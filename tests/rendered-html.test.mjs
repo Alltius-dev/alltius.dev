@@ -80,6 +80,42 @@ test("Portuguese home renders the approved headline", async () => {
   );
 });
 
+test("home metadata uses concise SEO copy separate from the hero", async () => {
+  const cases = [
+    {
+      path: "/",
+      title: "AIULLMA | Technology services for scalable operations",
+      heroSupport:
+        "AIULLMA LLC designs, implements and supports specialized technology services powered by dedicated infrastructure. Our model combines initial implementation, ongoing service and infrastructure, helping companies grow without tying every user, contact, message or workflow to another subscription fee. Cloud, telecommunications, platform and other third-party charges may apply.",
+    },
+    {
+      path: "/pt/",
+      title: "AIULLMA | Serviços de tecnologia para operações escaláveis",
+      heroSupport:
+        "A AIULLMA LLC projeta, implanta e sustenta serviços tecnológicos especializados sobre infraestrutura dedicada. Nosso modelo combina implantação inicial, serviço contínuo e infraestrutura, permitindo que empresas cresçam sem transformar cada usuário, contato, mensagem ou automação em uma nova cobrança. Tarifas de nuvem, telecomunicações, plataformas e outros terceiros podem ser aplicadas.",
+    },
+  ];
+
+  for (const { path, title, heroSupport } of cases) {
+    const html = await htmlFor(path);
+    const renderedTitle = html.match(/<title>([^<]+)<\/title>/i)?.[1];
+    const description = html.match(
+      /<meta[^>]+name="description"[^>]+content="([^"]+)"[^>]*>/i,
+    )?.[1];
+
+    assert.equal(renderedTitle, title);
+    assert.ok(description, `${path} must render a meta description`);
+    assert.ok(
+      description.length >= 150 && description.length <= 165,
+      `${path} meta description must be 150–165 characters; received ${description.length}`,
+    );
+    assert.ok(
+      !description.includes(heroSupport),
+      `${path} meta description must not reuse the complete hero copy`,
+    );
+  }
+});
+
 test("home exposes semantic navigation and the operational model", async () => {
   const html = await htmlFor("/");
   assert.match(html, /<a[^>]+href="#main-content"[^>]*>Skip to content<\/a>/i);
@@ -135,6 +171,30 @@ test("primary CTAs preserve the equivalent contact route", async () => {
     await htmlFor("/pt/"),
     /<a[^>]+href="\/pt\/contato"[^>]*>Fale sobre sua operação<\/a>/i,
   );
+});
+
+test("home contact sections visibly expose the corporate email and business address", async () => {
+  const address =
+    "2105 Vista Oeste NW Ste E, 1349, Albuquerque, NM 87120, United States";
+
+  for (const path of ["/", "/pt/"]) {
+    const html = await htmlFor(path);
+    const contactSection = html.match(
+      /<section[^>]+class="[^"]*\bcontact-section\b[^"]*"[^>]*>([\s\S]*?)<\/section>/i,
+    )?.[1];
+
+    assert.ok(contactSection, `${path} must render its Contact section`);
+    assert.match(
+      contactSection,
+      /<a[^>]+href="mailto:contact@aiullma\.com"[^>]*>contact@aiullma\.com<\/a>/i,
+    );
+    assert.match(contactSection, new RegExp(address));
+    assert.doesNotMatch(
+      html,
+      new RegExp(`<span[^>]+class="[^"]*sr-only[^"]*"[^>]*>${address}</span>`, "i"),
+      `${path} must not duplicate the address in hidden global content`,
+    );
+  }
 });
 
 test("every rendered mail link uses an approved corporate address", async () => {

@@ -5,7 +5,13 @@ import { routePairs, siteContent } from "../../lib/site-content";
 
 const content = siteContent.pt.home;
 
-export const metadata = metadataFor("pt", routePairs.home.pt, content.headline, content.support);
+export const metadata = metadataFor(
+  "pt",
+  routePairs.home.pt,
+  content.seoTitle,
+  content.seoDescription,
+  true,
+);
 
 export default function PortugueseHome() {
   return (

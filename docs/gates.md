@@ -1,5 +1,7 @@
 # AIULLMA Institutional Site Gates
 
+Public summary — operational identifiers and internal review artifacts intentionally omitted. The authoritative internal record is maintained outside this public repository.
+
 **Updated:** 2026-08-15
 
 This public register records the approved decisions and outstanding release checks for `aiullma.com`.

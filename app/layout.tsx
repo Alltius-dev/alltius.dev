@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 
 import "./globals.css";
-import { publicAddress } from "../lib/site-content";
 
 export const metadata: Metadata = {
   title: "AIULLMA LLC",
@@ -60,7 +59,6 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organization) }}
           type="application/ld+json"
         />
-        <span className="sr-only">{publicAddress}</span>
         {children}
       </body>
     </html>

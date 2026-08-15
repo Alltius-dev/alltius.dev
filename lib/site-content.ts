@@ -43,6 +43,8 @@ export type SiteContent = {
     disclaimer: string;
   };
   home: {
+    seoTitle: string;
+    seoDescription: string;
     eyebrow: string;
     headline: string;
     support: string;
@@ -84,6 +86,9 @@ export const siteContent: Record<Locale, SiteContent> = {
         "References to third-party products do not imply affiliation, certification or endorsement.",
     },
     home: {
+      seoTitle: "AIULLMA | Technology services for scalable operations",
+      seoDescription:
+        "AIULLMA LLC designs, implements and supports technology services with ongoing operations and dedicated infrastructure for scalable business workflows.",
       eyebrow: "AIULLMA LLC · NEW MEXICO, UNITED STATES",
       headline: "Technology services for scalable business operations.",
       support:
@@ -269,6 +274,9 @@ export const siteContent: Record<Locale, SiteContent> = {
         "Referências a produtos de terceiros não implicam afiliação, certificação ou endosso.",
     },
     home: {
+      seoTitle: "AIULLMA | Serviços de tecnologia para operações escaláveis",
+      seoDescription:
+        "A AIULLMA LLC projeta, implanta e sustenta serviços de tecnologia com operação contínua e infraestrutura dedicada para fluxos empresariais escaláveis.",
       eyebrow: "AIULLMA LLC · NEW MEXICO, ESTADOS UNIDOS",
       headline: "Serviços de tecnologia para operações empresariais escaláveis.",
       support:

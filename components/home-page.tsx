@@ -1,4 +1,9 @@
-import { routePairs, siteContent, type Locale } from "../lib/site-content";
+import {
+  publicAddress,
+  routePairs,
+  siteContent,
+  type Locale,
+} from "../lib/site-content";
 
 export function HomePage({ locale }: { locale: Locale }) {
   const content = siteContent[locale].home;
@@ -81,6 +86,12 @@ export function HomePage({ locale }: { locale: Locale }) {
           <h2 id="contact-title">{content.contactTitle}</h2>
           <div className="contact-copy">
             <p>{content.contactPrompt}</p>
+            <p>
+              <a className="text-link" href="mailto:contact@aiullma.com">
+                contact@aiullma.com
+              </a>
+            </p>
+            <p>{publicAddress}</p>
             <p className="safety-note">{content.contactSafety}</p>
             <a className="button-link" href={routePairs.contact[locale]}>{content.primaryCta}</a>
           </div>

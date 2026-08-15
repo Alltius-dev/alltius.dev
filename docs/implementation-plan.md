@@ -1,5 +1,7 @@
 # AIULLMA Institutional Site Implementation Plan
 
+Public summary — operational identifiers and internal review artifacts intentionally omitted. The authoritative internal record is maintained outside this public repository.
+
 ## Goal
 
 Build and verify the bilingual institutional website for AIULLMA LLC at `https://aiullma.com`, with public legal/contact pages and static, server-rendered content.

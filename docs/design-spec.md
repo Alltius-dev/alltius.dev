@@ -1,5 +1,7 @@
 # AIULLMA Institutional Site — Design Specification
 
+Public summary — operational identifiers and internal review artifacts intentionally omitted. The authoritative internal record is maintained outside this public repository.
+
 **Status:** Approved
 **Primary domain:** `https://aiullma.com`
 

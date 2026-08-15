@@ -14,11 +14,12 @@ export function metadataFor(
   path: string,
   title: string,
   description: string,
+  absoluteTitle = false,
 ): Metadata {
   const alternate = alternatePath(locale, path);
 
   return {
-    title: `${title} | AIULLMA LLC`,
+    title: absoluteTitle ? title : `${title} | AIULLMA LLC`,
     description,
     alternates: {
       canonical: path,
