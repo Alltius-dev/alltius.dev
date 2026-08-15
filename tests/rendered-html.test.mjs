@@ -116,6 +116,16 @@ test("Portuguese pages localize accessibility labels", async () => {
   assert.match(html, /<nav[^>]+aria-label="Políticas"/i);
 });
 
+test("mobile menu summaries describe the disclosure action in both languages", async () => {
+  const english = await htmlFor("/");
+  assert.match(english, /<summary>Menu<\/summary>/i);
+  assert.doesNotMatch(english, /<summary>Home<\/summary>/i);
+
+  const portuguese = await htmlFor("/pt/");
+  assert.match(portuguese, /<summary>Menu<\/summary>/i);
+  assert.doesNotMatch(portuguese, /<summary>Início<\/summary>/i);
+});
+
 test("primary CTAs preserve the equivalent contact route", async () => {
   assert.match(
     await htmlFor("/"),

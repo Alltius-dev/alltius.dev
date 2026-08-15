@@ -16,6 +16,7 @@ export function SiteShell({ locale, alternatePath, children }: SiteShellProps) {
     locale === "pt"
       ? {
           home: "Página inicial da AIULLMA",
+          menu: "Menu",
           mobileNavigation: "Navegação móvel",
           policies: "Políticas",
           primaryNavigation: "Navegação principal",
@@ -23,6 +24,7 @@ export function SiteShell({ locale, alternatePath, children }: SiteShellProps) {
         }
       : {
           home: "AIULLMA home",
+          menu: "Menu",
           mobileNavigation: "Mobile navigation",
           policies: "Policies",
           primaryNavigation: "Primary navigation",
@@ -53,7 +55,7 @@ export function SiteShell({ locale, alternatePath, children }: SiteShellProps) {
             </a>
           </nav>
           <details className="mobile-navigation">
-            <summary>{content.nav.home}</summary>
+            <summary>{accessibility.menu}</summary>
             <nav aria-label={accessibility.mobileNavigation}>
               <a href={paths.home}>{content.nav.home}</a>
               <a href={`${paths.home}#company`}>{content.nav.company}</a>
