@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 
 import "./globals.css";
 import { publicAddress } from "../lib/site-content";
@@ -8,6 +9,24 @@ export const metadata: Metadata = {
   description: "Technology services for scalable business operations.",
   metadataBase: new URL("https://aiullma.com"),
   icons: { icon: "/favicon.svg" },
+  openGraph: {
+    type: "website",
+    siteName: "AIULLMA LLC",
+    title: "AIULLMA LLC",
+    description: "Technology services for scalable business operations.",
+    images: [
+      {
+        url: "/og.png",
+        width: 1200,
+        height: 630,
+        alt: "AIULLMA — Technology services for scalable business operations.",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: ["/og.png"],
+  },
 };
 
 const organization = {
@@ -26,13 +45,16 @@ const organization = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const requestHeaders = await headers();
+  const language = requestHeaders.get("x-aiullma-language") === "pt-BR" ? "pt-BR" : "en";
+
   return (
-    <html lang="en">
+    <html lang={language}>
       <body className="site-body">
         <script
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organization) }}

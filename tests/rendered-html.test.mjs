@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 const expectedRoutes = [
@@ -79,6 +80,67 @@ test("Portuguese home renders the approved headline", async () => {
   );
 });
 
+test("home exposes semantic navigation and the operational model", async () => {
+  const html = await htmlFor("/");
+  assert.match(html, /<a[^>]+href="#main-content"[^>]*>Skip to content<\/a>/i);
+  assert.match(html, /<nav[^>]+aria-label="Primary navigation"/i);
+  assert.match(html, /<header[^>]+class="site-header"/i);
+  assert.match(html, /<section[^>]+class="hero"/i);
+  assert.match(html, /<ol[^>]+class="operational-rails"/i);
+  assert.match(html, /<article[^>]+class="[^"]*\bcapability-row\b[^"]*"/i);
+  assert.match(html, /<footer[^>]+class="site-footer"/i);
+  assert.match(html, /Implementation/);
+  assert.match(html, /Ongoing service/);
+  assert.match(html, /Dedicated infrastructure/);
+
+  assert.match(await htmlFor("/privacy"), /<main[^>]+class="legal-layout"/i);
+});
+
+test("localized pages declare their language in server-rendered HTML", async () => {
+  for (const path of expectedRoutes) {
+    const expectedLanguage = path.startsWith("/pt") ? "pt-BR" : "en";
+    assert.match(
+      await htmlFor(path),
+      new RegExp(`<html[^>]+lang=["']${expectedLanguage}["']`, "i"),
+      `${path} must render lang=${expectedLanguage}`,
+    );
+  }
+});
+
+test("Portuguese pages localize accessibility labels", async () => {
+  const html = await htmlFor("/pt/");
+  assert.match(html, /<a[^>]+href="#main-content"[^>]*>Pular para o conteúdo<\/a>/i);
+  assert.match(html, /<a[^>]+aria-label="Página inicial da AIULLMA"/i);
+  assert.match(html, /<nav[^>]+aria-label="Navegação principal"/i);
+  assert.match(html, /<nav[^>]+aria-label="Navegação móvel"/i);
+  assert.match(html, /<nav[^>]+aria-label="Políticas"/i);
+});
+
+test("primary CTAs preserve the equivalent contact route", async () => {
+  assert.match(
+    await htmlFor("/"),
+    /<a[^>]+href="\/contact"[^>]*>Discuss your operation<\/a>/i,
+  );
+  assert.match(
+    await htmlFor("/pt/"),
+    /<a[^>]+href="\/pt\/contato"[^>]*>Fale sobre sua operação<\/a>/i,
+  );
+});
+
+test("every rendered mail link uses an approved corporate address", async () => {
+  const approved = new Set([
+    "mailto:contact@aiullma.com",
+    "mailto:privacy@aiullma.com",
+  ]);
+
+  for (const path of expectedRoutes) {
+    const mailLinks = [...(await htmlFor(path)).matchAll(/href=["'](mailto:[^"']+)["']/gi)];
+    for (const [, href] of mailLinks) {
+      assert.ok(approved.has(href.toLowerCase()), `${path} exposes unexpected mail link ${href}`);
+    }
+  }
+});
+
 test("hero support qualifies pricing language in both languages", async () => {
   assert.match(
     await htmlFor("/"),
@@ -140,6 +202,31 @@ test("localized pages publish canonical and alternate metadata", async () => {
   assert.match(portuguese, /rel="canonical" href="https:\/\/aiullma\.com\/pt\/contato"/i);
   assert.match(portuguese, /rel="alternate" hrefLang="en" href="https:\/\/aiullma\.com\/contact"/i);
   assert.match(portuguese, /rel="alternate" hrefLang="pt-BR" href="https:\/\/aiullma\.com\/pt\/contato"/i);
+});
+
+test("rendered head publishes favicon and 1200 by 630 social preview metadata", async () => {
+  for (const [path, canonical] of [
+    ["/", "https://aiullma.com"],
+    ["/pt/", "https://aiullma.com/pt/"],
+  ]) {
+    const html = await htmlFor(path);
+    assert.match(html, new RegExp(`rel="canonical" href="${canonical}"`, "i"));
+    assert.match(html, /rel="alternate" hrefLang="en" href="https:\/\/aiullma\.com"/i);
+    assert.match(html, /rel="alternate" hrefLang="pt-BR" href="https:\/\/aiullma\.com\/pt\/"/i);
+    assert.match(html, /rel="icon" href="\/favicon\.svg"/i);
+    assert.match(html, /property="og:image" content="https:\/\/aiullma\.com\/og\.png"/i);
+    assert.match(html, /property="og:image:width" content="1200"/i);
+    assert.match(html, /property="og:image:height" content="630"/i);
+  }
+});
+
+test("social preview and favicon assets are available at their declared dimensions", async () => {
+  const preview = await readFile(new URL("../public/og.png", import.meta.url));
+  assert.equal(preview.readUInt32BE(16), 1200);
+  assert.equal(preview.readUInt32BE(20), 630);
+
+  const favicon = await readFile(new URL("../public/favicon.svg", import.meta.url), "utf8");
+  assert.match(favicon, /<svg\b/i);
 });
 
 test("crawler discovery routes publish the approved canonical URLs", async () => {
