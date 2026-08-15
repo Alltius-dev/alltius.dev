@@ -6,7 +6,7 @@ This public register records the approved decisions and outstanding release chec
 
 | Gate | Decision | Status |
 | --- | --- | --- |
-| Legal identity | Use `AIULLMA LLC` as the legal entity and `AIULLMA` as the wordmark. | Approved |
+| Legal identity | Use `AIULLMA LLC` as the legal entity and `AIULLMA` as the wordmark. Its New Mexico registration was verified against the company formation record supplied by the owner. | Approved |
 | Domain | Publish at `aiullma.com`, with `www.aiullma.com` resolving or redirecting to the canonical domain. | Approved; publication pending |
 | Architecture | Bilingual one-page home plus Contact, Privacy, Terms and Data Deletion pages. | Approved |
 | Positioning | Specialized technology services: implementation, ongoing service and dedicated infrastructure, priced by scope and capacity. | Approved |

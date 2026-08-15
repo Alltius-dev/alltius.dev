@@ -87,12 +87,12 @@ export const siteContent: Record<Locale, SiteContent> = {
       eyebrow: "AIULLMA LLC · NEW MEXICO, UNITED STATES",
       headline: "Technology services for scalable business operations.",
       support:
-        "AIULLMA LLC designs, implements and supports specialized technology services powered by dedicated infrastructure. Our model combines initial implementation, ongoing service and infrastructure, helping companies grow without tying every user, contact, message or workflow to another subscription fee.",
+        "AIULLMA LLC designs, implements and supports specialized technology services powered by dedicated infrastructure. Our model combines initial implementation, ongoing service and infrastructure, helping companies grow without tying every user, contact, message or workflow to another subscription fee. Cloud, telecommunications, platform and other third-party charges may apply.",
       primaryCta: "Discuss your operation",
       secondaryCta: "See our operating model",
       companyTitle: "Company",
       company:
-        "AIULLMA LLC is a technology services company organized in New Mexico, United States. We design, implement and operate specialized systems for business workflows. Certain engagements may be delivered under the Alltius operating brand.",
+        "AIULLMA LLC is a technology services company registered in New Mexico, United States. We design, implement and operate specialized systems for business workflows. Certain engagements may be delivered under the Alltius operating brand.",
       capabilitiesTitle: "Capabilities",
       capabilities: [
         {
@@ -140,7 +140,7 @@ export const siteContent: Record<Locale, SiteContent> = {
         "AIULLMA’s fees are structured around scope and capacity rather than automatically multiplied by every seat, contact, message or workflow. Cloud, telecommunications, platform and other third-party charges may apply.",
       trustTitle: "Built for clear diligence",
       trust:
-        "AIULLMA LLC is organized in New Mexico, United States. Our public policies and direct company contacts are available below.",
+        "AIULLMA LLC is registered in New Mexico, United States. Our public policies and direct company contacts are available below.",
       contactTitle: "Start with the operating context",
       contactPrompt:
         "Tell us about the workflow, systems involved, desired outcome and relevant operating constraints.",
@@ -272,12 +272,12 @@ export const siteContent: Record<Locale, SiteContent> = {
       eyebrow: "AIULLMA LLC · NEW MEXICO, ESTADOS UNIDOS",
       headline: "Serviços de tecnologia para operações empresariais escaláveis.",
       support:
-        "A AIULLMA LLC projeta, implanta e sustenta serviços tecnológicos especializados sobre infraestrutura dedicada. Nosso modelo combina implantação inicial, serviço contínuo e infraestrutura, permitindo que empresas cresçam sem transformar cada usuário, contato, mensagem ou automação em uma nova cobrança.",
+        "A AIULLMA LLC projeta, implanta e sustenta serviços tecnológicos especializados sobre infraestrutura dedicada. Nosso modelo combina implantação inicial, serviço contínuo e infraestrutura, permitindo que empresas cresçam sem transformar cada usuário, contato, mensagem ou automação em uma nova cobrança. Tarifas de nuvem, telecomunicações, plataformas e outros terceiros podem ser aplicadas.",
       primaryCta: "Fale sobre sua operação",
       secondaryCta: "Conheça nosso modelo",
       companyTitle: "Empresa",
       company:
-        "A AIULLMA LLC é uma empresa de serviços tecnológicos constituída no New Mexico, Estados Unidos. Projetamos, implantamos e operamos sistemas especializados para fluxos empresariais. Determinados projetos podem ser entregues sob a marca operacional Alltius.",
+        "A AIULLMA LLC é uma empresa de serviços tecnológicos registrada no New Mexico, Estados Unidos. Projetamos, implantamos e operamos sistemas especializados para fluxos empresariais. Determinados projetos podem ser entregues sob a marca operacional Alltius.",
       capabilitiesTitle: "Capacidades",
       capabilities: [
         {
@@ -325,7 +325,7 @@ export const siteContent: Record<Locale, SiteContent> = {
         "As cobranças da AIULLMA são estruturadas por escopo e capacidade, sem multiplicação automática por usuário, contato, mensagem ou fluxo. Tarifas de nuvem, telecomunicações, plataformas e outros terceiros podem ser aplicadas.",
       trustTitle: "Base para uma diligência clara",
       trust:
-        "A AIULLMA LLC é constituída no New Mexico, Estados Unidos. Nossas políticas públicas e contatos corporativos diretos estão disponíveis abaixo.",
+        "A AIULLMA LLC é registrada no New Mexico, Estados Unidos. Nossas políticas públicas e contatos corporativos diretos estão disponíveis abaixo.",
       contactTitle: "Comece pelo contexto operacional",
       contactPrompt:
         "Conte sobre o fluxo, os sistemas envolvidos, o resultado desejado e as restrições operacionais relevantes.",

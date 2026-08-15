@@ -51,6 +51,12 @@ async function htmlFor(path) {
   return response.text();
 }
 
+async function textFor(path) {
+  const response = await render(path);
+  assert.equal(response.status, 200);
+  return response.text();
+}
+
 for (const path of expectedRoutes) {
   test(`${path} renders a public HTML page`, async () => {
     const response = await render(path);
@@ -70,6 +76,17 @@ test("Portuguese home renders the approved headline", async () => {
   assert.match(
     await htmlFor("/pt/"),
     /Serviços de tecnologia para operações empresariais escaláveis\./,
+  );
+});
+
+test("hero support qualifies pricing language in both languages", async () => {
+  assert.match(
+    await htmlFor("/"),
+    /another subscription fee\. Cloud, telecommunications, platform and other third-party charges may apply\./,
+  );
+  assert.match(
+    await htmlFor("/pt/"),
+    /nova cobrança\. Tarifas de nuvem, telecomunicações, plataformas e outros terceiros podem ser aplicadas\./,
   );
 });
 
@@ -111,4 +128,51 @@ test("rendered pages avoid prohibited claims", async () => {
       assert.doesNotMatch(html, pattern, `${path} must not contain ${pattern}`);
     }
   }
+});
+
+test("localized pages publish canonical and alternate metadata", async () => {
+  const english = await htmlFor("/contact");
+  assert.match(english, /rel="canonical" href="https:\/\/aiullma\.com\/contact"/i);
+  assert.match(english, /rel="alternate" hrefLang="en" href="https:\/\/aiullma\.com\/contact"/i);
+  assert.match(english, /rel="alternate" hrefLang="pt-BR" href="https:\/\/aiullma\.com\/pt\/contato"/i);
+
+  const portuguese = await htmlFor("/pt/contato");
+  assert.match(portuguese, /rel="canonical" href="https:\/\/aiullma\.com\/pt\/contato"/i);
+  assert.match(portuguese, /rel="alternate" hrefLang="en" href="https:\/\/aiullma\.com\/contact"/i);
+  assert.match(portuguese, /rel="alternate" hrefLang="pt-BR" href="https:\/\/aiullma\.com\/pt\/contato"/i);
+});
+
+test("crawler discovery routes publish the approved canonical URLs", async () => {
+  const robots = await textFor("/robots.txt");
+  assert.match(robots, /User-agent: \*/i);
+  assert.match(robots, /Allow: \//i);
+  assert.match(robots, /Sitemap: https:\/\/aiullma\.com\/sitemap\.xml/i);
+
+  const sitemap = await textFor("/sitemap.xml");
+  for (const path of expectedRoutes) {
+    assert.match(sitemap, new RegExp(`https://aiullma\\.com${path}`));
+  }
+});
+
+test("home publishes the approved Organization JSON-LD", async () => {
+  const html = await htmlFor("/");
+  const match = html.match(/<script type="application\/ld\+json">(.*?)<\/script>/);
+  assert.ok(match, "Organization JSON-LD must be rendered in the document");
+
+  const organization = JSON.parse(match[1]);
+  assert.deepEqual(organization, {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "AIULLMA LLC",
+    url: "https://aiullma.com",
+    email: "contact@aiullma.com",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "2105 Vista Oeste NW Ste E, 1349",
+      addressLocality: "Albuquerque",
+      addressRegion: "NM",
+      postalCode: "87120",
+      addressCountry: "US",
+    },
+  });
 });
