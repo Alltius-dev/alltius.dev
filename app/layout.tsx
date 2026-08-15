@@ -1,23 +1,28 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import { publicAddress } from "../lib/site-content";
 
 export const metadata: Metadata = {
-  title: "Starter Project",
-  description: "A clean starting point for building your site.",
-  icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg",
+  title: "AIULLMA LLC",
+  description: "Technology services for scalable business operations.",
+  metadataBase: new URL("https://aiullma.com"),
+  icons: { icon: "/favicon.svg" },
+};
+
+const organization = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "AIULLMA LLC",
+  url: "https://aiullma.com",
+  email: "contact@aiullma.com",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "2105 Vista Oeste NW Ste E, 1349",
+    addressLocality: "Albuquerque",
+    addressRegion: "NM",
+    postalCode: "87120",
+    addressCountry: "US",
   },
 };
 
@@ -28,9 +33,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className="site-body">
+        <script
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organization) }}
+          type="application/ld+json"
+        />
+        <span className="sr-only">{publicAddress}</span>
         {children}
       </body>
     </html>

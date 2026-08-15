@@ -1,15 +1,16 @@
-import type { Metadata } from "next";
-import { SkeletonPreview } from "./_sites-preview/SkeletonPreview";
+import { HomePage } from "../components/home-page";
+import { SiteShell } from "../components/site-shell";
+import { metadataFor } from "../lib/metadata";
+import { routePairs, siteContent } from "../lib/site-content";
 
-export const metadata: Metadata = {
-  title: "Your site is taking shape",
-  description:
-    "Your first version will appear here automatically when it’s ready.",
-  other: {
-    "codex-preview": "development",
-  },
-};
+const content = siteContent.en.home;
+
+export const metadata = metadataFor("en", routePairs.home.en, content.headline, content.support);
 
 export default function Home() {
-  return <SkeletonPreview />;
+  return (
+    <SiteShell locale="en" alternatePath={routePairs.home.pt}>
+      <HomePage locale="en" />
+    </SiteShell>
+  );
 }
