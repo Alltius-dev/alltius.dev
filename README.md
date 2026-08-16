@@ -1,22 +1,22 @@
 # AIULLMA institutional website
 
-Public source for the bilingual institutional website of AIULLMA LLC. The site explains the company, its technology-services model, direct contact channels and public policies without implying third-party approval, certification or partnership.
+Public source for the trilingual institutional website of AIULLMA LLC. The site explains the company, its managed technology and AI services model, direct contact channels and public policies without implying third-party approval, certification or partnership.
 
 The canonical production domain is [https://aiullma.com](https://aiullma.com). `www.aiullma.com` is expected to resolve or redirect to the canonical domain.
 
 ## Routes
 
-| English | Portuguese |
-| --- | --- |
-| `/` | `/pt/` |
-| `/contact` | `/pt/contato` |
-| `/privacy` | `/pt/privacidade` |
-| `/terms` | `/pt/termos` |
-| `/data-deletion` | `/pt/exclusao-de-dados` |
+| English | Portuguese | Spanish (Latin America) |
+| --- | --- | --- |
+| `/` | `/pt/` | `/es/` |
+| `/contact` | `/pt/contato` | `/es/contacto` |
+| `/privacy` | `/pt/privacidade` | `/es/privacidad` |
+| `/terms` | `/pt/termos` | `/es/terminos` |
+| `/data-deletion` | `/pt/exclusao-de-dados` | `/es/eliminacion-de-datos` |
 
 ## Architecture and privacy
 
-The application uses server-rendered React routes, reusable components and typed bilingual content. It is stateless and has no contact form, authentication, database, CMS, analytics, advertising pixels, session replay, fingerprinting or non-essential cookies. Visitors contact AIULLMA through the corporate email addresses published on the site.
+The application uses server-rendered React routes, reusable components and typed trilingual content. It is stateless and has no contact form, authentication, database, CMS, analytics, advertising pixels, session replay, fingerprinting or non-essential cookies. Visitors contact AIULLMA through the corporate email addresses published on the site.
 
 ## Stack
 
@@ -42,7 +42,7 @@ npm run start
 
 ## Deployment
 
-The project is configured for OpenAI Sites deployment and produces a Cloudflare-compatible worker bundle. Deployment must preserve `https://aiullma.com` as the canonical origin and keep all English and Portuguese routes publicly available over HTTPS.
+The project is configured for OpenAI Sites deployment and produces a Cloudflare-compatible worker bundle. Deployment must preserve `https://aiullma.com` as the canonical origin and keep all English, Portuguese and Latin American Spanish routes publicly available over HTTPS.
 
 ## Documentation
 

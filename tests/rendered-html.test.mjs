@@ -155,6 +155,13 @@ test("home metadata uses concise SEO copy separate from the hero", async () => {
   }
 });
 
+test("social metadata reflects the service-first growth positioning", async () => {
+  const html = await htmlFor("/");
+  assert.match(html, /property="og:title" content="AIULLMA LLC"/i);
+  assert.match(html, /property="og:description" content="Managed technology and AI services for companies ready to grow revenue\./i);
+  assert.match(html, /property="og:image:alt" content="AIULLMA — Managed technology and AI services for companies ready to grow revenue\./i);
+});
+
 test("home exposes semantic navigation and the operational model", async () => {
   const html = await htmlFor("/");
   assert.match(html, /<a[^>]+href="#main-content"[^>]*>Skip to content<\/a>/i);

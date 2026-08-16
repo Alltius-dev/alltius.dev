@@ -5,20 +5,20 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "AIULLMA LLC",
-  description: "Technology services for scalable business operations.",
+  description: "Managed technology and AI services for companies ready to grow revenue.",
   metadataBase: new URL("https://aiullma.com"),
   icons: { icon: "/favicon.svg" },
   openGraph: {
     type: "website",
     siteName: "AIULLMA LLC",
     title: "AIULLMA LLC",
-    description: "Technology services for scalable business operations.",
+    description: "Managed technology and AI services for companies ready to grow revenue.",
     images: [
       {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "AIULLMA — Technology services for scalable business operations.",
+        alt: "AIULLMA — Managed technology and AI services for companies ready to grow revenue.",
       },
     ],
   },
