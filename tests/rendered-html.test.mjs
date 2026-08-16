@@ -296,11 +296,11 @@ test("legal pages identify the AIULLMA LLC legal entity", async () => {
 
 test("language selectors link every page to its EN PT and ES equivalents", async () => {
   const routeGroups = [
-    [{ path: "/", label: "English" }, { path: "/pt/", label: "Português" }, { path: "/es/", label: "Español" }],
-    [{ path: "/contact", label: "English" }, { path: "/pt/contato", label: "Português" }, { path: "/es/contacto", label: "Español" }],
-    [{ path: "/privacy", label: "English" }, { path: "/pt/privacidade", label: "Português" }, { path: "/es/privacidad", label: "Español" }],
-    [{ path: "/terms", label: "English" }, { path: "/pt/termos", label: "Português" }, { path: "/es/terminos", label: "Español" }],
-    [{ path: "/data-deletion", label: "English" }, { path: "/pt/exclusao-de-dados", label: "Português" }, { path: "/es/eliminacion-de-datos", label: "Español" }],
+    [{ path: "/", label: "English", hrefLang: "en" }, { path: "/pt/", label: "Português", hrefLang: "pt-BR" }, { path: "/es/", label: "Español", hrefLang: "es-419" }],
+    [{ path: "/contact", label: "English", hrefLang: "en" }, { path: "/pt/contato", label: "Português", hrefLang: "pt-BR" }, { path: "/es/contacto", label: "Español", hrefLang: "es-419" }],
+    [{ path: "/privacy", label: "English", hrefLang: "en" }, { path: "/pt/privacidade", label: "Português", hrefLang: "pt-BR" }, { path: "/es/privacidad", label: "Español", hrefLang: "es-419" }],
+    [{ path: "/terms", label: "English", hrefLang: "en" }, { path: "/pt/termos", label: "Português", hrefLang: "pt-BR" }, { path: "/es/terminos", label: "Español", hrefLang: "es-419" }],
+    [{ path: "/data-deletion", label: "English", hrefLang: "en" }, { path: "/pt/exclusao-de-dados", label: "Português", hrefLang: "pt-BR" }, { path: "/es/eliminacion-de-datos", label: "Español", hrefLang: "es-419" }],
   ];
 
   for (const group of routeGroups) {
@@ -311,7 +311,10 @@ test("language selectors link every page to its EN PT and ES equivalents", async
       for (const [, switcher] of switchers) {
         assert.match(switcher, new RegExp(`<span[^>]+aria-current=["']page["'][^>]*>${current.label}<\\/span>`));
         for (const target of group.filter((item) => item.path !== current.path)) {
-          assert.match(switcher, new RegExp(`href=["']${target.path}["']`));
+          assert.match(
+            switcher,
+            new RegExp(`<a(?=[^>]*href=["']${target.path}["'])(?=[^>]*hrefLang=["']${target.hrefLang}["'])[^>]*>`),
+          );
         }
       }
     }

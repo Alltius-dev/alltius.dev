@@ -1,7 +1,7 @@
 # AIULLMA service-first growth copy
 
 Date: 2026-08-16  
-Status: approved direction; awaiting written-spec review
+Status: approved — 2026-08-16
 
 ## Objective
 
