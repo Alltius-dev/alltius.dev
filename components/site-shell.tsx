@@ -4,13 +4,21 @@ import {
   type Locale,
 } from "../lib/site-content";
 
+export type LocalizedPaths = Readonly<Record<Locale, string>>;
+
 type SiteShellProps = {
   locale: Locale;
-  alternatePath: string;
+  localizedPaths: LocalizedPaths;
   children: React.ReactNode;
 };
 
-export function SiteShell({ locale, alternatePath, children }: SiteShellProps) {
+const languageOptions = [
+  { locale: "en", label: "English", hrefLang: "en" },
+  { locale: "pt", label: "Português", hrefLang: "pt-BR" },
+  { locale: "es", label: "Español", hrefLang: "es-419" },
+] as const;
+
+export function SiteShell({ locale, localizedPaths, children }: SiteShellProps) {
   const content = siteContent[locale];
   const accessibilityByLocale = {
     en: {
@@ -59,9 +67,17 @@ export function SiteShell({ locale, alternatePath, children }: SiteShellProps) {
             <a href={`${paths.home}#capabilities`}>{content.nav.capabilities}</a>
             <a href={`${paths.home}#model`}>{content.nav.model}</a>
             <a href={paths.contact}>{content.nav.contact}</a>
-            <a className="language-link" href={alternatePath} hrefLang={locale === "en" ? "pt-BR" : "en"}>
-              {content.nav.language}
-            </a>
+            <div className="language-switcher" role="group" aria-label={content.nav.languages}>
+              {languageOptions.map((option) =>
+                option.locale === locale ? (
+                  <span aria-current="page" key={option.locale}>{option.label}</span>
+                ) : (
+                  <a href={localizedPaths[option.locale]} hrefLang={option.hrefLang} key={option.locale}>
+                    {option.label}
+                  </a>
+                ),
+              )}
+            </div>
           </nav>
           <details className="mobile-navigation">
             <summary>{accessibility.menu}</summary>
@@ -71,9 +87,17 @@ export function SiteShell({ locale, alternatePath, children }: SiteShellProps) {
               <a href={`${paths.home}#capabilities`}>{content.nav.capabilities}</a>
               <a href={`${paths.home}#model`}>{content.nav.model}</a>
               <a href={paths.contact}>{content.nav.contact}</a>
-              <a href={alternatePath} hrefLang={locale === "en" ? "pt-BR" : "en"}>
-                {content.nav.language}
-              </a>
+              <div className="language-switcher" role="group" aria-label={content.nav.languages}>
+                {languageOptions.map((option) =>
+                  option.locale === locale ? (
+                    <span aria-current="page" key={option.locale}>{option.label}</span>
+                  ) : (
+                    <a href={localizedPaths[option.locale]} hrefLang={option.hrefLang} key={option.locale}>
+                      {option.label}
+                    </a>
+                  ),
+                )}
+              </div>
             </nav>
           </details>
         </div>

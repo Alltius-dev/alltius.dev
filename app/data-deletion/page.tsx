@@ -8,5 +8,5 @@ const content = siteContent.en.legal.dataDeletion;
 export const metadata = metadataFor("en", routePairs.dataDeletion.en, content.title, content.description);
 
 export default function DataDeletionPage() {
-  return <SiteShell locale="en" alternatePath={routePairs.dataDeletion.pt}><LegalPage locale="en" pageKey="dataDeletion" /></SiteShell>;
+  return <SiteShell locale="en" localizedPaths={routePairs.dataDeletion}><LegalPage locale="en" pageKey="dataDeletion" /></SiteShell>;
 }

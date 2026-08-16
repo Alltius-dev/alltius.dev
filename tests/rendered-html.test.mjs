@@ -287,18 +287,27 @@ test("legal pages identify the AIULLMA LLC legal entity", async () => {
   }
 });
 
-test("language switchers link to the equivalent localized route", async () => {
-  const equivalents = [
-    ["/", "/pt/"],
-    ["/contact", "/pt/contato"],
-    ["/privacy", "/pt/privacidade"],
-    ["/terms", "/pt/termos"],
-    ["/data-deletion", "/pt/exclusao-de-dados"],
+test("language selectors link every page to its EN PT and ES equivalents", async () => {
+  const routeGroups = [
+    [{ path: "/", label: "English" }, { path: "/pt/", label: "Português" }, { path: "/es/", label: "Español" }],
+    [{ path: "/contact", label: "English" }, { path: "/pt/contato", label: "Português" }, { path: "/es/contacto", label: "Español" }],
+    [{ path: "/privacy", label: "English" }, { path: "/pt/privacidade", label: "Português" }, { path: "/es/privacidad", label: "Español" }],
+    [{ path: "/terms", label: "English" }, { path: "/pt/termos", label: "Português" }, { path: "/es/terminos", label: "Español" }],
+    [{ path: "/data-deletion", label: "English" }, { path: "/pt/exclusao-de-dados", label: "Português" }, { path: "/es/eliminacion-de-datos", label: "Español" }],
   ];
 
-  for (const [englishPath, portuguesePath] of equivalents) {
-    assert.match(await htmlFor(englishPath), new RegExp(`href=["']${portuguesePath}["']`));
-    assert.match(await htmlFor(portuguesePath), new RegExp(`href=["']${englishPath}["']`));
+  for (const group of routeGroups) {
+    for (const current of group) {
+      const html = await htmlFor(current.path);
+      const switchers = [...html.matchAll(/<div[^>]+class="language-switcher"[^>]*>([\s\S]*?)<\/div>/gi)];
+      assert.equal(switchers.length, 2, `${current.path} must render desktop and mobile selectors`);
+      for (const [, switcher] of switchers) {
+        assert.match(switcher, new RegExp(`<span[^>]+aria-current=["']page["'][^>]*>${current.label}<\\/span>`));
+        for (const target of group.filter((item) => item.path !== current.path)) {
+          assert.match(switcher, new RegExp(`href=["']${target.path}["']`));
+        }
+      }
+    }
   }
 });
 
@@ -322,15 +331,18 @@ test("rendered pages avoid prohibited claims", async () => {
 });
 
 test("localized pages publish canonical and alternate metadata", async () => {
-  const english = await htmlFor("/contact");
-  assert.match(english, /rel="canonical" href="https:\/\/aiullma\.com\/contact"/i);
-  assert.match(english, /rel="alternate" hrefLang="en" href="https:\/\/aiullma\.com\/contact"/i);
-  assert.match(english, /rel="alternate" hrefLang="pt-BR" href="https:\/\/aiullma\.com\/pt\/contato"/i);
-
-  const portuguese = await htmlFor("/pt/contato");
-  assert.match(portuguese, /rel="canonical" href="https:\/\/aiullma\.com\/pt\/contato"/i);
-  assert.match(portuguese, /rel="alternate" hrefLang="en" href="https:\/\/aiullma\.com\/contact"/i);
-  assert.match(portuguese, /rel="alternate" hrefLang="pt-BR" href="https:\/\/aiullma\.com\/pt\/contato"/i);
+  for (const [path, canonical] of [
+    ["/contact", "https://aiullma.com/contact"],
+    ["/pt/contato", "https://aiullma.com/pt/contato"],
+    ["/es/contacto", "https://aiullma.com/es/contacto"],
+  ]) {
+    const html = await htmlFor(path);
+    assert.match(html, new RegExp(`rel="canonical" href="${canonical}"`, "i"));
+    assert.match(html, /hrefLang="en" href="https:\/\/aiullma\.com\/contact"/i);
+    assert.match(html, /hrefLang="pt-BR" href="https:\/\/aiullma\.com\/pt\/contato"/i);
+    assert.match(html, /hrefLang="es-419" href="https:\/\/aiullma\.com\/es\/contacto"/i);
+    assert.match(html, /hrefLang="x-default" href="https:\/\/aiullma\.com\/contact"/i);
+  }
 });
 
 test("rendered head publishes favicon and 1200 by 630 social preview metadata", async () => {

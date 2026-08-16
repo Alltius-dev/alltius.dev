@@ -8,5 +8,5 @@ const content = siteContent.es.legal.contact;
 export const metadata = metadataFor("es", routePairs.contact.es, content.title, content.description);
 
 export default function SpanishContactPage() {
-  return <SiteShell locale="es" alternatePath={routePairs.contact.en}><LegalPage locale="es" pageKey="contact" /></SiteShell>;
+  return <SiteShell locale="es" localizedPaths={routePairs.contact}><LegalPage locale="es" pageKey="contact" /></SiteShell>;
 }

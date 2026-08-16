@@ -4,11 +4,6 @@ import { routePairs, type Locale } from "./site-content";
 
 const origin = "https://aiullma.com";
 
-function alternatePath(locale: Locale, path: string) {
-  const pair = Object.values(routePairs).find((route) => route[locale] === path);
-  return pair?.[locale === "en" ? "pt" : "en"];
-}
-
 export function metadataFor(
   locale: Locale,
   path: string,
@@ -16,17 +11,19 @@ export function metadataFor(
   description: string,
   absoluteTitle = false,
 ): Metadata {
-  const alternate = alternatePath(locale, path);
+  const pair = Object.values(routePairs).find((route) => route[locale] === path);
 
   return {
     title: absoluteTitle ? title : `${title} | AIULLMA LLC`,
     description,
     alternates: {
       canonical: path,
-      languages: alternate
+      languages: pair
         ? {
-            en: locale === "en" ? path : alternate,
-            "pt-BR": locale === "pt" ? path : alternate,
+            en: pair.en,
+            "pt-BR": pair.pt,
+            "es-419": pair.es,
+            "x-default": pair.en,
           }
         : undefined,
     },

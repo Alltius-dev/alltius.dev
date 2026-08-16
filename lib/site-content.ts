@@ -37,7 +37,7 @@ export type SiteContent = {
     capabilities: string;
     model: string;
     contact: string;
-    language: string;
+    languages: string;
   };
   footer: {
     policies: string;
@@ -79,7 +79,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       capabilities: "Capabilities",
       model: "Operating model",
       contact: "Contact",
-      language: "Português",
+      languages: "Languages",
     },
     footer: {
       policies: "Policies",
@@ -268,7 +268,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       capabilities: "Capacidades",
       model: "Modelo operacional",
       contact: "Contato",
-      language: "English",
+      languages: "Idiomas",
     },
     footer: {
       policies: "Políticas",
@@ -456,7 +456,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       capabilities: "Capacidades",
       model: "Modelo de servicio",
       contact: "Contacto",
-      language: "English",
+      languages: "Idiomas",
     },
     footer: {
       policies: "Políticas",

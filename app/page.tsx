@@ -15,7 +15,7 @@ export const metadata = metadataFor(
 
 export default function Home() {
   return (
-    <SiteShell locale="en" alternatePath={routePairs.home.pt}>
+    <SiteShell locale="en" localizedPaths={routePairs.home}>
       <HomePage locale="en" />
     </SiteShell>
   );

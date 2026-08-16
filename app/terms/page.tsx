@@ -8,5 +8,5 @@ const content = siteContent.en.legal.terms;
 export const metadata = metadataFor("en", routePairs.terms.en, content.title, content.description);
 
 export default function TermsPage() {
-  return <SiteShell locale="en" alternatePath={routePairs.terms.pt}><LegalPage locale="en" pageKey="terms" /></SiteShell>;
+  return <SiteShell locale="en" localizedPaths={routePairs.terms}><LegalPage locale="en" pageKey="terms" /></SiteShell>;
 }

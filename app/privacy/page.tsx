@@ -8,5 +8,5 @@ const content = siteContent.en.legal.privacy;
 export const metadata = metadataFor("en", routePairs.privacy.en, content.title, content.description);
 
 export default function PrivacyPage() {
-  return <SiteShell locale="en" alternatePath={routePairs.privacy.pt}><LegalPage locale="en" pageKey="privacy" /></SiteShell>;
+  return <SiteShell locale="en" localizedPaths={routePairs.privacy}><LegalPage locale="en" pageKey="privacy" /></SiteShell>;
 }
