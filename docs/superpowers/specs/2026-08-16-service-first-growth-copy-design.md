@@ -311,11 +311,11 @@ Spanish accessibility labels:
 ## SEO and social preview
 
 - English title: `AIULLMA | Managed technology and AI services for growth`
-- English description: `AIULLMA builds, operates and optimizes automation, AI agents, business intelligence, systems and dedicated infrastructure to help companies grow revenue and operating capacity.`
+- English description: `AIULLMA builds, operates and optimizes automation, AI agents, BI, systems and dedicated infrastructure to help companies grow revenue and operating capacity.`
 - Portuguese title: `AIULLMA | Serviços gerenciados de tecnologia e IA para crescimento`
-- Portuguese description: `A AIULLMA constrói, opera e otimiza automações, agentes de IA, BI, sistemas e infraestrutura dedicada para ajudar empresas a ampliar receita e capacidade operacional.`
+- Portuguese description: `A AIULLMA constrói, opera e otimiza automações, agentes de IA, BI e infraestrutura dedicada para ampliar receita, margem e capacidade operacional de empresas.`
 - Spanish title: `AIULLMA | Servicios gestionados de tecnología e IA para crecer`
-- Spanish description: `AIULLMA construye, opera y optimiza automatizaciones, agentes de IA, BI, sistemas e infraestructura dedicada para ayudar a las empresas a aumentar sus ingresos y su capacidad operativa.`
+- Spanish description: `AIULLMA construye, opera y optimiza automatizaciones, agentes de IA, BI e infraestructura dedicada para ayudar a aumentar ingresos y capacidad operativa.`
 - Regenerate the social-preview card once so it does not retain the previous headline. It must use the approved B1 palette and the new English headline without adding claims, logos or certifications.
 
 ## Unchanged scope
