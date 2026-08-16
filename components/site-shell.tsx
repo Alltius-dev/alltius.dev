@@ -12,24 +12,33 @@ type SiteShellProps = {
 
 export function SiteShell({ locale, alternatePath, children }: SiteShellProps) {
   const content = siteContent[locale];
-  const accessibility =
-    locale === "pt"
-      ? {
-          home: "Página inicial da AIULLMA",
-          menu: "Menu",
-          mobileNavigation: "Navegação móvel",
-          policies: "Políticas",
-          primaryNavigation: "Navegação principal",
-          skip: "Pular para o conteúdo",
-        }
-      : {
-          home: "AIULLMA home",
-          menu: "Menu",
-          mobileNavigation: "Mobile navigation",
-          policies: "Policies",
-          primaryNavigation: "Primary navigation",
-          skip: "Skip to content",
-        };
+  const accessibilityByLocale = {
+    en: {
+      home: "AIULLMA home",
+      menu: "Menu",
+      mobileNavigation: "Mobile navigation",
+      policies: "Policies",
+      primaryNavigation: "Primary navigation",
+      skip: "Skip to content",
+    },
+    pt: {
+      home: "Página inicial da AIULLMA",
+      menu: "Menu",
+      mobileNavigation: "Navegação móvel",
+      policies: "Políticas",
+      primaryNavigation: "Navegação principal",
+      skip: "Pular para o conteúdo",
+    },
+    es: {
+      home: "Página de inicio de AIULLMA",
+      menu: "Menú",
+      mobileNavigation: "Navegación móvil",
+      policies: "Políticas",
+      primaryNavigation: "Navegación principal",
+      skip: "Ir al contenido",
+    },
+  } as const;
+  const accessibility = accessibilityByLocale[locale];
   const paths = {
     home: routePairs.home[locale],
     contact: routePairs.contact[locale],

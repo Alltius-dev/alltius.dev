@@ -3,7 +3,11 @@ import { NextResponse } from "next/server";
 
 export function proxy(request: NextRequest) {
   const requestHeaders = new Headers(request.headers);
-  const language = request.nextUrl.pathname.startsWith("/pt") ? "pt-BR" : "en";
+  const language = request.nextUrl.pathname.startsWith("/pt")
+    ? "pt-BR"
+    : request.nextUrl.pathname.startsWith("/es")
+      ? "es-419"
+      : "en";
 
   requestHeaders.set("x-aiullma-language", language);
 

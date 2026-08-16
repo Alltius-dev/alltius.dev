@@ -13,6 +13,11 @@ const expectedRoutes = [
   "/pt/privacidade",
   "/pt/termos",
   "/pt/exclusao-de-dados",
+  "/es/",
+  "/es/contacto",
+  "/es/privacidad",
+  "/es/terminos",
+  "/es/eliminacion-de-datos",
 ];
 
 const prohibitedPatterns = [
@@ -86,6 +91,13 @@ const positioningCases = [
     model: ["Construção orientada ao crescimento", "Operação contínua", "Otimização com dados e IA"],
     capabilities: ["Automação orientada à receita", "BI para decisões de crescimento", "Agentes de IA integrados à operação"],
   },
+  {
+    path: "/es/",
+    headline: /Servicios gestionados de tecnología e IA para empresas preparadas para generar más ingresos\./,
+    support: /identificar oportunidades, tomar mejores decisiones, atender una mayor demanda y crecer\./,
+    model: ["Construcción orientada al crecimiento", "Operación continua", "Optimización con datos e IA"],
+    capabilities: ["Automatización orientada a los ingresos", "BI para decisiones de crecimiento", "Agentes de IA integrados en la operación"],
+  },
 ];
 
 test("home pages lead with the approved service-first growth positioning", async () => {
@@ -113,9 +125,17 @@ test("home metadata uses concise SEO copy separate from the hero", async () => {
       description:
         "A AIULLMA constrói, opera e otimiza automações, agentes de IA, BI e infraestrutura dedicada para ampliar receita, margem e capacidade operacional de empresas.",
     },
+    {
+      path: "/es/",
+      title: "AIULLMA | Servicios gestionados de tecnología e IA para crecer",
+      description:
+        "AIULLMA construye, opera y optimiza automatizaciones, agentes de IA, BI e infraestructura dedicada para ayudar a aumentar ingresos y capacidad operativa.",
+      heroSupport:
+        "AIULLMA construye, opera y optimiza automatizaciones, sistemas, agentes de IA, inteligencia de negocios e infraestructura dedicada para ayudar a las empresas a identificar oportunidades, tomar mejores decisiones, atender una mayor demanda y crecer.",
+    },
   ];
 
-  for (const { path, title, description: expectedDescription } of cases) {
+  for (const { path, title, description: expectedDescription, heroSupport } of cases) {
     const html = await htmlFor(path);
     const renderedTitle = html.match(/<title>([^<]+)<\/title>/i)?.[1];
     const description = html.match(
@@ -129,6 +149,9 @@ test("home metadata uses concise SEO copy separate from the hero", async () => {
       description.length >= 150 && description.length <= 165,
       `${path} meta description must be 150–165 characters; received ${description.length}`,
     );
+    if (heroSupport) {
+      assert.match(html, new RegExp(heroSupport));
+    }
   }
 });
 
@@ -150,7 +173,11 @@ test("home exposes semantic navigation and the operational model", async () => {
 
 test("localized pages declare their language in server-rendered HTML", async () => {
   for (const path of expectedRoutes) {
-    const expectedLanguage = path.startsWith("/pt") ? "pt-BR" : "en";
+    const expectedLanguage = path.startsWith("/pt")
+      ? "pt-BR"
+      : path.startsWith("/es")
+        ? "es-419"
+        : "en";
     assert.match(
       await htmlFor(path),
       new RegExp(`<html[^>]+lang=["']${expectedLanguage}["']`, "i"),
@@ -166,6 +193,22 @@ test("Portuguese pages localize accessibility labels", async () => {
   assert.match(html, /<nav[^>]+aria-label="Navegação principal"/i);
   assert.match(html, /<nav[^>]+aria-label="Navegação móvel"/i);
   assert.match(html, /<nav[^>]+aria-label="Políticas"/i);
+});
+
+test("Spanish home renders the approved Latin American positioning", async () => {
+  const html = await htmlFor("/es/");
+  assert.match(html, /Servicios gestionados de tecnología e IA para empresas preparadas para generar más ingresos\./);
+  assert.match(html, /identificar oportunidades, tomar mejores decisiones, atender una mayor demanda y crecer\./);
+  assert.match(html, /Hablemos de su objetivo de crecimiento/);
+});
+
+test("Spanish pages localize accessibility labels", async () => {
+  const html = await htmlFor("/es/");
+  assert.match(html, /<a[^>]+href="#main-content"[^>]*>Ir al contenido<\/a>/i);
+  assert.match(html, /aria-label="Página de inicio de AIULLMA"/i);
+  assert.match(html, /aria-label="Navegación principal"/i);
+  assert.match(html, /aria-label="Navegación móvil"/i);
+  assert.match(html, /aria-label="Políticas"/i);
 });
 
 test("mobile menu summaries describe the disclosure action in both languages", async () => {
@@ -187,13 +230,17 @@ test("primary CTAs preserve the equivalent contact route", async () => {
     await htmlFor("/pt/"),
     /<a[^>]+href="\/pt\/contato"[^>]*>Fale sobre sua meta de crescimento<\/a>/i,
   );
+  assert.match(
+    await htmlFor("/es/"),
+    /<a[^>]+href="\/es\/contacto"[^>]*>Hablemos de su objetivo de crecimiento<\/a>/i,
+  );
 });
 
 test("home contact sections visibly expose the corporate email and business address", async () => {
   const address =
     "2105 Vista Oeste NW Ste E, 1349, Albuquerque, NM 87120, United States";
 
-  for (const path of ["/", "/pt/"]) {
+  for (const path of ["/", "/pt/", "/es/"]) {
     const html = await htmlFor(path);
     const contactSection = html.match(
       /<section[^>]+class="[^"]*\bcontact-section\b[^"]*"[^>]*>([\s\S]*?)<\/section>/i,
@@ -256,11 +303,11 @@ test("language switchers link to the equivalent localized route", async () => {
 });
 
 test("contact and data-deletion pages expose the correct corporate emails", async () => {
-  for (const path of ["/contact", "/pt/contato"]) {
+  for (const path of ["/contact", "/pt/contato", "/es/contacto"]) {
     assert.match(await htmlFor(path), /href=["']mailto:contact@aiullma\.com["']/i);
   }
 
-  for (const path of ["/data-deletion", "/pt/exclusao-de-dados"]) {
+  for (const path of ["/data-deletion", "/pt/exclusao-de-dados", "/es/eliminacion-de-datos"]) {
     assert.match(await htmlFor(path), /href=["']mailto:privacy@aiullma\.com["']/i);
   }
 });

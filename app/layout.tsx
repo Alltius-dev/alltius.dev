@@ -50,7 +50,10 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const requestHeaders = await headers();
-  const language = requestHeaders.get("x-aiullma-language") === "pt-BR" ? "pt-BR" : "en";
+  const requestedLanguage = requestHeaders.get("x-aiullma-language");
+  const language = requestedLanguage === "pt-BR" || requestedLanguage === "es-419"
+    ? requestedLanguage
+    : "en";
 
   return (
     <html lang={language}>

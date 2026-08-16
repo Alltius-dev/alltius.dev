@@ -40,12 +40,11 @@ const worker = {
       }, allowedWidths);
     }
 
-    // vinext normalizes a directory route to its slashless form. The approved
-    // Portuguese home route is `/pt/`, so preserve that public URL while
-    // dispatching to the generated `/pt` route internally.
-    if (url.pathname === "/pt/") {
+    // vinext normalizes directory routes to their slashless form. Preserve
+    // the approved localized home URLs while dispatching to generated routes.
+    if (url.pathname === "/pt/" || url.pathname === "/es/") {
       const normalizedUrl = new URL(request.url);
-      normalizedUrl.pathname = "/pt";
+      normalizedUrl.pathname = url.pathname.slice(0, -1);
       return handler.fetch(new Request(normalizedUrl, request), env, ctx);
     }
 
