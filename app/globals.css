@@ -259,10 +259,16 @@ p {
 }
 
 .hero-support {
+  display: grid;
   font-size: clamp(1rem, 1.5vw, 1.18rem);
+  gap: 14px;
   line-height: 1.75;
   margin-block-end: 34px;
   max-width: 66ch;
+}
+
+.hero-support p {
+  margin: 0;
 }
 
 .hero-actions {

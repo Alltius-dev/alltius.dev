@@ -1,13 +1,17 @@
-export type Locale = "en" | "pt";
+export type Locale = "en" | "pt" | "es";
 
 export type LegalPageKey = "contact" | "privacy" | "terms" | "dataDeletion";
 
 export const routePairs = {
-  home: { en: "/", pt: "/pt/" },
-  contact: { en: "/contact", pt: "/pt/contato" },
-  privacy: { en: "/privacy", pt: "/pt/privacidade" },
-  terms: { en: "/terms", pt: "/pt/termos" },
-  dataDeletion: { en: "/data-deletion", pt: "/pt/exclusao-de-dados" },
+  home: { en: "/", pt: "/pt/", es: "/es/" },
+  contact: { en: "/contact", pt: "/pt/contato", es: "/es/contacto" },
+  privacy: { en: "/privacy", pt: "/pt/privacidade", es: "/es/privacidad" },
+  terms: { en: "/terms", pt: "/pt/termos", es: "/es/terminos" },
+  dataDeletion: {
+    en: "/data-deletion",
+    pt: "/pt/exclusao-de-dados",
+    es: "/es/eliminacion-de-datos",
+  },
 } as const;
 
 export const publicAddress =
@@ -47,7 +51,7 @@ export type SiteContent = {
     seoDescription: string;
     eyebrow: string;
     headline: string;
-    support: string;
+    support: string[];
     primaryCta: string;
     secondaryCta: string;
     companyTitle: string;
@@ -86,69 +90,70 @@ export const siteContent: Record<Locale, SiteContent> = {
         "References to third-party products do not imply affiliation, certification or endorsement.",
     },
     home: {
-      seoTitle: "AIULLMA | Technology services for scalable operations",
+      seoTitle: "AIULLMA | Managed technology and AI services for growth",
       seoDescription:
-        "AIULLMA LLC designs, implements and supports technology services with ongoing operations and dedicated infrastructure for scalable business workflows.",
+        "AIULLMA builds, operates and optimizes automation, AI agents, BI, systems and dedicated infrastructure to help companies grow revenue and operating capacity.",
       eyebrow: "AIULLMA LLC · NEW MEXICO, UNITED STATES",
-      headline: "Technology services for scalable business operations.",
-      support:
-        "AIULLMA LLC designs, implements and supports specialized technology services powered by dedicated infrastructure. Our model combines initial implementation, ongoing service and infrastructure, helping companies grow without tying every user, contact, message or workflow to another subscription fee. Cloud, telecommunications, platform and other third-party charges may apply.",
-      primaryCta: "Discuss your operation",
-      secondaryCta: "See our operating model",
-      companyTitle: "Company",
+      headline: "Managed technology and AI services for companies ready to grow revenue.",
+      support: [
+        "AIULLMA builds, operates and optimizes automation, systems, AI agents, business intelligence and dedicated infrastructure to help companies identify opportunities, make better decisions, serve more demand and grow.",
+        "We deliver this capability as an ongoing service, so every gain in scale strengthens revenue and margins—instead of being absorbed by fees for each user, contact, message or automation.",
+      ],
+      primaryCta: "Discuss your growth objective",
+      secondaryCta: "See our service model",
+      companyTitle: "A service company built around growth",
       company:
-        "AIULLMA LLC is a technology services company registered in New Mexico, United States. We design, implement and operate specialized systems for business workflows. Certain engagements may be delivered under the Alltius operating brand.",
-      capabilitiesTitle: "Capabilities",
+        "AIULLMA LLC is a managed technology and AI services company registered in New Mexico, United States. We build, operate and optimize systems that expand our clients’ commercial and operating capacity. Certain services may be delivered under the Alltius operating brand.",
+      capabilitiesTitle: "Capabilities that turn operations into growth",
       capabilities: [
         {
-          title: "Process automation",
+          title: "Revenue-focused automation",
           description:
-            "We design practical automations around the work that teams need to complete.",
+            "We connect commercial and operating workflows to reduce friction, accelerate execution and turn more demand into results.",
         },
         {
-          title: "Systems and integrations",
+          title: "BI for growth decisions",
           description:
-            "We connect the systems and data flows that support an agreed business process.",
+            "We bring together revenue, performance, cost and opportunity indicators so decisions can be faster and better informed.",
         },
         {
-          title: "AI-supported operations",
+          title: "AI agents embedded in operations",
           description:
-            "We apply appropriate AI capabilities to help teams operate with clearer, more useful information.",
+            "We apply AI agents to defined tasks and workflows, expanding team capacity with control and context.",
         },
         {
-          title: "Managed applications and infrastructure",
+          title: "Managed systems and infrastructure",
           description:
-            "We operate agreed application environments and the infrastructure that supports them.",
+            "We operate applications, integrations and dedicated environments that support the service as demand evolves.",
         },
       ],
-      modelTitle:
-        "Implementation, ongoing service and dedicated infrastructure under one service model.",
+      modelTitle: "We build, operate and optimize as an ongoing service.",
       model: [
         {
-          title: "Initial implementation",
+          title: "Growth-focused build",
           description:
-            "Discovery, system design, configuration, integrations and launch.",
+            "We translate commercial and operating objectives into systems, automation, indicators and an appropriate technical foundation.",
         },
         {
-          title: "Ongoing service",
+          title: "Continuous operation",
           description:
-            "Monitoring, maintenance, operational support and agreed improvements.",
+            "We keep applications, integrations and infrastructure running within the agreed scope and capacity.",
         },
         {
-          title: "Dedicated infrastructure",
+          title: "Optimization with data and AI",
           description:
-            "Capacity and environments provisioned for the engagement under the agreed scope.",
+            "We use observed performance, BI and AI capabilities to prioritize improvements and expand results over time.",
         },
       ],
-      scalingTitle: "Scale the operation, not the billing units.",
+      scalingTitle: "Make scale strengthen revenue and margins.",
       commercialQualifier:
-        "AIULLMA’s fees are structured around scope and capacity rather than automatically multiplied by every seat, contact, message or workflow. Cloud, telecommunications, platform and other third-party charges may apply.",
+        "AIULLMA’s model combines ongoing service, scope and capacity. This reduces dependence on charges that automatically grow with every user, contact, message or automation and allows solution economics to follow the business objective. Cloud, telecommunications, platform and other third-party charges may apply.",
       trustTitle: "Built for clear diligence",
       trust:
         "AIULLMA LLC is registered in New Mexico, United States. Our public policies and direct company contacts are available below.",
-      contactTitle: "Start with the operating context",
+      contactTitle: "Start with the growth objective",
       contactPrompt:
-        "Tell us about the workflow, systems involved, desired outcome and relevant operating constraints.",
+        "Tell us which revenue or capacity outcome your company is pursuing, how the operation works today, which systems are involved and what limits the next stage of growth.",
       contactSafety:
         "Please do not send credentials, API keys, client databases or sensitive personal data by email.",
     },
@@ -274,69 +279,70 @@ export const siteContent: Record<Locale, SiteContent> = {
         "Referências a produtos de terceiros não implicam afiliação, certificação ou endosso.",
     },
     home: {
-      seoTitle: "AIULLMA | Serviços de tecnologia para operações escaláveis",
+      seoTitle: "AIULLMA | Serviços gerenciados de tecnologia e IA para crescimento",
       seoDescription:
-        "A AIULLMA LLC projeta, implanta e sustenta serviços de tecnologia com operação contínua e infraestrutura dedicada para fluxos empresariais escaláveis.",
+        "A AIULLMA constrói, opera e otimiza automações, agentes de IA, BI e infraestrutura dedicada para ampliar receita, margem e capacidade operacional de empresas.",
       eyebrow: "AIULLMA LLC · NEW MEXICO, ESTADOS UNIDOS",
-      headline: "Serviços de tecnologia para operações empresariais escaláveis.",
-      support:
-        "A AIULLMA LLC projeta, implanta e sustenta serviços tecnológicos especializados sobre infraestrutura dedicada. Nosso modelo combina implantação inicial, serviço contínuo e infraestrutura, permitindo que empresas cresçam sem transformar cada usuário, contato, mensagem ou automação em uma nova cobrança. Tarifas de nuvem, telecomunicações, plataformas e outros terceiros podem ser aplicadas.",
-      primaryCta: "Fale sobre sua operação",
-      secondaryCta: "Conheça nosso modelo",
-      companyTitle: "Empresa",
+      headline: "Serviços gerenciados de tecnologia e IA para empresas prontas para faturar mais.",
+      support: [
+        "A AIULLMA constrói, opera e otimiza automações, sistemas, agentes de IA, inteligência de dados e infraestrutura dedicada para ajudar empresas a identificar oportunidades, tomar decisões melhores, atender mais demanda e crescer.",
+        "Entregamos essa capacidade como serviço contínuo, para que cada ganho de escala fortaleça a receita e a margem — em vez de ser absorvido por cobranças por usuário, contato, mensagem ou automação.",
+      ],
+      primaryCta: "Fale sobre sua meta de crescimento",
+      secondaryCta: "Conheça nosso modelo de serviço",
+      companyTitle: "Uma empresa de serviços para crescimento",
       company:
-        "A AIULLMA LLC é uma empresa de serviços tecnológicos registrada no New Mexico, Estados Unidos. Projetamos, implantamos e operamos sistemas especializados para fluxos empresariais. Determinados projetos podem ser entregues sob a marca operacional Alltius.",
-      capabilitiesTitle: "Capacidades",
+        "A AIULLMA LLC é uma empresa de serviços gerenciados de tecnologia e IA registrada no New Mexico, Estados Unidos. Construímos, operamos e otimizamos sistemas que ampliam a capacidade comercial e operacional de nossos clientes. Determinados serviços podem ser entregues sob a marca operacional Alltius.",
+      capabilitiesTitle: "Capacidades para transformar operação em crescimento",
       capabilities: [
         {
-          title: "Automação de processos",
+          title: "Automação orientada à receita",
           description:
-            "Projetamos automações práticas para o trabalho que as equipes precisam realizar.",
+            "Conectamos processos comerciais e operacionais para reduzir atrito, acelerar execução e transformar mais demanda em resultado.",
         },
         {
-          title: "Sistemas e integrações",
+          title: "BI para decisões de crescimento",
           description:
-            "Conectamos sistemas e fluxos de dados que apoiam um processo empresarial acordado.",
+            "Reunimos indicadores de receita, desempenho, custos e oportunidades para tornar decisões mais rápidas e fundamentadas.",
         },
         {
-          title: "Operações apoiadas por IA",
+          title: "Agentes de IA integrados à operação",
           description:
-            "Aplicamos recursos adequados de IA para ajudar as equipes a operar com informações mais claras e úteis.",
+            "Aplicamos agentes de IA em tarefas e fluxos definidos, ampliando a capacidade das equipes com controle e contexto.",
         },
         {
-          title: "Aplicações e infraestrutura gerenciadas",
+          title: "Sistemas e infraestrutura gerenciados",
           description:
-            "Operamos ambientes de aplicação acordados e a infraestrutura que os sustenta.",
+            "Operamos aplicações, integrações e ambientes dedicados que sustentam o serviço e acompanham a evolução da demanda.",
         },
       ],
-      modelTitle:
-        "Implantação, serviço contínuo e infraestrutura dedicada em um único modelo de serviço.",
+      modelTitle: "Construímos, operamos e otimizamos como um serviço contínuo.",
       model: [
         {
-          title: "Implantação inicial",
+          title: "Construção orientada ao crescimento",
           description:
-            "Descoberta, desenho de sistema, configuração, integrações e lançamento.",
+            "Traduzimos objetivos comerciais e operacionais em sistemas, automações, indicadores e uma base técnica adequada.",
         },
         {
-          title: "Serviço contínuo",
+          title: "Operação contínua",
           description:
-            "Monitoramento, manutenção, suporte operacional e melhorias acordadas.",
+            "Mantemos aplicações, integrações e infraestrutura funcionando dentro do escopo e da capacidade acordados.",
         },
         {
-          title: "Infraestrutura dedicada",
+          title: "Otimização com dados e IA",
           description:
-            "Capacidade e ambientes provisionados para o projeto dentro do escopo acordado.",
+            "Usamos desempenho observado, BI e recursos de IA para priorizar melhorias e ampliar resultados ao longo do tempo.",
         },
       ],
-      scalingTitle: "Escale a operação, não as unidades de cobrança.",
+      scalingTitle: "Faça a escala fortalecer receita e margem.",
       commercialQualifier:
-        "As cobranças da AIULLMA são estruturadas por escopo e capacidade, sem multiplicação automática por usuário, contato, mensagem ou fluxo. Tarifas de nuvem, telecomunicações, plataformas e outros terceiros podem ser aplicadas.",
+        "O modelo da AIULLMA combina serviço contínuo, escopo e capacidade. Isso reduz a dependência de cobranças que crescem automaticamente a cada usuário, contato, mensagem ou automação e permite que a economia da solução acompanhe o objetivo do negócio. Tarifas de nuvem, telecomunicações, plataformas e outros terceiros podem ser aplicadas.",
       trustTitle: "Base para uma diligência clara",
       trust:
         "A AIULLMA LLC é registrada no New Mexico, Estados Unidos. Nossas políticas públicas e contatos corporativos diretos estão disponíveis abaixo.",
-      contactTitle: "Comece pelo contexto operacional",
+      contactTitle: "Comece pela meta de crescimento",
       contactPrompt:
-        "Conte sobre o fluxo, os sistemas envolvidos, o resultado desejado e as restrições operacionais relevantes.",
+        "Conte qual resultado de receita ou capacidade sua empresa busca, como a operação funciona hoje, quais sistemas estão envolvidos e o que limita o próximo estágio de crescimento.",
       contactSafety:
         "Não envie credenciais, chaves de API, bases de clientes ou dados pessoais sensíveis por e-mail.",
     },
@@ -437,6 +443,195 @@ export const siteContent: Record<Locale, SiteContent> = {
             paragraphs: [
               "Podemos verificar sua identidade antes de agir. Quando apropriado, excluiremos ou anonimizaremos informações, sujeito a requisitos legítimos de retenção legal, de segurança, contábil e de backup que podem limitar a exclusão imediata.",
               "Se os dados solicitados forem controlados por um de nossos clientes, a solicitação poderá precisar ser direcionada ao cliente. Explicaremos o próximo passo aplicável quando razoavelmente possível.",
+            ],
+          },
+        ],
+      },
+    },
+  },
+  es: {
+    nav: {
+      home: "Inicio",
+      company: "Empresa",
+      capabilities: "Capacidades",
+      model: "Modelo de servicio",
+      contact: "Contacto",
+      language: "English",
+    },
+    footer: {
+      policies: "Políticas",
+      privacy: "Privacidad",
+      terms: "Términos",
+      dataDeletion: "Eliminación de datos",
+      disclaimer:
+        "Las referencias a productos de terceros no implican afiliación, certificación ni respaldo.",
+    },
+    home: {
+      seoTitle: "AIULLMA | Servicios gestionados de tecnología e IA para crecer",
+      seoDescription:
+        "AIULLMA construye, opera y optimiza automatizaciones, agentes de IA, BI e infraestructura dedicada para ayudar a aumentar ingresos y capacidad operativa.",
+      eyebrow: "AIULLMA LLC · NEW MEXICO, ESTADOS UNIDOS",
+      headline:
+        "Servicios gestionados de tecnología e IA para empresas preparadas para generar más ingresos.",
+      support: [
+        "AIULLMA construye, opera y optimiza automatizaciones, sistemas, agentes de IA, inteligencia de negocios e infraestructura dedicada para ayudar a las empresas a identificar oportunidades, tomar mejores decisiones, atender una mayor demanda y crecer.",
+        "Entregamos esta capacidad como un servicio continuo, para que cada avance en escala fortalezca los ingresos y los márgenes, en lugar de quedar absorbido por cobros por usuario, contacto, mensaje o automatización.",
+      ],
+      primaryCta: "Hablemos de su objetivo de crecimiento",
+      secondaryCta: "Conozca nuestro modelo de servicio",
+      companyTitle: "Una empresa de servicios orientada al crecimiento",
+      company:
+        "AIULLMA LLC es una empresa de servicios gestionados de tecnología e IA registrada en New Mexico, Estados Unidos. Construimos, operamos y optimizamos sistemas que amplían la capacidad comercial y operativa de nuestros clientes. Algunos servicios pueden prestarse bajo la marca operativa Alltius.",
+      capabilitiesTitle: "Capacidades que convierten la operación en crecimiento",
+      capabilities: [
+        {
+          title: "Automatización orientada a los ingresos",
+          description:
+            "Conectamos procesos comerciales y operativos para reducir fricción, acelerar la ejecución y convertir una mayor demanda en resultados.",
+        },
+        {
+          title: "BI para decisiones de crecimiento",
+          description:
+            "Reunimos indicadores de ingresos, desempeño, costos y oportunidades para tomar decisiones más rápidas y mejor fundamentadas.",
+        },
+        {
+          title: "Agentes de IA integrados en la operación",
+          description:
+            "Aplicamos agentes de IA a tareas y flujos definidos, ampliando la capacidad de los equipos con control y contexto.",
+        },
+        {
+          title: "Sistemas e infraestructura gestionados",
+          description:
+            "Operamos aplicaciones, integraciones y entornos dedicados que sostienen el servicio a medida que evoluciona la demanda.",
+        },
+      ],
+      modelTitle: "Construimos, operamos y optimizamos como un servicio continuo.",
+      model: [
+        {
+          title: "Construcción orientada al crecimiento",
+          description:
+            "Traducimos objetivos comerciales y operativos en sistemas, automatizaciones, indicadores y una base técnica adecuada.",
+        },
+        {
+          title: "Operación continua",
+          description:
+            "Mantenemos aplicaciones, integraciones e infraestructura en funcionamiento dentro del alcance y la capacidad acordados.",
+        },
+        {
+          title: "Optimización con datos e IA",
+          description:
+            "Utilizamos el desempeño observado, BI y capacidades de IA para priorizar mejoras y ampliar resultados a lo largo del tiempo.",
+        },
+      ],
+      scalingTitle: "Haga que la escala fortalezca los ingresos y los márgenes.",
+      commercialQualifier:
+        "El modelo de AIULLMA combina servicio continuo, alcance y capacidad. Esto reduce la dependencia de cobros que aumentan automáticamente con cada usuario, contacto, mensaje o automatización y permite que la economía de la solución acompañe el objetivo del negocio. Pueden aplicarse cargos de nube, telecomunicaciones, plataformas y otros terceros.",
+      trustTitle: "Preparada para una evaluación clara",
+      trust:
+        "AIULLMA LLC está registrada en New Mexico, Estados Unidos. Nuestras políticas públicas y contactos corporativos directos están disponibles a continuación.",
+      contactTitle: "Comience por el objetivo de crecimiento",
+      contactPrompt:
+        "Cuéntenos qué resultado de ingresos o capacidad busca su empresa, cómo funciona actualmente la operación, qué sistemas intervienen y qué limita la siguiente etapa de crecimiento.",
+      contactSafety:
+        "No envíe credenciales, claves de API, bases de clientes ni datos personales sensibles por correo electrónico.",
+    },
+    legal: {
+      contact: {
+        title: "Contacto de AIULLMA LLC",
+        description: "Contacto corporativo directo de AIULLMA LLC.",
+        introduction:
+          "Comuníquese directamente con AIULLMA LLC para conversar sobre una posible contratación de servicios tecnológicos.",
+        email: "contact@aiullma.com",
+        sections: [
+          {
+            heading: "Contexto inicial útil",
+            paragraphs: [
+              "Indique el flujo u objetivo operativo, los sistemas involucrados, el resultado esperado y cualquier plazo o restricción relevante.",
+              "No envíe credenciales, contraseñas, tokens, claves de API, bases de clientes ni datos personales sensibles por correo electrónico.",
+            ],
+          },
+          { heading: "Dirección comercial", paragraphs: [publicAddress] },
+        ],
+      },
+      privacy: {
+        title: "Aviso de Privacidad",
+        description:
+          "Cómo gestiona AIULLMA LLC la información en su sitio web público.",
+        introduction:
+          "Este aviso explica cómo gestiona AIULLMA LLC la información personal relacionada con este sitio web público y con las consultas directas por correo electrónico.",
+        email: "privacy@aiullma.com",
+        sections: [
+          {
+            heading: "Información que utilizamos",
+            paragraphs: [
+              "En su lanzamiento, este sitio no utiliza píxeles publicitarios, herramientas de analítica, grabación de sesiones, técnicas de fingerprinting ni cookies no esenciales. Cuando se visita el sitio, pueden generarse registros ordinarios de alojamiento y seguridad.",
+              "Cuando nos envía un correo electrónico, utilizamos la información proporcionada para responder a su consulta, evaluar una posible contratación y mantener registros comerciales razonables.",
+            ],
+          },
+          {
+            heading: "Proveedores y transferencias",
+            paragraphs: [
+              "Podemos utilizar proveedores de alojamiento, correo electrónico, seguridad y servicios profesionales para operar el sitio y responder a las consultas. Estos proveedores pueden procesar información en países distintos al suyo, con las salvaguardas adecuadas cuando sean exigidas.",
+            ],
+          },
+          {
+            heading: "Conservación, seguridad y derechos",
+            paragraphs: [
+              "Conservamos la información únicamente durante el tiempo razonablemente necesario para los fines descritos, incluidas necesidades legales, contables, de seguridad y de respaldo. Utilizamos salvaguardas administrativas y técnicas razonables, pero ninguna transmisión ni sistema es completamente seguro.",
+              "Puede solicitar acceso, corrección, eliminación u otros derechos aplicables escribiendo a privacy@aiullma.com. AIULLMA LLC es responsable del tratamiento de este sitio; cuando tratamos datos para un sistema de un cliente, el cliente puede controlar la solicitud correspondiente.",
+            ],
+          },
+        ],
+      },
+      terms: {
+        title: "Términos de Uso",
+        description: "Términos aplicables al sitio web público de AIULLMA LLC.",
+        introduction:
+          "Estos Términos de Uso se aplican únicamente a este sitio web público de AIULLMA LLC.",
+        sections: [
+          {
+            heading: "Uso permitido",
+            paragraphs: [
+              "Puede utilizar este sitio con fines informativos y lícitos. No interfiera con el sitio, intente obtener acceso no autorizado, introduzca material dañino ni utilice su contenido de forma engañosa.",
+              "El contenido del sitio pertenece a AIULLMA LLC o a sus licenciantes y no puede copiarse ni reutilizarse salvo cuando lo permita la ley o exista autorización por escrito.",
+            ],
+          },
+          {
+            heading: "Información y terceros",
+            paragraphs: [
+              "El contenido del sitio es información general y no crea un compromiso de servicio. Las referencias o enlaces a productos o sitios de terceros no implican afiliación, certificación ni respaldo.",
+              "Los servicios de pago se rigen por propuestas, alcances de trabajo u otros contratos independientes aceptados para la contratación correspondiente.",
+            ],
+          },
+          {
+            heading: "Exenciones y contexto aplicable",
+            paragraphs: [
+              "Este sitio se proporciona según disponibilidad, en la medida permitida por la ley, sin garantías de disponibilidad ininterrumpida ni de idoneidad para un fin específico. AIULLMA LLC no responde por pérdidas indirectas o consecuentes derivadas del uso de este sitio público, en la medida permitida por la ley.",
+              "Estos términos se rigen por las leyes aplicables de New Mexico, Estados Unidos. Podemos actualizarlos mediante la publicación de una versión revisada. Las consultas pueden enviarse a contact@aiullma.com.",
+            ],
+          },
+        ],
+      },
+      dataDeletion: {
+        title: "Solicitudes de Eliminación de Datos",
+        description:
+          "Cómo solicitar la eliminación de información controlada por AIULLMA LLC.",
+        introduction:
+          "Para solicitar la eliminación de información personal controlada por AIULLMA LLC, escriba a privacy@aiullma.com desde una dirección asociada con la solicitud.",
+        email: "privacy@aiullma.com",
+        sections: [
+          {
+            heading: "Qué debe incluir",
+            paragraphs: [
+              "Incluya su nombre, empresa, relación con AIULLMA LLC, los datos o el servicio involucrados y suficiente contexto para ayudarnos a localizar el registro correspondiente.",
+              "No envíe contraseñas, tokens, claves de API, listas de clientes ni conjuntos de datos sensibles en una solicitud de eliminación.",
+            ],
+          },
+          {
+            heading: "Cómo se gestionan las solicitudes",
+            paragraphs: [
+              "Podemos verificar su identidad antes de actuar. Cuando corresponda, eliminaremos o anonimizaremos la información, sujeto a requisitos legítimos de conservación legal, de seguridad, contable y de respaldo que pueden limitar la eliminación inmediata.",
+              "Si los datos solicitados están controlados por uno de nuestros clientes, es posible que la solicitud deba dirigirse a ese cliente. Explicaremos el siguiente paso aplicable cuando sea razonablemente posible.",
             ],
           },
         ],

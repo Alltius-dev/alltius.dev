@@ -15,7 +15,11 @@ export function HomePage({ locale }: { locale: Locale }) {
           <div className="hero-copy">
             <p className="eyebrow">{content.eyebrow}</p>
             <h1 id="hero-title">{content.headline}</h1>
-            <p className="hero-support">{content.support}</p>
+            <div className="hero-support">
+              {content.support.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
             <div className="hero-actions">
               <a className="button-link" href={routePairs.contact[locale]}>{content.primaryCta}</a>
               <a className="text-link" href="#model">{content.secondaryCta}</a>

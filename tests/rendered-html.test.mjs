@@ -22,6 +22,11 @@ const prohibitedPatterns = [
   /unlimited users/i,
   /unlimited messages/i,
   /zero SaaS/i,
+  /guaranteed revenue/i,
+  /guaranteed ROI/i,
+  /receita garantida/i,
+  /ROI garantido/i,
+  /ingresos garantizados/i,
 ];
 
 async function render(path) {
@@ -66,37 +71,51 @@ for (const path of expectedRoutes) {
   });
 }
 
-test("English home renders the approved headline", async () => {
-  assert.match(
-    await htmlFor("/"),
-    /Technology services for scalable business operations\./,
-  );
-});
+const positioningCases = [
+  {
+    path: "/",
+    headline: /Managed technology and AI services for companies ready to grow revenue\./,
+    support: /identify opportunities, make better decisions, serve more demand and grow\./,
+    model: ["Growth-focused build", "Continuous operation", "Optimization with data and AI"],
+    capabilities: ["Revenue-focused automation", "BI for growth decisions", "AI agents embedded in operations"],
+  },
+  {
+    path: "/pt/",
+    headline: /Serviços gerenciados de tecnologia e IA para empresas prontas para faturar mais\./,
+    support: /identificar oportunidades, tomar decisões melhores, atender mais demanda e crescer\./,
+    model: ["Construção orientada ao crescimento", "Operação contínua", "Otimização com dados e IA"],
+    capabilities: ["Automação orientada à receita", "BI para decisões de crescimento", "Agentes de IA integrados à operação"],
+  },
+];
 
-test("Portuguese home renders the approved headline", async () => {
-  assert.match(
-    await htmlFor("/pt/"),
-    /Serviços de tecnologia para operações empresariais escaláveis\./,
-  );
+test("home pages lead with the approved service-first growth positioning", async () => {
+  for (const item of positioningCases) {
+    const html = await htmlFor(item.path);
+    assert.match(html, item.headline);
+    assert.match(html, item.support);
+    for (const label of [...item.model, ...item.capabilities]) {
+      assert.match(html, new RegExp(label));
+    }
+  }
 });
 
 test("home metadata uses concise SEO copy separate from the hero", async () => {
   const cases = [
     {
       path: "/",
-      title: "AIULLMA | Technology services for scalable operations",
-      heroSupport:
-        "AIULLMA LLC designs, implements and supports specialized technology services powered by dedicated infrastructure. Our model combines initial implementation, ongoing service and infrastructure, helping companies grow without tying every user, contact, message or workflow to another subscription fee. Cloud, telecommunications, platform and other third-party charges may apply.",
+      title: "AIULLMA | Managed technology and AI services for growth",
+      description:
+        "AIULLMA builds, operates and optimizes automation, AI agents, BI, systems and dedicated infrastructure to help companies grow revenue and operating capacity.",
     },
     {
       path: "/pt/",
-      title: "AIULLMA | Serviços de tecnologia para operações escaláveis",
-      heroSupport:
-        "A AIULLMA LLC projeta, implanta e sustenta serviços tecnológicos especializados sobre infraestrutura dedicada. Nosso modelo combina implantação inicial, serviço contínuo e infraestrutura, permitindo que empresas cresçam sem transformar cada usuário, contato, mensagem ou automação em uma nova cobrança. Tarifas de nuvem, telecomunicações, plataformas e outros terceiros podem ser aplicadas.",
+      title: "AIULLMA | Serviços gerenciados de tecnologia e IA para crescimento",
+      description:
+        "A AIULLMA constrói, opera e otimiza automações, agentes de IA, BI e infraestrutura dedicada para ampliar receita, margem e capacidade operacional de empresas.",
     },
   ];
 
-  for (const { path, title, heroSupport } of cases) {
+  for (const { path, title, description: expectedDescription } of cases) {
     const html = await htmlFor(path);
     const renderedTitle = html.match(/<title>([^<]+)<\/title>/i)?.[1];
     const description = html.match(
@@ -105,13 +124,10 @@ test("home metadata uses concise SEO copy separate from the hero", async () => {
 
     assert.equal(renderedTitle, title);
     assert.ok(description, `${path} must render a meta description`);
+    assert.equal(description, expectedDescription);
     assert.ok(
       description.length >= 150 && description.length <= 165,
       `${path} meta description must be 150–165 characters; received ${description.length}`,
-    );
-    assert.ok(
-      !description.includes(heroSupport),
-      `${path} meta description must not reuse the complete hero copy`,
     );
   }
 });
@@ -125,9 +141,9 @@ test("home exposes semantic navigation and the operational model", async () => {
   assert.match(html, /<ol[^>]+class="operational-rails"/i);
   assert.match(html, /<article[^>]+class="[^"]*\bcapability-row\b[^"]*"/i);
   assert.match(html, /<footer[^>]+class="site-footer"/i);
-  assert.match(html, /Implementation/);
-  assert.match(html, /Ongoing service/);
-  assert.match(html, /Dedicated infrastructure/);
+  assert.match(html, /Growth-focused build/);
+  assert.match(html, /Continuous operation/);
+  assert.match(html, /Optimization with data and AI/);
 
   assert.match(await htmlFor("/privacy"), /<main[^>]+class="legal-layout"/i);
 });
@@ -165,11 +181,11 @@ test("mobile menu summaries describe the disclosure action in both languages", a
 test("primary CTAs preserve the equivalent contact route", async () => {
   assert.match(
     await htmlFor("/"),
-    /<a[^>]+href="\/contact"[^>]*>Discuss your operation<\/a>/i,
+    /<a[^>]+href="\/contact"[^>]*>Discuss your growth objective<\/a>/i,
   );
   assert.match(
     await htmlFor("/pt/"),
-    /<a[^>]+href="\/pt\/contato"[^>]*>Fale sobre sua operação<\/a>/i,
+    /<a[^>]+href="\/pt\/contato"[^>]*>Fale sobre sua meta de crescimento<\/a>/i,
   );
 });
 
@@ -211,15 +227,11 @@ test("every rendered mail link uses an approved corporate address", async () => 
   }
 });
 
-test("hero support qualifies pricing language in both languages", async () => {
-  assert.match(
-    await htmlFor("/"),
-    /another subscription fee\. Cloud, telecommunications, platform and other third-party charges may apply\./,
-  );
-  assert.match(
-    await htmlFor("/pt/"),
-    /nova cobrança\. Tarifas de nuvem, telecomunicações, plataformas e outros terceiros podem ser aplicadas\./,
-  );
+test("growth claims remain qualified and preserve the third-party cost notice", async () => {
+  assert.match(await htmlFor("/"), /help companies identify opportunities/);
+  assert.match(await htmlFor("/pt/"), /ajudar empresas a identificar oportunidades/);
+  assert.match(await htmlFor("/"), /Cloud, telecommunications, platform and other third-party charges may apply\./);
+  assert.match(await htmlFor("/pt/"), /Tarifas de nuvem, telecomunicações, plataformas e outros terceiros podem ser aplicadas\./);
 });
 
 test("legal pages identify the AIULLMA LLC legal entity", async () => {
