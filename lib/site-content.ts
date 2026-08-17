@@ -2,11 +2,20 @@ export type Locale = "en" | "pt" | "es";
 
 export type LegalPageKey = "contact" | "privacy" | "terms" | "dataDeletion";
 
+export type EmailOperationsContent = {
+  title: string;
+  description: string;
+  introduction: string;
+  sections: Array<{ heading: string; paragraphs: string[] }>;
+  cta: string;
+};
+
 export const routePairs = {
   home: { en: "/", pt: "/pt/", es: "/es/" },
   contact: { en: "/contact", pt: "/pt/contato", es: "/es/contacto" },
   privacy: { en: "/privacy", pt: "/pt/privacidade", es: "/es/privacidad" },
   terms: { en: "/terms", pt: "/pt/termos", es: "/es/terminos" },
+  email: { en: "/email", pt: "/pt/email", es: "/es/email" },
   dataDeletion: {
     en: "/data-deletion",
     pt: "/pt/exclusao-de-dados",
@@ -68,6 +77,7 @@ export type SiteContent = {
     contactPrompt: string;
     contactSafety: string;
   };
+  emailOperations: EmailOperationsContent;
   legal: Record<LegalPageKey, LegalContent>;
 };
 
@@ -90,72 +100,115 @@ export const siteContent: Record<Locale, SiteContent> = {
         "References to third-party products do not imply affiliation, certification or endorsement.",
     },
     home: {
-      seoTitle: "AIULLMA | Managed technology and AI services for growth",
+      seoTitle: "Alltius | Digital capacity services for growth",
       seoDescription:
-        "AIULLMA builds, operates and optimizes automation, AI agents, BI, systems and dedicated infrastructure to help companies grow revenue and operating capacity.",
-      eyebrow: "AIULLMA LLC · NEW MEXICO, UNITED STATES",
-      headline: "Managed technology and AI services for companies ready to grow revenue.",
+        "Alltius builds, operates and optimizes automation, BI, AI, customer-service systems and managed infrastructure to expand growth capacity.",
+      eyebrow: "ALLTIUS · OPERATED BY AIULLMA LLC",
+      headline: "Alltius builds, operates and optimizes digital capacity for growth.",
       support: [
-        "AIULLMA builds, operates and optimizes automation, systems, AI agents, business intelligence and dedicated infrastructure to help companies identify opportunities, make better decisions, serve more demand and grow.",
-        "We deliver this capability as an ongoing service, so every gain in scale strengthens revenue and margins—instead of being absorbed by fees for each user, contact, message or automation.",
+        "Focused services in customer operations, automation, data and BI, AI, email and managed infrastructure help companies identify opportunities, make better decisions, serve more demand and grow.",
+        "Each specialist front can stand alone and is delivered through implementation, continuous operation and measured optimization.",
       ],
       primaryCta: "Discuss your growth objective",
       secondaryCta: "See our service model",
-      companyTitle: "A service company built around growth",
+      companyTitle: "A specialist service brand for growth capacity",
       company:
-        "AIULLMA LLC is a managed technology and AI services company registered in New Mexico, United States. We build, operate and optimize systems that expand our clients’ commercial and operating capacity. Certain services may be delivered under the Alltius operating brand.",
-      capabilitiesTitle: "Capabilities that turn operations into growth",
+        "Alltius is a service brand operated by AIULLMA LLC, registered in New Mexico, United States. We build, operate and optimize focused technology capabilities that can expand commercial and operating capacity.",
+      capabilitiesTitle: "Specialist service fronts",
       capabilities: [
         {
-          title: "Revenue-focused automation",
+          title: "Alltius Atendimento",
           description:
-            "We connect commercial and operating workflows to reduce friction, accelerate execution and turn more demand into results.",
+            "Managed customer-service systems, channels and operating workflows designed to help teams respond consistently and serve more demand.",
         },
         {
-          title: "BI for growth decisions",
+          title: "Alltius Automação",
           description:
-            "We bring together revenue, performance, cost and opportunity indicators so decisions can be faster and better informed.",
+            "Focused workflow and systems automation that can reduce friction, accelerate execution and connect commercial and operating work.",
         },
         {
-          title: "AI agents embedded in operations",
+          title: "Alltius Dados/BI",
           description:
-            "We apply AI agents to defined tasks and workflows, expanding team capacity with control and context.",
+            "Data foundations, indicators and business intelligence designed to support faster, better-informed growth decisions.",
         },
         {
-          title: "Managed systems and infrastructure",
+          title: "Alltius IA",
           description:
-            "We operate applications, integrations and dedicated environments that support the service as demand evolves.",
+            "AI agents and assisted workflows applied to defined tasks, with operational context, oversight and measurable boundaries.",
+        },
+        {
+          title: "Alltius Email & Messaging",
+          description:
+            "Transactional and operational delivery comes first; permission-based marketing may be activated later after opt-in, preference and unsubscribe controls are operating.",
         },
       ],
-      modelTitle: "We build, operate and optimize as an ongoing service.",
+      modelTitle: "Build, operate and optimize as an ongoing service.",
       model: [
         {
-          title: "Growth-focused build",
+          title: "Build",
           description:
-            "We translate commercial and operating objectives into systems, automation, indicators and an appropriate technical foundation.",
+            "An initial implementation translates the selected objective into systems, workflows, indicators and the right technical foundation.",
         },
         {
-          title: "Continuous operation",
+          title: "Operate",
           description:
-            "We keep applications, integrations and infrastructure running within the agreed scope and capacity.",
+            "A monthly service keeps applications, integrations, messaging and infrastructure operating within the agreed scope and capacity.",
         },
         {
-          title: "Optimization with data and AI",
+          title: "Optimize",
           description:
-            "We use observed performance, BI and AI capabilities to prioritize improvements and expand results over time.",
+            "Observed performance, data and AI can guide prioritized improvements as demand, constraints and opportunities evolve.",
         },
       ],
-      scalingTitle: "Make scale strengthen revenue and margins.",
+      scalingTitle: "Economics designed for useful scale",
       commercialQualifier:
-        "AIULLMA’s model combines ongoing service, scope and capacity. This reduces dependence on charges that automatically grow with every user, contact, message or automation and allows solution economics to follow the business objective. Cloud, telecommunications, platform and other third-party charges may apply.",
+        "The model combines initial implementation, monthly service and infrastructure. It is designed so scale does not automatically become a new per-contact, per-message, per-user or per-execution charge. Third-party charges may still apply.",
       trustTitle: "Built for clear diligence",
       trust:
-        "AIULLMA LLC is registered in New Mexico, United States. Our public policies and direct company contacts are available below.",
+        "Alltius is a service brand operated by AIULLMA LLC, registered in New Mexico, United States. Our public policies and direct company contact are available below.",
       contactTitle: "Start with the growth objective",
       contactPrompt:
-        "Tell us which revenue or capacity outcome your company is pursuing, how the operation works today, which systems are involved and what limits the next stage of growth.",
+        "Tell us which revenue or capacity outcome your company is pursuing, how the operation works today and which specialist service can remove the next constraint.",
       contactSafety:
         "Please do not send credentials, API keys, client databases or sensitive personal data by email.",
+    },
+    emailOperations: {
+      title: "Email & Messaging Operations",
+      description:
+        "How Alltius manages transactional email, permission-based lifecycle communication and reviewed client tenants.",
+      introduction:
+        "Alltius Email & Messaging is a managed service operated by AIULLMA LLC. It starts with low-volume transactional and operational communication, with controls designed around sender identity, consent, deliverability and tenant boundaries.",
+      sections: [
+        {
+          heading: "Initial sending posture",
+          paragraphs: [
+            "Transactional email is the initial focus: account notices, security messages, support updates and workflow alerts tied to an action or active business relationship.",
+            "Permission-based marketing may be activated later only after opt-in, preference and unsubscribe controls are operating for the relevant audience.",
+          ],
+        },
+        {
+          heading: "Consent and recipient controls",
+          paragraphs: [
+            "Marketing recipients must have requested or lawfully subscribed to the communication, and every marketing message must provide a clear unsubscribe path.",
+            "Unsubscribe, bounce and complaint events are processed into suppression controls so affected recipients are not sent the same category of communication again.",
+          ],
+        },
+        {
+          heading: "Reviewed and isolated tenants",
+          paragraphs: [
+            "Each client tenant is reviewed for ownership, sender identity, use case, recipient source, content and operating limits before sending is enabled.",
+            "Credentials, recipient data, templates, events and suppression state are isolated by tenant, with access revocation and offboarding controls.",
+          ],
+        },
+        {
+          heading: "Deliverability and acceptable use",
+          paragraphs: [
+            "Delivery, bounce and complaint signals are monitored, and a tenant may be paused when activity creates abuse, compliance or reputation risk.",
+            "Anonymous sending, deceptive identity, unsolicited bulk delivery, phishing and prohibited content are not supported.",
+          ],
+        },
+      ],
+      cta: "Discuss a reviewed email or messaging use case",
     },
     legal: {
       contact: {
@@ -279,72 +332,115 @@ export const siteContent: Record<Locale, SiteContent> = {
         "Referências a produtos de terceiros não implicam afiliação, certificação ou endosso.",
     },
     home: {
-      seoTitle: "AIULLMA | Serviços gerenciados de tecnologia e IA para crescimento",
+      seoTitle: "Alltius | Serviços de capacidade digital para crescimento",
       seoDescription:
-        "A AIULLMA constrói, opera e otimiza automações, agentes de IA, BI e infraestrutura dedicada para ampliar receita, margem e capacidade operacional de empresas.",
-      eyebrow: "AIULLMA LLC · NEW MEXICO, ESTADOS UNIDOS",
-      headline: "Serviços gerenciados de tecnologia e IA para empresas prontas para faturar mais.",
+        "Alltius constrói, opera e otimiza automação, dados/BI, IA, atendimento e infraestrutura gerenciada para ampliar capacidade de crescimento.",
+      eyebrow: "ALLTIUS · OPERADA PELA AIULLMA LLC",
+      headline: "Alltius constrói, opera e otimiza capacidade digital para crescer.",
       support: [
-        "A AIULLMA constrói, opera e otimiza automações, sistemas, agentes de IA, inteligência de dados e infraestrutura dedicada para ajudar empresas a identificar oportunidades, tomar decisões melhores, atender mais demanda e crescer.",
-        "Entregamos essa capacidade como serviço contínuo, para que cada ganho de escala fortaleça a receita e a margem — em vez de ser absorvido por cobranças por usuário, contato, mensagem ou automação.",
+        "Serviços focados em atendimento, automação, dados e BI, IA, e-mail e infraestrutura gerenciada são desenhados para ajudar empresas a identificar oportunidades, tomar decisões melhores, atender mais demanda e crescer.",
+        "Cada frente especialista pode ser contratada separadamente e é entregue com implementação, operação contínua e otimização orientada por evidências.",
       ],
-      primaryCta: "Fale sobre sua meta de crescimento",
+      primaryCta: "Fale sobre seu objetivo de crescimento",
       secondaryCta: "Conheça nosso modelo de serviço",
-      companyTitle: "Uma empresa de serviços para crescimento",
+      companyTitle: "Uma marca de serviços especialistas para crescer",
       company:
-        "A AIULLMA LLC é uma empresa de serviços gerenciados de tecnologia e IA registrada no New Mexico, Estados Unidos. Construímos, operamos e otimizamos sistemas que ampliam a capacidade comercial e operacional de nossos clientes. Determinados serviços podem ser entregues sob a marca operacional Alltius.",
-      capabilitiesTitle: "Capacidades para transformar operação em crescimento",
+        "Alltius é uma marca de serviços operada pela AIULLMA LLC, registrada no New Mexico, Estados Unidos. Construímos, operamos e otimizamos capacidades tecnológicas focadas que podem ampliar a capacidade comercial e operacional.",
+      capabilitiesTitle: "Frentes de serviço especialistas",
       capabilities: [
         {
-          title: "Automação orientada à receita",
+          title: "Alltius Atendimento",
           description:
-            "Conectamos processos comerciais e operacionais para reduzir atrito, acelerar execução e transformar mais demanda em resultado.",
+            "Sistemas, canais e fluxos de atendimento gerenciados para ajudar equipes a responder com consistência e absorver mais demanda.",
         },
         {
-          title: "BI para decisões de crescimento",
+          title: "Alltius Automação",
           description:
-            "Reunimos indicadores de receita, desempenho, custos e oportunidades para tornar decisões mais rápidas e fundamentadas.",
+            "Automação focada de processos e sistemas que pode reduzir atrito, acelerar a execução e conectar o trabalho comercial ao operacional.",
         },
         {
-          title: "Agentes de IA integrados à operação",
+          title: "Alltius Dados/BI",
           description:
-            "Aplicamos agentes de IA em tarefas e fluxos definidos, ampliando a capacidade das equipes com controle e contexto.",
+            "Bases de dados, indicadores e inteligência de negócios desenhados para apoiar decisões de crescimento mais rápidas e bem fundamentadas.",
         },
         {
-          title: "Sistemas e infraestrutura gerenciados",
+          title: "Alltius IA",
           description:
-            "Operamos aplicações, integrações e ambientes dedicados que sustentam o serviço e acompanham a evolução da demanda.",
+            "Agentes de IA e fluxos assistidos aplicados a tarefas definidas, com contexto operacional, supervisão e limites mensuráveis.",
+        },
+        {
+          title: "Alltius Email & Messaging",
+          description:
+            "Envios transacionais e operacionais vêm primeiro; marketing baseado em permissão pode ser ativado depois que os controles de consentimento, preferências e descadastro estiverem funcionando.",
         },
       ],
-      modelTitle: "Construímos, operamos e otimizamos como um serviço contínuo.",
+      modelTitle: "Construir, operar e otimizar como serviço contínuo.",
       model: [
         {
-          title: "Construção orientada ao crescimento",
+          title: "Construir",
           description:
-            "Traduzimos objetivos comerciais e operacionais em sistemas, automações, indicadores e uma base técnica adequada.",
+            "A implementação inicial traduz o objetivo escolhido em sistemas, fluxos, indicadores e uma base técnica adequada.",
         },
         {
-          title: "Operação contínua",
+          title: "Operar",
           description:
-            "Mantemos aplicações, integrações e infraestrutura funcionando dentro do escopo e da capacidade acordados.",
+            "O serviço mensal mantém aplicações, integrações, mensageria e infraestrutura operando dentro do escopo e da capacidade acordados.",
         },
         {
-          title: "Otimização com dados e IA",
+          title: "Otimizar",
           description:
-            "Usamos desempenho observado, BI e recursos de IA para priorizar melhorias e ampliar resultados ao longo do tempo.",
+            "Desempenho observado, dados e IA podem orientar melhorias priorizadas conforme demanda, restrições e oportunidades evoluem.",
         },
       ],
-      scalingTitle: "Faça a escala fortalecer receita e margem.",
+      scalingTitle: "Economia desenhada para escalar com utilidade",
       commercialQualifier:
-        "O modelo da AIULLMA combina serviço contínuo, escopo e capacidade. Isso reduz a dependência de cobranças que crescem automaticamente a cada usuário, contato, mensagem ou automação e permite que a economia da solução acompanhe o objetivo do negócio. Tarifas de nuvem, telecomunicações, plataformas e outros terceiros podem ser aplicadas.",
+        "O modelo combina implementação inicial, serviço mensal e infraestrutura. Ele foi desenhado para que a escala não se transforme automaticamente em uma nova cobrança por contato, mensagem, usuário ou execução. Custos de terceiros ainda podem ser aplicados.",
       trustTitle: "Base para uma diligência clara",
       trust:
-        "A AIULLMA LLC é registrada no New Mexico, Estados Unidos. Nossas políticas públicas e contatos corporativos diretos estão disponíveis abaixo.",
-      contactTitle: "Comece pela meta de crescimento",
+        "Alltius é uma marca de serviços operada pela AIULLMA LLC, registrada no New Mexico, Estados Unidos. Nossas políticas públicas e nosso contato corporativo direto estão disponíveis abaixo.",
+      contactTitle: "Comece pelo objetivo de crescimento",
       contactPrompt:
-        "Conte qual resultado de receita ou capacidade sua empresa busca, como a operação funciona hoje, quais sistemas estão envolvidos e o que limita o próximo estágio de crescimento.",
+        "Conte qual resultado de receita ou capacidade sua empresa busca, como a operação funciona hoje e qual serviço especialista pode remover a próxima restrição.",
       contactSafety:
         "Não envie credenciais, chaves de API, bases de clientes ou dados pessoais sensíveis por e-mail.",
+    },
+    emailOperations: {
+      title: "Operações de Email & Messaging",
+      description:
+        "Como a Alltius gerencia e-mail transacional, comunicação de ciclo de vida baseada em permissão e clientes revisados.",
+      introduction:
+        "Alltius Email & Messaging é um serviço gerenciado operado pela AIULLMA LLC. Ele começa com comunicação transacional e operacional de baixo volume, com controles desenhados para identidade do remetente, consentimento, entregabilidade e separação entre clientes.",
+      sections: [
+        {
+          heading: "Postura inicial de envio",
+          paragraphs: [
+            "E-mail transacional é o foco inicial: avisos de conta, mensagens de segurança, atualizações de suporte e alertas de fluxo ligados a uma ação ou relação comercial ativa.",
+            "Marketing baseado em permissão pode ser ativado depois, somente quando os controles de consentimento, preferências e descadastro estiverem funcionando para o público correspondente.",
+          ],
+        },
+        {
+          heading: "Consentimento e controle de destinatários",
+          paragraphs: [
+            "Destinatários de marketing devem ter solicitado ou aderido legalmente à comunicação, e toda mensagem de marketing deve oferecer um caminho claro de descadastro.",
+            "Eventos de descadastro, devolução e reclamação alimentam controles de supressão para evitar novos envios da mesma categoria aos destinatários afetados.",
+          ],
+        },
+        {
+          heading: "Clientes revisados e isolados",
+          paragraphs: [
+            "Cada cliente é revisado quanto a responsável, identidade do remetente, caso de uso, origem dos destinatários, conteúdo e limites operacionais antes da liberação de envios.",
+            "Credenciais, dados de destinatários, modelos, eventos e estado de supressão são isolados por tenant, com controles de revogação de acesso e encerramento.",
+          ],
+        },
+        {
+          heading: "Entregabilidade e uso aceitável",
+          paragraphs: [
+            "Sinais de entrega, devolução e reclamação são monitorados, e um cliente pode ser pausado quando a atividade gera risco de abuso, conformidade ou reputação.",
+            "Envio anônimo, identidade enganosa, distribuição em massa não solicitada, phishing e conteúdo proibido não são aceitos.",
+          ],
+        },
+      ],
+      cta: "Converse sobre um caso revisado de e-mail ou mensageria",
     },
     legal: {
       contact: {
@@ -467,73 +563,115 @@ export const siteContent: Record<Locale, SiteContent> = {
         "Las referencias a productos de terceros no implican afiliación, certificación ni respaldo.",
     },
     home: {
-      seoTitle: "AIULLMA | Servicios gestionados de tecnología e IA para crecer",
+      seoTitle: "Alltius | Servicios de capacidad digital para crecer",
       seoDescription:
-        "AIULLMA construye, opera y optimiza automatizaciones, agentes de IA, BI e infraestructura dedicada para ayudar a aumentar ingresos y capacidad operativa.",
-      eyebrow: "AIULLMA LLC · NEW MEXICO, ESTADOS UNIDOS",
-      headline:
-        "Servicios gestionados de tecnología e IA para empresas preparadas para generar más ingresos.",
+        "Alltius construye, opera y optimiza automatización, datos/BI, IA, atención e infraestructura gestionada para ampliar la capacidad de crecimiento.",
+      eyebrow: "ALLTIUS · OPERADA POR AIULLMA LLC",
+      headline: "Alltius construye, opera y optimiza capacidad digital para crecer.",
       support: [
-        "AIULLMA construye, opera y optimiza automatizaciones, sistemas, agentes de IA, inteligencia de negocios e infraestructura dedicada para ayudar a las empresas a identificar oportunidades, tomar mejores decisiones, atender una mayor demanda y crecer.",
-        "Entregamos esta capacidad como un servicio continuo, para que cada avance en escala fortalezca los ingresos y los márgenes, en lugar de quedar absorbido por cobros por usuario, contacto, mensaje o automatización.",
+        "Los servicios especializados en atención, automatización, datos y BI, IA, correo e infraestructura gestionada pueden ayudar a las empresas a identificar oportunidades, tomar mejores decisiones, atender más demanda y crecer.",
+        "Cada frente especializado puede contratarse por separado y se entrega mediante implementación, operación continua y optimización basada en evidencia.",
       ],
       primaryCta: "Hablemos de su objetivo de crecimiento",
       secondaryCta: "Conozca nuestro modelo de servicio",
-      companyTitle: "Una empresa de servicios orientada al crecimiento",
+      companyTitle: "Una marca de servicios especializados para crecer",
       company:
-        "AIULLMA LLC es una empresa de servicios gestionados de tecnología e IA registrada en New Mexico, Estados Unidos. Construimos, operamos y optimizamos sistemas que amplían la capacidad comercial y operativa de nuestros clientes. Algunos servicios pueden prestarse bajo la marca operativa Alltius.",
-      capabilitiesTitle: "Capacidades que convierten la operación en crecimiento",
+        "Alltius es una marca de servicios operada por AIULLMA LLC, registrada en New Mexico, Estados Unidos. Construimos, operamos y optimizamos capacidades tecnológicas especializadas que pueden ampliar la capacidad comercial y operativa.",
+      capabilitiesTitle: "Frentes de servicio especializados",
       capabilities: [
         {
-          title: "Automatización orientada a los ingresos",
+          title: "Alltius Atendimento",
           description:
-            "Conectamos procesos comerciales y operativos para reducir fricción, acelerar la ejecución y convertir una mayor demanda en resultados.",
+            "Sistemas, canales y flujos de atención gestionados para ayudar a los equipos a responder con consistencia y atender más demanda.",
         },
         {
-          title: "BI para decisiones de crecimiento",
+          title: "Alltius Automação",
           description:
-            "Reunimos indicadores de ingresos, desempeño, costos y oportunidades para tomar decisiones más rápidas y mejor fundamentadas.",
+            "Automatización focalizada de procesos y sistemas que puede reducir fricción, acelerar la ejecución y conectar el trabajo comercial con el operativo.",
         },
         {
-          title: "Agentes de IA integrados en la operación",
+          title: "Alltius Dados/BI",
           description:
-            "Aplicamos agentes de IA a tareas y flujos definidos, ampliando la capacidad de los equipos con control y contexto.",
+            "Bases de datos, indicadores e inteligencia de negocios diseñados para apoyar decisiones de crecimiento más rápidas y mejor fundamentadas.",
         },
         {
-          title: "Sistemas e infraestructura gestionados",
+          title: "Alltius IA",
           description:
-            "Operamos aplicaciones, integraciones y entornos dedicados que sostienen el servicio a medida que evoluciona la demanda.",
+            "Agentes de IA y flujos asistidos aplicados a tareas definidas, con contexto operativo, supervisión y límites medibles.",
+        },
+        {
+          title: "Alltius Email & Messaging",
+          description:
+            "Los envíos transaccionales y operativos vienen primero; el marketing basado en permisos puede activarse más adelante cuando estén activos los controles de consentimiento, preferencias y cancelación de suscripción.",
         },
       ],
-      modelTitle: "Construimos, operamos y optimizamos como un servicio continuo.",
+      modelTitle: "Construir, operar y optimizar como servicio continuo.",
       model: [
         {
-          title: "Construcción orientada al crecimiento",
+          title: "Construir",
           description:
-            "Traducimos objetivos comerciales y operativos en sistemas, automatizaciones, indicadores y una base técnica adecuada.",
+            "La implementación inicial traduce el objetivo elegido en sistemas, flujos, indicadores y una base técnica adecuada.",
         },
         {
-          title: "Operación continua",
+          title: "Operar",
           description:
-            "Mantenemos aplicaciones, integraciones e infraestructura en funcionamiento dentro del alcance y la capacidad acordados.",
+            "El servicio mensual mantiene aplicaciones, integraciones, mensajería e infraestructura operando dentro del alcance y la capacidad acordados.",
         },
         {
-          title: "Optimización con datos e IA",
+          title: "Optimizar",
           description:
-            "Utilizamos el desempeño observado, BI y capacidades de IA para priorizar mejoras y ampliar resultados a lo largo del tiempo.",
+            "El desempeño observado, los datos y la IA pueden orientar mejoras priorizadas a medida que evolucionan la demanda, las restricciones y las oportunidades.",
         },
       ],
-      scalingTitle: "Haga que la escala fortalezca los ingresos y los márgenes.",
+      scalingTitle: "Economía diseñada para escalar con utilidad",
       commercialQualifier:
-        "El modelo de AIULLMA combina servicio continuo, alcance y capacidad. Esto reduce la dependencia de cobros que aumentan automáticamente con cada usuario, contacto, mensaje o automatización y permite que la economía de la solución acompañe el objetivo del negocio. Pueden aplicarse cargos de nube, telecomunicaciones, plataformas y otros terceros.",
+        "El modelo combina implementación inicial, servicio mensual e infraestructura. Está diseñado para que la escala no se convierta automáticamente en un nuevo cargo por contacto, mensaje, usuario o ejecución. Los cargos de terceros todavía pueden aplicarse.",
       trustTitle: "Preparada para una evaluación clara",
       trust:
-        "AIULLMA LLC está registrada en New Mexico, Estados Unidos. Nuestras políticas públicas y contactos corporativos directos están disponibles a continuación.",
+        "Alltius es una marca de servicios operada por AIULLMA LLC, registrada en New Mexico, Estados Unidos. Nuestras políticas públicas y nuestro contacto corporativo directo están disponibles a continuación.",
       contactTitle: "Comience por el objetivo de crecimiento",
       contactPrompt:
-        "Cuéntenos qué resultado de ingresos o capacidad busca su empresa, cómo funciona actualmente la operación, qué sistemas intervienen y qué limita la siguiente etapa de crecimiento.",
+        "Cuéntenos qué resultado de ingresos o capacidad busca su empresa, cómo funciona actualmente la operación y qué servicio especializado puede eliminar la siguiente restricción.",
       contactSafety:
         "No envíe credenciales, claves de API, bases de clientes ni datos personales sensibles por correo electrónico.",
+    },
+    emailOperations: {
+      title: "Operaciones de Email & Messaging",
+      description:
+        "Cómo Alltius gestiona correo transaccional, comunicación de ciclo de vida basada en permisos y clientes revisados.",
+      introduction:
+        "Alltius Email & Messaging es un servicio gestionado operado por AIULLMA LLC. Comienza con comunicación transaccional y operativa de bajo volumen, con controles diseñados para identidad del remitente, consentimiento, entregabilidad y separación entre clientes.",
+      sections: [
+        {
+          heading: "Postura inicial de envío",
+          paragraphs: [
+            "El correo transaccional es el foco inicial: avisos de cuenta, mensajes de seguridad, actualizaciones de soporte y alertas de flujo vinculados a una acción o relación comercial activa.",
+            "El marketing basado en permisos puede activarse más adelante solamente cuando estén operativos los controles de consentimiento, preferencias y cancelación de suscripción para la audiencia correspondiente.",
+          ],
+        },
+        {
+          heading: "Consentimiento y control de destinatarios",
+          paragraphs: [
+            "Los destinatarios de marketing deben haber solicitado la comunicación o haberse suscrito legalmente, y todo mensaje de marketing debe ofrecer una vía clara de cancelación de suscripción.",
+            "Los eventos de cancelación de suscripción, rebote y queja alimentan controles de supresión para evitar nuevos envíos de la misma categoría a los destinatarios afectados.",
+          ],
+        },
+        {
+          heading: "Clientes revisados y aislados",
+          paragraphs: [
+            "Cada cliente se revisa en cuanto a responsable, identidad del remitente, caso de uso, origen de destinatarios, contenido y límites operativos antes de habilitar los envíos.",
+            "Las credenciales, los datos de destinatarios, las plantillas, los eventos y el estado de supresión se aíslan por tenant, con controles para revocar el acceso y cerrar el servicio.",
+          ],
+        },
+        {
+          heading: "Entregabilidad y uso aceptable",
+          paragraphs: [
+            "Las señales de entrega, rebote y queja se supervisan, y un cliente puede pausarse cuando la actividad genera riesgos de abuso, cumplimiento o reputación.",
+            "El envío anónimo, la identidad engañosa, la distribución masiva no solicitada, el phishing y el contenido prohibido no son compatibles con el servicio.",
+          ],
+        },
+      ],
+      cta: "Conversemos sobre un caso revisado de correo o mensajería",
     },
     legal: {
       contact: {

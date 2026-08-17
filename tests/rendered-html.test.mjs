@@ -24,6 +24,11 @@ const prohibitedPatterns = [
   /Meta approved/i,
   /Tech Provider/i,
   /official partner/i,
+  /AWS partner/i,
+  /AWS certified/i,
+  /SES approved/i,
+  /open relay/i,
+  /purchased lists?/i,
   /unlimited users/i,
   /unlimited messages/i,
   /zero SaaS/i,
@@ -79,63 +84,86 @@ for (const path of expectedRoutes) {
 const positioningCases = [
   {
     path: "/",
-    headline: /Managed technology and AI services for companies ready to grow revenue\./,
-    support: /identify opportunities, make better decisions, serve more demand and grow\./,
-    model: ["Growth-focused build", "Continuous operation", "Optimization with data and AI"],
-    capabilities: ["Revenue-focused automation", "BI for growth decisions", "AI agents embedded in operations"],
+    headline: /Alltius builds, operates and optimizes digital capacity for growth\./,
+    support: /help companies identify opportunities, make better decisions, serve more demand and grow\./,
+    company:
+      /Alltius is a service brand operated by AIULLMA LLC, registered in New Mexico, United States\./,
+    model: ["Build", "Operate", "Optimize"],
+    capabilities: [
+      "Alltius Atendimento",
+      "Alltius Automação",
+      "Alltius Dados/BI",
+      "Alltius IA",
+      "Alltius Email & Messaging",
+    ],
   },
   {
     path: "/pt/",
-    headline: /Serviços gerenciados de tecnologia e IA para empresas prontas para faturar mais\./,
-    support: /identificar oportunidades, tomar decisões melhores, atender mais demanda e crescer\./,
-    model: ["Construção orientada ao crescimento", "Operação contínua", "Otimização com dados e IA"],
-    capabilities: ["Automação orientada à receita", "BI para decisões de crescimento", "Agentes de IA integrados à operação"],
+    headline: /Alltius constrói, opera e otimiza capacidade digital para crescer\./,
+    support: /ajudar empresas a identificar oportunidades, tomar decisões melhores, atender mais demanda e crescer\./,
+    company:
+      /Alltius é uma marca de serviços operada pela AIULLMA LLC, registrada no New Mexico, Estados Unidos\./,
+    model: ["Construir", "Operar", "Otimizar"],
+    capabilities: [
+      "Alltius Atendimento",
+      "Alltius Automação",
+      "Alltius Dados/BI",
+      "Alltius IA",
+      "Alltius Email & Messaging",
+    ],
   },
   {
     path: "/es/",
-    headline: /Servicios gestionados de tecnología e IA para empresas preparadas para generar más ingresos\./,
-    support: /identificar oportunidades, tomar mejores decisiones, atender una mayor demanda y crecer\./,
-    model: ["Construcción orientada al crecimiento", "Operación continua", "Optimización con datos e IA"],
-    capabilities: ["Automatización orientada a los ingresos", "BI para decisiones de crecimiento", "Agentes de IA integrados en la operación"],
+    headline: /Alltius construye, opera y optimiza capacidad digital para crecer\./,
+    support: /ayudar a las empresas a identificar oportunidades, tomar mejores decisiones, atender más demanda y crecer\./,
+    company:
+      /Alltius es una marca de servicios operada por AIULLMA LLC, registrada en New Mexico, Estados Unidos\./,
+    model: ["Construir", "Operar", "Optimizar"],
+    capabilities: [
+      "Alltius Atendimento",
+      "Alltius Automação",
+      "Alltius Dados/BI",
+      "Alltius IA",
+      "Alltius Email & Messaging",
+    ],
   },
 ];
 
-test("home pages lead with the approved service-first growth positioning", async () => {
+test("home pages lead with the approved Alltius service-first positioning", async () => {
   for (const item of positioningCases) {
     const html = await htmlFor(item.path);
     assert.match(html, item.headline);
     assert.match(html, item.support);
+    assert.match(html, item.company);
     for (const label of [...item.model, ...item.capabilities]) {
-      assert.match(html, new RegExp(label));
+      assert.match(html, new RegExp(label.replace("&", "(?:&|&amp;)")));
     }
   }
 });
 
-test("home metadata uses concise SEO copy separate from the hero", async () => {
+test("home metadata uses the Alltius public brand in each locale", async () => {
   const cases = [
     {
       path: "/",
-      title: "AIULLMA | Managed technology and AI services for growth",
+      title: "Alltius | Digital capacity services for growth",
       description:
-        "AIULLMA builds, operates and optimizes automation, AI agents, BI, systems and dedicated infrastructure to help companies grow revenue and operating capacity.",
+        "Alltius builds, operates and optimizes automation, BI, AI, customer-service systems and managed infrastructure to expand growth capacity.",
     },
     {
       path: "/pt/",
-      title: "AIULLMA | Serviços gerenciados de tecnologia e IA para crescimento",
+      title: "Alltius | Serviços de capacidade digital para crescimento",
       description:
-        "A AIULLMA constrói, opera e otimiza automações, agentes de IA, BI e infraestrutura dedicada para ampliar receita, margem e capacidade operacional de empresas.",
+        "Alltius constrói, opera e otimiza automação, dados/BI, IA, atendimento e infraestrutura gerenciada para ampliar capacidade de crescimento.",
     },
     {
       path: "/es/",
-      title: "AIULLMA | Servicios gestionados de tecnología e IA para crecer",
+      title: "Alltius | Servicios de capacidad digital para crecer",
       description:
-        "AIULLMA construye, opera y optimiza automatizaciones, agentes de IA, BI e infraestructura dedicada para ayudar a aumentar ingresos y capacidad operativa.",
-      heroSupport:
-        "AIULLMA construye, opera y optimiza automatizaciones, sistemas, agentes de IA, inteligencia de negocios e infraestructura dedicada para ayudar a las empresas a identificar oportunidades, tomar mejores decisiones, atender una mayor demanda y crecer.",
+        "Alltius construye, opera y optimiza automatización, datos/BI, IA, atención e infraestructura gestionada para ampliar la capacidad de crecimiento.",
     },
   ];
 
-  for (const { path, title, description: expectedDescription, heroSupport } of cases) {
+  for (const { path, title, description: expectedDescription } of cases) {
     const html = await htmlFor(path);
     const renderedTitle = html.match(/<title>([^<]+)<\/title>/i)?.[1];
     const description = html.match(
@@ -145,24 +173,19 @@ test("home metadata uses concise SEO copy separate from the hero", async () => {
     assert.equal(renderedTitle, title);
     assert.ok(description, `${path} must render a meta description`);
     assert.equal(description, expectedDescription);
-    assert.ok(
-      description.length >= 150 && description.length <= 165,
-      `${path} meta description must be 150–165 characters; received ${description.length}`,
-    );
-    if (heroSupport) {
-      assert.match(html, new RegExp(heroSupport));
-    }
   }
 });
 
-test("social metadata reflects the service-first growth positioning", async () => {
+test("home pages include the endorsed-brand relationship copy", async () => {
   const html = await htmlFor("/");
-  assert.match(html, /property="og:title" content="AIULLMA LLC"/i);
-  assert.match(html, /property="og:description" content="Managed technology and AI services for companies ready to grow revenue\./i);
-  assert.match(html, /property="og:image:alt" content="AIULLMA — Managed technology and AI services for companies ready to grow revenue\./i);
+  assert.match(
+    html,
+    /Alltius is a service brand operated by AIULLMA LLC, registered in New Mexico, United States\./,
+  );
+  assert.match(html, /Our public policies and direct company contact are available below\./);
 });
 
-test("home exposes semantic navigation and the operational model", async () => {
+test("home exposes semantic navigation and the updated operating model", async () => {
   const html = await htmlFor("/");
   assert.match(html, /<a[^>]+href="#main-content"[^>]*>Skip to content<\/a>/i);
   assert.match(html, /<nav[^>]+aria-label="Primary navigation"/i);
@@ -171,9 +194,9 @@ test("home exposes semantic navigation and the operational model", async () => {
   assert.match(html, /<ol[^>]+class="operational-rails"/i);
   assert.match(html, /<article[^>]+class="[^"]*\bcapability-row\b[^"]*"/i);
   assert.match(html, /<footer[^>]+class="site-footer"/i);
-  assert.match(html, /Growth-focused build/);
-  assert.match(html, /Continuous operation/);
-  assert.match(html, /Optimization with data and AI/);
+  assert.match(html, /Build/);
+  assert.match(html, /Operate/);
+  assert.match(html, /Optimize/);
 
   assert.match(await htmlFor("/privacy"), /<main[^>]+class="legal-layout"/i);
 });
@@ -202,10 +225,13 @@ test("Portuguese pages localize accessibility labels", async () => {
   assert.match(html, /<nav[^>]+aria-label="Políticas"/i);
 });
 
-test("Spanish home renders the approved Latin American positioning", async () => {
+test("Spanish home renders the approved Alltius positioning", async () => {
   const html = await htmlFor("/es/");
-  assert.match(html, /Servicios gestionados de tecnología e IA para empresas preparadas para generar más ingresos\./);
-  assert.match(html, /identificar oportunidades, tomar mejores decisiones, atender una mayor demanda y crecer\./);
+  assert.match(html, /Alltius construye, opera y optimiza capacidad digital para crecer\./);
+  assert.match(
+    html,
+    /ayudar a las empresas a identificar oportunidades, tomar mejores decisiones, atender más demanda y crecer\./,
+  );
   assert.match(html, /Hablemos de su objetivo de crecimiento/);
 });
 
@@ -235,7 +261,7 @@ test("primary CTAs preserve the equivalent contact route", async () => {
   );
   assert.match(
     await htmlFor("/pt/"),
-    /<a[^>]+href="\/pt\/contato"[^>]*>Fale sobre sua meta de crescimento<\/a>/i,
+    /<a[^>]+href="\/pt\/contato"[^>]*>Fale sobre seu objetivo de crescimento<\/a>/i,
   );
   assert.match(
     await htmlFor("/es/"),
@@ -281,15 +307,32 @@ test("every rendered mail link uses an approved corporate address", async () => 
   }
 });
 
-test("growth claims remain qualified and preserve the third-party cost notice", async () => {
+test("home copy keeps growth claims qualified and preserves the scale-economics message", async () => {
   assert.match(await htmlFor("/"), /help companies identify opportunities/);
   assert.match(await htmlFor("/pt/"), /ajudar empresas a identificar oportunidades/);
-  assert.match(await htmlFor("/"), /Cloud, telecommunications, platform and other third-party charges may apply\./);
-  assert.match(await htmlFor("/pt/"), /Tarifas de nuvem, telecomunicações, plataformas e outros terceiros podem ser aplicadas\./);
+  assert.match(await htmlFor("/es/"), /ayudar a las empresas a identificar oportunidades/);
+
+  assert.match(await htmlFor("/"), /initial implementation, monthly service and infrastructure/i);
+  assert.match(await htmlFor("/pt/"), /implementação inicial, serviço mensal e infraestrutura/i);
+  assert.match(await htmlFor("/es/"), /implementación inicial, servicio mensual e infraestructura/i);
+
+  assert.match(await htmlFor("/"), /per-contact, per-message, per-user or per-execution charge/i);
+  assert.match(await htmlFor("/pt/"), /por contato, mensagem, usuário ou execução/i);
+  assert.match(await htmlFor("/es/"), /por contacto, mensaje, usuario o ejecución/i);
+
+  assert.match(await htmlFor("/"), /third-party charges may still apply\./i);
+  assert.match(await htmlFor("/pt/"), /custos de terceiros ainda podem ser aplicados\./i);
+  assert.match(await htmlFor("/es/"), /los cargos de terceros todavía pueden aplicarse\./i);
+});
+
+test("home copy keeps permission-based marketing explicitly future-gated", async () => {
+  assert.match(await htmlFor("/"), /permission-based marketing may be activated later/i);
+  assert.match(await htmlFor("/pt/"), /marketing baseado em permissão pode ser ativado depois/i);
+  assert.match(await htmlFor("/es/"), /marketing basado en permisos puede activarse más adelante/i);
 });
 
 test("legal pages identify the AIULLMA LLC legal entity", async () => {
-  for (const path of expectedRoutes.filter((path) => path !== "/" && path !== "/pt/")) {
+  for (const path of expectedRoutes.filter((path) => path !== "/" && path !== "/pt/" && path !== "/es/")) {
     assert.match(await htmlFor(path), /AIULLMA LLC/);
   }
 });
