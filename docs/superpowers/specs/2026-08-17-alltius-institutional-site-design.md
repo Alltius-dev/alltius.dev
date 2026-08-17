@@ -1,7 +1,7 @@
 # Alltius.dev institutional service site
 
 Date: 2026-08-17
-Status: proposed for user review
+Status: proposed for user review — AWS SES addition
 
 ## Objective
 
@@ -13,7 +13,9 @@ Alltius should communicate that it builds, operates and optimizes technology
 services that help companies identify opportunities, make better decisions,
 serve more demand and grow revenue. The site must present the service model as
 the product: initial implementation, ongoing service and the infrastructure
-needed to operate it.
+needed to operate it. Email delivery and lifecycle operations are an explicit
+service front, capable of supporting both internal company use and selected
+client tenants.
 
 The site must not present Alltius as a generic company that sells every tool
 at once. Automation, customer service systems, BI, data, AI agents and managed
@@ -100,8 +102,8 @@ model:
 2. **Company** — Alltius as a specialist managed-services brand, with one
    sentence connecting it to AIULLMA LLC.
 3. **Specialist service fronts** — Alltius Atendimento, Alltius Automação,
-   Alltius Dados/BI and Alltius IA, each described as a focused service that
-   can stand alone.
+   Alltius Dados/BI, Alltius IA and Alltius Email & Messaging, each described
+   as a focused service that can stand alone.
 4. **Operating model** — build, operate and optimize, explicitly tied to
    initial implementation, monthly service and infrastructure.
 5. **Scale economics** — explain that the model is designed to avoid making
@@ -127,10 +129,84 @@ The English and Latin American Spanish versions will be written as native
 localizations, not literal translations. The core promise, limitations and
 commercial qualification remain equivalent across all three languages.
 
+## AWS SES and email operations
+
+The site must support a future Amazon SES production-access request and make
+the actual operating model understandable to AWS reviewers. The site may
+describe the capability as AWS SES-based only after the service is configured;
+it must not imply that Alltius is an AWS partner, certified provider or
+endorsed by AWS.
+
+The public email-services page will explain four legitimate sending contexts:
+
+1. **Internal operations** — Alltius/AIULLMA alerts, account messages,
+   service notifications and other operational email.
+2. **Transactional email** — one-to-one messages triggered by a user action or
+   an active business relationship, such as account events, status changes,
+   receipts, support updates or workflow notifications.
+3. **Permission-based marketing email** — segmented campaigns and lifecycle
+   communication sent only to recipients who explicitly requested or otherwise
+   lawfully subscribed to that communication, with a visible unsubscribe path.
+4. **Managed client tenants** — approved businesses may send through the
+   service after sender identity, use case, list origin, content, consent and
+   compliance controls are reviewed.
+
+The site and legal pages will state the following operating rules:
+
+- no purchased, scraped, harvested or rented recipient lists;
+- no unsolicited bulk email, deceptive sender identity, spoofing, phishing or
+  prohibited content;
+- marketing messages identify the sender and provide a clear, functional
+  unsubscribe mechanism;
+- bounce, complaint, delivery and unsubscribe events are processed and used
+  to suppress future sends;
+- client tenants are responsible for lawful recipient collection and the
+  accuracy of their content, while Alltius retains service-level monitoring,
+  abuse controls and the right to pause a tenant;
+- credentials, recipient data, templates, event data and suppression state are
+  isolated by tenant and are not shared between clients;
+- every tenant has a documented owner, approved sending identities, usage
+  limits, escalation contact and offboarding process.
+
+### Multi-tenant architecture boundary
+
+The public site describes two supported operating patterns without promising a
+single implementation for every client:
+
+1. **Tenant management within the Alltius SES account** — each client is
+   represented by an isolated SES tenant with associated identities,
+   configuration sets, templates, event routing and suppression controls.
+2. **Client-owned AWS account or identity** — where the client controls its
+   AWS account or verified domain, Alltius may operate as an authorized
+   delegate through SES sending authorization with permissions limited to the
+   approved sender identity and actions.
+
+The service design must preserve tenant-level reputation and data boundaries.
+At minimum, implementation planning must cover identity verification, per-
+tenant configuration sets, delivery/bounce/complaint event handling,
+tenant-level suppression, rate and volume controls, access revocation and
+abuse review. A client must never be treated as permission to send arbitrary
+mail through a shared, unreviewed relay.
+
+The website should include a public “Email & Messaging Operations” page in all
+three languages, linked from the capabilities section and footer. It should
+describe the use cases, onboarding review, sender authentication, consent,
+unsubscribe, suppression and tenant isolation in plain language. The Terms of
+Use should include a short acceptable-use section, and the Privacy Notice
+should explain the roles of Alltius/AIULLMA LLC and client tenants when email
+recipient or event data is processed.
+
+This public site supports the evidence AWS may review, but it does not itself
+grant Amazon SES production access. Production access remains a separate AWS
+account review in which the sending type, website, consent process and bounce/
+complaint handling must be accurately described.
+
 ## Legal and contact treatment
 
 The reference site has no analytics, advertising pixels, non-essential
-cookies or web form. The Alltius site keeps that low-collection posture.
+cookies or web form. The Alltius site keeps that low-collection posture. Email
+delivery itself is a separate managed service: the public site does not
+collect subscriber lists or send campaigns from a web form.
 
 The contact destination must use a verified company-controlled address. Before
 implementation, verify whether an Alltius alias exists in Cloudflare Email
@@ -159,6 +235,7 @@ by proposals, statements of work or separate agreements.
 - no pricing table or guaranteed ROI claim;
 - no client logos, fabricated case studies or invented metrics;
 - no lead database or form backend;
+- no open relay, anonymous sending or permission to use purchased lists;
 - no Meta app, Tech Provider workflow or WhatsApp integration in this site
   release;
 - no changes to the existing AIULLMA site or its Cloudflare records.
@@ -167,15 +244,19 @@ by proposals, statements of work or separate agreements.
 
 The release is ready when:
 
-1. The three language surfaces and all 15 routes build successfully.
+1. The three language surfaces and all 18 routes, including the public email
+   operations page, build successfully.
 2. All visible commercial branding says Alltius, while the official AIULLMA
    relationship is present in the footer and legal pages.
 3. The home copy presents specialist service fronts and the build/operate/
    optimize model rather than a generic SaaS catalog.
 4. The site has no analytics, pixels, non-essential cookies or form backend.
-5. `robots.txt`, `sitemap.xml`, canonical metadata, language alternates and
+5. Email-service copy documents opt-in, unsubscribe, suppression,
+   bounce/complaint handling, tenant isolation and acceptable use without
+   claiming AWS partnership or guaranteed SES approval.
+6. `robots.txt`, `sitemap.xml`, canonical metadata, language alternates and
    social metadata use `alltius.dev`.
-6. The static build deploys to Cloudflare Pages at no hosting cost.
-7. `https://alltius.dev` serves the published site over HTTPS, with any
+7. The static build deploys to Cloudflare Pages at no hosting cost.
+8. `https://alltius.dev` serves the published site over HTTPS, with any
    `www` behavior explicitly verified.
-8. The GitHub repository contains the exact source used for the deployment.
+9. The GitHub repository contains the exact source used for the deployment.
