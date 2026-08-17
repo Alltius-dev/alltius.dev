@@ -151,12 +151,13 @@ p {
   align-items: center;
   color: var(--text-strong);
   display: inline-flex;
-  font-size: 1.08rem;
-  font-weight: 800;
-  letter-spacing: 0.2em;
+  font-size: clamp(1.06rem, 1rem + 0.35vw, 1.24rem);
+  font-weight: 780;
+  letter-spacing: 0.08em;
   line-height: 1;
   min-height: 44px;
   text-decoration: none;
+  text-transform: none;
 }
 
 .desktop-navigation,
@@ -520,8 +521,9 @@ p {
 
 .footer-identity p {
   font-size: 0.82rem;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
   margin: 18px 0 0;
+  max-width: 34ch;
 }
 
 .site-footer nav {

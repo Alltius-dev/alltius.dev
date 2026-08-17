@@ -4,26 +4,28 @@ import { headers } from "next/headers";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AIULLMA LLC",
-  description: "Managed technology and AI services for companies ready to grow revenue.",
-  metadataBase: new URL("https://aiullma.com"),
+  title: "Alltius",
+  description: "Alltius builds, operates and optimizes managed digital capacity for growth.",
+  metadataBase: new URL("https://alltius.dev"),
   icons: { icon: "/favicon.svg" },
   openGraph: {
     type: "website",
-    siteName: "AIULLMA LLC",
-    title: "AIULLMA LLC",
-    description: "Managed technology and AI services for companies ready to grow revenue.",
+    siteName: "Alltius",
+    title: "Alltius",
+    description: "Alltius builds, operates and optimizes managed digital capacity for growth.",
     images: [
       {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "AIULLMA — Managed technology and AI services for companies ready to grow revenue.",
+        alt: "Alltius — Build, operate and optimize managed digital capacity for growth.",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
+    title: "Alltius",
+    description: "Alltius builds, operates and optimizes managed digital capacity for growth.",
     images: ["/og.png"],
   },
 };
@@ -31,17 +33,10 @@ export const metadata: Metadata = {
 const organization = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "AIULLMA LLC",
-  url: "https://aiullma.com",
+  name: "Alltius",
+  legalName: "AIULLMA LLC",
+  url: "https://alltius.dev",
   email: "contact@aiullma.com",
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "2105 Vista Oeste NW Ste E, 1349",
-    addressLocality: "Albuquerque",
-    addressRegion: "NM",
-    postalCode: "87120",
-    addressCountry: "US",
-  },
 };
 
 export default async function RootLayout({

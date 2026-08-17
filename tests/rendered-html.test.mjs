@@ -221,7 +221,7 @@ test("localized pages declare their language in server-rendered HTML", async () 
 test("Portuguese pages localize accessibility labels", async () => {
   const html = await htmlFor("/pt/");
   assert.match(html, /<a[^>]+href="#main-content"[^>]*>Pular para o conteúdo<\/a>/i);
-  assert.match(html, /<a[^>]+aria-label="Página inicial da AIULLMA"/i);
+  assert.match(html, /<a[^>]+aria-label="Página inicial da Alltius"/i);
   assert.match(html, /<nav[^>]+aria-label="Navegação principal"/i);
   assert.match(html, /<nav[^>]+aria-label="Navegação móvel"/i);
   assert.match(html, /<nav[^>]+aria-label="Políticas"/i);
@@ -240,7 +240,7 @@ test("Spanish home renders the approved Alltius positioning", async () => {
 test("Spanish pages localize accessibility labels", async () => {
   const html = await htmlFor("/es/");
   assert.match(html, /<a[^>]+href="#main-content"[^>]*>Ir al contenido<\/a>/i);
-  assert.match(html, /aria-label="Página de inicio de AIULLMA"/i);
+  assert.match(html, /aria-label="Página de inicio de Alltius"/i);
   assert.match(html, /aria-label="Navegación principal"/i);
   assert.match(html, /aria-label="Navegación móvil"/i);
   assert.match(html, /aria-label="Políticas"/i);
@@ -392,6 +392,103 @@ test("legal pages identify the AIULLMA LLC legal entity", async () => {
   }
 });
 
+test("every public page uses Alltius as the commercial wordmark and keeps AIULLMA LLC in footer or legal contexts", async () => {
+  const footerRelationshipPatterns = {
+    "/": /Alltius is a service brand operated by AIULLMA LLC/i,
+    "/pt/": /Alltius é uma marca de serviços operada pela AIULLMA LLC/i,
+    "/es/": /Alltius es una marca de servicios operada por AIULLMA LLC/i,
+  };
+
+  for (const path of expectedRoutes) {
+    const html = await htmlFor(path);
+    const wordmarks = [...html.matchAll(/class="wordmark"[^>]*>([^<]+)</gi)].map(([, text]) => text.trim());
+
+    assert.ok(wordmarks.length >= 2, `${path} must render header and footer wordmarks`);
+    assert.deepEqual(
+      [...new Set(wordmarks)],
+      ["Alltius"],
+      `${path} must use Alltius as the only public wordmark`,
+    );
+    assert.doesNotMatch(html, />AIULLMA</i, `${path} must not render AIULLMA as the visible wordmark`);
+  }
+
+  for (const [path, pattern] of Object.entries(footerRelationshipPatterns)) {
+    assert.match(await htmlFor(path), pattern);
+  }
+});
+
+test("rendered metadata uses alltius.dev, Alltius titles and the approved social image", async () => {
+  const cases = [
+    { path: "/", title: "Alltius | Digital capacity services for growth" },
+    { path: "/email", title: "Email & Messaging Operations | Alltius" },
+    { path: "/pt/email", title: "Operações de E-mail e Mensageria | Alltius" },
+    { path: "/es/email", title: "Operaciones de Email y Mensajería | Alltius" },
+  ];
+
+  for (const { path, title } of cases) {
+    const html = await htmlFor(path);
+
+    assert.match(html, new RegExp(`<title>${title}<\\/title>`));
+    assert.match(html, /<meta[^>]+property="og:title"[^>]+content="Alltius"/i);
+    assert.match(html, /<meta[^>]+property="og:site_name"[^>]+content="Alltius"/i);
+    assert.match(
+      html,
+      /<meta[^>]+property="og:description"[^>]+content="Alltius builds, operates and optimizes managed digital capacity for growth\."[^>]*>/i,
+    );
+    assert.match(
+      html,
+      /<meta[^>]+property="og:image"[^>]+content="https:\/\/alltius\.dev\/og\.png"[^>]*>/i,
+    );
+    assert.match(
+      html,
+      /<meta[^>]+property="og:image:alt"[^>]+content="Alltius — Build, operate and optimize managed digital capacity for growth\."[^>]*>/i,
+    );
+    assert.match(html, /<meta[^>]+name="twitter:title"[^>]+content="Alltius"/i);
+    assert.match(
+      html,
+      /<meta[^>]+name="twitter:description"[^>]+content="Alltius builds, operates and optimizes managed digital capacity for growth\."[^>]*>/i,
+    );
+    assert.match(
+      html,
+      /<meta[^>]+name="twitter:image"[^>]+content="https:\/\/alltius\.dev\/og\.png"[^>]*>/i,
+    );
+    assert.match(html, /<link[^>]+rel="canonical"[^>]+href="https:\/\/alltius\.dev/i);
+    assert.doesNotMatch(html, /https:\/\/aiullma\.com/i, `${path} must not keep aiullma.com in rendered metadata`);
+    assert.doesNotMatch(html, /AIULLMA LLC<\/title>/i, `${path} must not use an AIULLMA-only page title`);
+  }
+});
+
+test("organization JSON-LD uses the Alltius public identity and aiullma contact bridge", async () => {
+  const html = await htmlFor("/");
+  const jsonLdMatch = html.match(
+    /<script type="application\/ld\+json">([^<]+)<\/script>/i,
+  );
+
+  assert.ok(jsonLdMatch, "root page must render organization JSON-LD");
+
+  const organization = JSON.parse(jsonLdMatch[1]);
+
+  assert.equal(organization.name, "Alltius");
+  assert.equal(organization.legalName, "AIULLMA LLC");
+  assert.equal(organization.url, "https://alltius.dev");
+  assert.equal(organization.email, "contact@aiullma.com");
+  assert.equal(organization.sameAs, undefined);
+});
+
+test("robots.txt and sitemap.xml publish the alltius.dev canonical origin", async () => {
+  const robotsText = await textFor("/robots.txt");
+  assert.match(robotsText, /^User-Agent: \*/mi);
+  assert.match(robotsText, /^Allow: \//mi);
+  assert.match(robotsText, /^Sitemap: https:\/\/alltius\.dev\/sitemap\.xml$/mi);
+  assert.doesNotMatch(robotsText, /aiullma\.com/i);
+
+  const sitemapText = await textFor("/sitemap.xml");
+  for (const path of expectedRoutes) {
+    assert.match(sitemapText, new RegExp(`<loc>https://alltius\\.dev${path}</loc>`));
+  }
+  assert.doesNotMatch(sitemapText, /aiullma\.com/i);
+});
+
 test("legal pages explain email-service privacy, acceptable use and control boundaries", async () => {
   const cases = [
     {
@@ -529,30 +626,30 @@ test("rendered pages avoid prohibited claims", async () => {
 
 test("localized pages publish canonical and alternate metadata", async () => {
   for (const [path, canonical] of [
-    ["/contact", "https://aiullma.com/contact"],
-    ["/pt/contato", "https://aiullma.com/pt/contato"],
-    ["/es/contacto", "https://aiullma.com/es/contacto"],
+    ["/contact", "https://alltius.dev/contact"],
+    ["/pt/contato", "https://alltius.dev/pt/contato"],
+    ["/es/contacto", "https://alltius.dev/es/contacto"],
   ]) {
     const html = await htmlFor(path);
     assert.match(html, new RegExp(`rel="canonical" href="${canonical}"`, "i"));
-    assert.match(html, /hrefLang="en" href="https:\/\/aiullma\.com\/contact"/i);
-    assert.match(html, /hrefLang="pt-BR" href="https:\/\/aiullma\.com\/pt\/contato"/i);
-    assert.match(html, /hrefLang="es-419" href="https:\/\/aiullma\.com\/es\/contacto"/i);
-    assert.match(html, /hrefLang="x-default" href="https:\/\/aiullma\.com\/contact"/i);
+    assert.match(html, /hrefLang="en" href="https:\/\/alltius\.dev\/contact"/i);
+    assert.match(html, /hrefLang="pt-BR" href="https:\/\/alltius\.dev\/pt\/contato"/i);
+    assert.match(html, /hrefLang="es-419" href="https:\/\/alltius\.dev\/es\/contacto"/i);
+    assert.match(html, /hrefLang="x-default" href="https:\/\/alltius\.dev\/contact"/i);
   }
 });
 
 test("rendered head publishes favicon and 1200 by 630 social preview metadata", async () => {
   for (const [path, canonical] of [
-    ["/", "https://aiullma.com"],
-    ["/pt/", "https://aiullma.com/pt/"],
+    ["/", "https://alltius.dev"],
+    ["/pt/", "https://alltius.dev/pt/"],
   ]) {
     const html = await htmlFor(path);
     assert.match(html, new RegExp(`rel="canonical" href="${canonical}"`, "i"));
-    assert.match(html, /rel="alternate" hrefLang="en" href="https:\/\/aiullma\.com"/i);
-    assert.match(html, /rel="alternate" hrefLang="pt-BR" href="https:\/\/aiullma\.com\/pt\/"/i);
+    assert.match(html, /rel="alternate" hrefLang="en" href="https:\/\/alltius\.dev"/i);
+    assert.match(html, /rel="alternate" hrefLang="pt-BR" href="https:\/\/alltius\.dev\/pt\/"/i);
     assert.match(html, /rel="icon" href="\/favicon\.svg"/i);
-    assert.match(html, /property="og:image" content="https:\/\/aiullma\.com\/og\.png"/i);
+    assert.match(html, /property="og:image" content="https:\/\/alltius\.dev\/og\.png"/i);
     assert.match(html, /property="og:image:width" content="1200"/i);
     assert.match(html, /property="og:image:height" content="630"/i);
   }
@@ -571,11 +668,11 @@ test("crawler discovery routes publish the approved canonical URLs", async () =>
   const robots = await textFor("/robots.txt");
   assert.match(robots, /User-agent: \*/i);
   assert.match(robots, /Allow: \//i);
-  assert.match(robots, /Sitemap: https:\/\/aiullma\.com\/sitemap\.xml/i);
+  assert.match(robots, /Sitemap: https:\/\/alltius\.dev\/sitemap\.xml/i);
 
   const sitemap = await textFor("/sitemap.xml");
   for (const path of expectedRoutes) {
-    assert.match(sitemap, new RegExp(`https://aiullma\\.com${path}`));
+    assert.match(sitemap, new RegExp(`https://alltius\\.dev${path}`));
   }
 });
 
@@ -588,16 +685,9 @@ test("home publishes the approved Organization JSON-LD", async () => {
   assert.deepEqual(organization, {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "AIULLMA LLC",
-    url: "https://aiullma.com",
+    name: "Alltius",
+    legalName: "AIULLMA LLC",
+    url: "https://alltius.dev",
     email: "contact@aiullma.com",
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "2105 Vista Oeste NW Ste E, 1349",
-      addressLocality: "Albuquerque",
-      addressRegion: "NM",
-      postalCode: "87120",
-      addressCountry: "US",
-    },
   });
 });

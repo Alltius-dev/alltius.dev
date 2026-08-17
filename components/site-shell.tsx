@@ -22,7 +22,7 @@ export function SiteShell({ locale, localizedPaths, children }: SiteShellProps) 
   const content = siteContent[locale];
   const accessibilityByLocale = {
     en: {
-      home: "AIULLMA home",
+      home: "Alltius home",
       menu: "Menu",
       mobileNavigation: "Mobile navigation",
       policies: "Policies",
@@ -30,7 +30,7 @@ export function SiteShell({ locale, localizedPaths, children }: SiteShellProps) 
       skip: "Skip to content",
     },
     pt: {
-      home: "Página inicial da AIULLMA",
+      home: "Página inicial da Alltius",
       menu: "Menu",
       mobileNavigation: "Navegação móvel",
       policies: "Políticas",
@@ -38,13 +38,18 @@ export function SiteShell({ locale, localizedPaths, children }: SiteShellProps) 
       skip: "Pular para o conteúdo",
     },
     es: {
-      home: "Página de inicio de AIULLMA",
+      home: "Página de inicio de Alltius",
       menu: "Menú",
       mobileNavigation: "Navegación móvil",
       policies: "Políticas",
       primaryNavigation: "Navegación principal",
       skip: "Ir al contenido",
     },
+  } as const;
+  const relationshipByLocale = {
+    en: "Alltius is a service brand operated by AIULLMA LLC.",
+    pt: "Alltius é uma marca de serviços operada pela AIULLMA LLC.",
+    es: "Alltius es una marca de servicios operada por AIULLMA LLC.",
   } as const;
   const accessibility = accessibilityByLocale[locale];
   const paths = {
@@ -61,7 +66,7 @@ export function SiteShell({ locale, localizedPaths, children }: SiteShellProps) 
       <header className="site-header">
         <div className="site-header-inner">
           <a aria-label={accessibility.home} className="wordmark" href={paths.home}>
-            AIULLMA
+            Alltius
           </a>
           <nav aria-label={accessibility.primaryNavigation} className="desktop-navigation">
             <a href={`${paths.home}#company`}>{content.nav.company}</a>
@@ -108,9 +113,9 @@ export function SiteShell({ locale, localizedPaths, children }: SiteShellProps) 
         <div className="site-footer-inner">
           <div className="footer-identity">
             <a aria-label={accessibility.home} className="wordmark" href={paths.home}>
-              AIULLMA
+              Alltius
             </a>
-            <p>AIULLMA LLC · {"New Mexico, United States"}</p>
+            <p>{relationshipByLocale[locale]}</p>
           </div>
           <nav aria-label={accessibility.policies}>
             <a href={paths.email}>{content.footer.email}</a>

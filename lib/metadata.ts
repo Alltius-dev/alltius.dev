@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 import { routePairs, type Locale } from "./site-content";
 
-const origin = "https://aiullma.com";
+const origin = "https://alltius.dev";
 
 export function metadataFor(
   locale: Locale,
@@ -14,7 +14,7 @@ export function metadataFor(
   const pair = Object.values(routePairs).find((route) => route[locale] === path);
 
   return {
-    title: absoluteTitle ? title : `${title} | AIULLMA LLC`,
+    title: absoluteTitle ? title : `${title} | Alltius`,
     description,
     alternates: {
       canonical: path,
