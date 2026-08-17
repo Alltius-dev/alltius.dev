@@ -12,9 +12,11 @@ export function metadataFor(
   absoluteTitle = false,
 ): Metadata {
   const pair = Object.values(routePairs).find((route) => route[locale] === path);
+  const fullTitle = absoluteTitle ? title : `${title} | Alltius`;
+  const socialAlt = `${fullTitle} — ${description}`;
 
   return {
-    title: absoluteTitle ? title : `${title} | Alltius`,
+    title: fullTitle,
     description,
     alternates: {
       canonical: path,
@@ -28,5 +30,24 @@ export function metadataFor(
         : undefined,
     },
     metadataBase: new URL(origin),
+    openGraph: {
+      siteName: "Alltius",
+      type: "website",
+      title: fullTitle,
+      description,
+      images: [
+        {
+          url: "/og.png",
+          width: 1200,
+          height: 630,
+          alt: socialAlt,
+        },
+      ],
+    },
+    twitter: {
+      title: fullTitle,
+      description,
+      images: ["/og.png"],
+    },
   };
 }

@@ -7,6 +7,36 @@ import {
   staticArtifactPathForRoute,
   staticDocumentRoutes,
 } from "../scripts/static-export-config.mjs";
+import { routePairs } from "../lib/site-content.ts";
+
+const expectedCanonicalPublicRoutes = [
+  "/",
+  "/pt/",
+  "/es/",
+  "/contact/",
+  "/pt/contato/",
+  "/es/contacto/",
+  "/privacy/",
+  "/pt/privacidade/",
+  "/es/privacidad/",
+  "/terms/",
+  "/pt/termos/",
+  "/es/terminos/",
+  "/email/",
+  "/pt/email/",
+  "/es/email/",
+  "/data-deletion/",
+  "/pt/exclusao-de-dados/",
+  "/es/eliminacion-de-datos/",
+];
+
+test("static export routes are derived from routePairs and use canonical trailing slashes", () => {
+  assert.deepEqual(
+    localizedPublicRoutes,
+    Object.values(routePairs).flatMap((pair) => Object.values(pair)),
+  );
+  assert.deepEqual(localizedPublicRoutes, expectedCanonicalPublicRoutes);
+});
 
 for (const route of localizedPublicRoutes) {
   test(`${route} exports a static HTML artifact`, async () => {

@@ -7,6 +7,7 @@ import {
   localizedPublicRoutes,
   staticArtifactPathForRoute,
   staticDocumentRoutes,
+  workerRenderPathForRoute,
 } from "./static-export-config.mjs";
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
@@ -49,7 +50,7 @@ async function fetchFromWorker(path, { headers = {} } = {}) {
 }
 
 async function exportHtmlRoute(route) {
-  const response = await fetchFromWorker(route, {
+  const response = await fetchFromWorker(workerRenderPathForRoute(route), {
     headers: {
       accept: "text/html",
       "x-aiullma-language": localeHeaderForRoute(route),

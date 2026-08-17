@@ -5,6 +5,7 @@ import test from "node:test";
 import {
   localeHeaderForRoute,
   localizedPublicRoutes as expectedRoutes,
+  workerRenderPathForRoute,
 } from "../scripts/static-export-config.mjs";
 
 const prohibitedPatterns = [
@@ -31,7 +32,7 @@ async function render(path, headers = {}) {
   const { default: worker } = await import(workerUrl.href);
 
   return worker.fetch(
-    new Request(`http://localhost${path}`, {
+    new Request(`http://localhost${workerRenderPathForRoute(path)}`, {
       headers,
     }),
     {
@@ -190,7 +191,7 @@ test("home exposes semantic navigation and the updated operating model", async (
   assert.match(html, /Operate/);
   assert.match(html, /Optimize/);
 
-  assert.match(await htmlFor("/privacy"), /<main[^>]+class="legal-layout"/i);
+  assert.match(await htmlFor("/privacy/"), /<main[^>]+class="legal-layout"/i);
 });
 
 test("localized pages declare their language in server-rendered HTML", async () => {
@@ -249,15 +250,15 @@ test("mobile menu summaries describe the disclosure action in both languages", a
 test("primary CTAs preserve the equivalent contact route", async () => {
   assert.match(
     await htmlFor("/"),
-    /<a[^>]+href="\/contact"[^>]*>Discuss your growth objective<\/a>/i,
+    /<a[^>]+href="\/contact\/"[^>]*>Discuss your growth objective<\/a>/i,
   );
   assert.match(
     await htmlFor("/pt/"),
-    /<a[^>]+href="\/pt\/contato"[^>]*>Fale sobre seu objetivo de crescimento<\/a>/i,
+    /<a[^>]+href="\/pt\/contato\/"[^>]*>Fale sobre seu objetivo de crescimento<\/a>/i,
   );
   assert.match(
     await htmlFor("/es/"),
-    /<a[^>]+href="\/es\/contacto"[^>]*>Hablemos de su objetivo de crecimiento<\/a>/i,
+    /<a[^>]+href="\/es\/contacto\/"[^>]*>Hablemos de su objetivo de crecimiento<\/a>/i,
   );
 });
 
@@ -312,9 +313,18 @@ test("home copy keeps growth claims qualified and preserves the scale-economics 
   assert.match(await htmlFor("/pt/"), /por contato, mensagem, usuário ou execução/i);
   assert.match(await htmlFor("/es/"), /por contacto, mensaje, usuario o ejecución/i);
 
-  assert.match(await htmlFor("/"), /third-party charges may still apply\./i);
-  assert.match(await htmlFor("/pt/"), /custos de terceiros ainda podem ser aplicados\./i);
-  assert.match(await htmlFor("/es/"), /los cargos de terceros todavía pueden aplicarse\./i);
+  assert.match(
+    await htmlFor("/"),
+    /cloud, telecommunications, platform and other third-party charges may still apply\./i,
+  );
+  assert.match(
+    await htmlFor("/pt/"),
+    /custos de nuvem, telecomunicações, plataforma e outros terceiros ainda podem ser aplicados\./i,
+  );
+  assert.match(
+    await htmlFor("/es/"),
+    /los cargos de nube, telecomunicaciones, plataforma y otros terceros todavía pueden aplicarse\./i,
+  );
 });
 
 test("home copy keeps permission-based marketing explicitly future-gated", async () => {
@@ -326,7 +336,7 @@ test("home copy keeps permission-based marketing explicitly future-gated", async
 test("email operations pages publish the reviewed service boundaries in every locale", async () => {
   const cases = [
     {
-      path: "/email",
+      path: "/email/",
       title: "Email & Messaging Operations",
       transactional: /Transactional email is the initial focus/i,
       marketing: /opt-?in[\s\S]*unsubscribe/i,
@@ -337,7 +347,7 @@ test("email operations pages publish the reviewed service boundaries in every lo
       operator: /AIULLMA LLC/i,
     },
     {
-      path: "/pt/email",
+      path: "/pt/email/",
       title: "Operações de E-mail e Mensageria",
       transactional: /e-?mail transacional é o foco inicial/i,
       marketing: /opt-?in[\s\S]*descadastro/i,
@@ -348,7 +358,7 @@ test("email operations pages publish the reviewed service boundaries in every lo
       operator: /AIULLMA LLC/i,
     },
     {
-      path: "/es/email",
+      path: "/es/email/",
       title: "Operaciones de Email y Mensajería",
       transactional: /el email transaccional es el enfoque inicial/i,
       marketing: /opt-?in[\s\S]*cancelación de suscripción/i,
@@ -409,21 +419,53 @@ test("every public page uses Alltius as the commercial wordmark and keeps AIULLM
 
 test("rendered metadata uses alltius.dev, Alltius titles and the approved social image", async () => {
   const cases = [
-    { path: "/", title: "Alltius | Digital capacity services for growth" },
-    { path: "/email", title: "Email & Messaging Operations | Alltius" },
-    { path: "/pt/email", title: "Operações de E-mail e Mensageria | Alltius" },
-    { path: "/es/email", title: "Operaciones de Email y Mensajería | Alltius" },
+    {
+      path: "/",
+      title: "Alltius | Digital capacity services for growth",
+      description:
+        "Alltius builds, operates and optimizes automation, BI, AI, customer-service systems and managed infrastructure to expand growth capacity.",
+      socialTitle: "Alltius | Digital capacity services for growth",
+      socialAlt:
+        "Alltius | Digital capacity services for growth — Alltius builds, operates and optimizes automation, BI, AI, customer-service systems and managed infrastructure to expand growth capacity.",
+    },
+    {
+      path: "/email/",
+      title: "Email & Messaging Operations | Alltius",
+      description:
+        "How Alltius manages transactional email, permission-based lifecycle communication and reviewed client tenants.",
+      socialTitle: "Email & Messaging Operations | Alltius",
+      socialAlt:
+        "Email & Messaging Operations | Alltius — How Alltius manages transactional email, permission-based lifecycle communication and reviewed client tenants.",
+    },
+    {
+      path: "/pt/email/",
+      title: "Operações de E-mail e Mensageria | Alltius",
+      description:
+        "Como a Alltius gerencia e-mail transacional, comunicação de ciclo de vida baseada em permissão e clientes revisados.",
+      socialTitle: "Operações de E-mail e Mensageria | Alltius",
+      socialAlt:
+        "Operações de E-mail e Mensageria | Alltius — Como a Alltius gerencia e-mail transacional, comunicação de ciclo de vida baseada em permissão e clientes revisados.",
+    },
+    {
+      path: "/es/email/",
+      title: "Operaciones de Email y Mensajería | Alltius",
+      description:
+        "Cómo Alltius gestiona correo transaccional, comunicación de ciclo de vida basada en permisos y clientes revisados.",
+      socialTitle: "Operaciones de Email y Mensajería | Alltius",
+      socialAlt:
+        "Operaciones de Email y Mensajería | Alltius — Cómo Alltius gestiona correo transaccional, comunicación de ciclo de vida basada en permisos y clientes revisados.",
+    },
   ];
 
-  for (const { path, title } of cases) {
+  for (const { path, title, description, socialTitle, socialAlt } of cases) {
     const html = await htmlFor(path);
 
     assert.match(html, new RegExp(`<title>${title}<\\/title>`));
-    assert.match(html, /<meta[^>]+property="og:title"[^>]+content="Alltius"/i);
+    assert.match(html, new RegExp(`<meta[^>]+property="og:title"[^>]+content="${socialTitle}"`, "i"));
     assert.match(html, /<meta[^>]+property="og:site_name"[^>]+content="Alltius"/i);
     assert.match(
       html,
-      /<meta[^>]+property="og:description"[^>]+content="Alltius builds, operates and optimizes managed digital capacity for growth\."[^>]*>/i,
+      new RegExp(`<meta[^>]+property="og:description"[^>]+content="${description}"[^>]*>`, "i"),
     );
     assert.match(
       html,
@@ -431,12 +473,12 @@ test("rendered metadata uses alltius.dev, Alltius titles and the approved social
     );
     assert.match(
       html,
-      /<meta[^>]+property="og:image:alt"[^>]+content="Alltius — Build, operate and optimize managed digital capacity for growth\."[^>]*>/i,
+      new RegExp(`<meta[^>]+property="og:image:alt"[^>]+content="${socialAlt}"[^>]*>`, "i"),
     );
-    assert.match(html, /<meta[^>]+name="twitter:title"[^>]+content="Alltius"/i);
+    assert.match(html, new RegExp(`<meta[^>]+name="twitter:title"[^>]+content="${socialTitle}"`, "i"));
     assert.match(
       html,
-      /<meta[^>]+name="twitter:description"[^>]+content="Alltius builds, operates and optimizes managed digital capacity for growth\."[^>]*>/i,
+      new RegExp(`<meta[^>]+name="twitter:description"[^>]+content="${description}"[^>]*>`, "i"),
     );
     assert.match(
       html,
@@ -482,13 +524,13 @@ test("robots.txt and sitemap.xml publish the alltius.dev canonical origin", asyn
 test("legal pages explain email-service privacy, acceptable use and control boundaries", async () => {
   const cases = [
     {
-      privacy: "/privacy",
+      privacy: "/privacy/",
       privacyPatterns: [
         /recipient[\s\S]*delivery[\s\S]*bounce[\s\S]*complaint[\s\S]*preference data/i,
         /AIULLMA LLC is the controller for this website/i,
         /client may control recipient data in a managed service/i,
       ],
-      terms: "/terms",
+      terms: "/terms/",
       termsPatterns: [
         /not offer an open relay/i,
         /unlawful or unsolicited mail/i,
@@ -497,20 +539,21 @@ test("legal pages explain email-service privacy, acceptable use and control boun
         /suspend service for abuse/i,
         /separate client agreements/i,
       ],
-      deletion: "/data-deletion",
+      deletion: "/data-deletion/",
       deletionPatterns: [
         /Alltius-controlled records/i,
         /client-controlled audience/i,
       ],
+      controllerPattern: /AIULLMA LLC is the controller for this website/gi,
     },
     {
-      privacy: "/pt/privacidade",
+      privacy: "/pt/privacidade/",
       privacyPatterns: [
         /destinatári[\w\s\S]*entrega[\s\S]*bounce[\s\S]*reclamaç(?:ão|ões)[\s\S]*preferênc/i,
         /A AIULLMA LLC é controladora deste site/i,
         /cliente pode controlar os dados de destinatários em um serviço gerenciado/i,
       ],
-      terms: "/pt/termos",
+      terms: "/pt/termos/",
       termsPatterns: [
         /não oferece um open relay/i,
         /e-?mail ilegal ou não solicitado/i,
@@ -519,20 +562,21 @@ test("legal pages explain email-service privacy, acceptable use and control boun
         /suspender o serviço por abuso/i,
         /acordos separados com clientes/i,
       ],
-      deletion: "/pt/exclusao-de-dados",
+      deletion: "/pt/exclusao-de-dados/",
       deletionPatterns: [
         /registros controlados pela Alltius/i,
         /audiência controlada por cliente/i,
       ],
+      controllerPattern: /A AIULLMA LLC é controladora deste site/gi,
     },
     {
-      privacy: "/es/privacidad",
+      privacy: "/es/privacidad/",
       privacyPatterns: [
         /destinatari[\w\s\S]*entrega[\s\S]*rebotes?[\s\S]*quejas?[\s\S]*preferenci/i,
         /AIULLMA LLC es responsable del tratamiento de este sitio/i,
         /cliente puede controlar los datos de destinatarios en un servicio gestionado/i,
       ],
-      terms: "/es/terminos",
+      terms: "/es/terminos/",
       termsPatterns: [
         /no ofrece un open relay/i,
         /correo ilegal o no solicitado/i,
@@ -541,11 +585,12 @@ test("legal pages explain email-service privacy, acceptable use and control boun
         /suspender el servicio por abuso/i,
         /acuerdos separados con clientes/i,
       ],
-      deletion: "/es/eliminacion-de-datos",
+      deletion: "/es/eliminacion-de-datos/",
       deletionPatterns: [
         /registros controlados por Alltius/i,
         /audiencia controlada por el cliente/i,
       ],
+      controllerPattern: /AIULLMA LLC es responsable del tratamiento de este sitio/gi,
     },
   ];
 
@@ -554,6 +599,12 @@ test("legal pages explain email-service privacy, acceptable use and control boun
     for (const pattern of item.privacyPatterns) {
       assert.match(privacyHtml, pattern, `${item.privacy} must include ${pattern}`);
     }
+    const renderedPrivacyHtml = privacyHtml.replaceAll(/<script\b[\s\S]*?<\/script>/gi, "");
+    assert.equal(
+      renderedPrivacyHtml.match(item.controllerPattern)?.length ?? 0,
+      1,
+      `${item.privacy} must explain the site/controller split once without an adjacent duplicate paragraph`,
+    );
 
     const termsHtml = await htmlFor(item.terms);
     for (const pattern of item.termsPatterns) {
@@ -570,11 +621,11 @@ test("legal pages explain email-service privacy, acceptable use and control boun
 test("language selectors link every page to its EN PT and ES equivalents", async () => {
   const routeGroups = [
     [{ path: "/", label: "English", hrefLang: "en" }, { path: "/pt/", label: "Português", hrefLang: "pt-BR" }, { path: "/es/", label: "Español", hrefLang: "es-419" }],
-    [{ path: "/contact", label: "English", hrefLang: "en" }, { path: "/pt/contato", label: "Português", hrefLang: "pt-BR" }, { path: "/es/contacto", label: "Español", hrefLang: "es-419" }],
-    [{ path: "/email", label: "English", hrefLang: "en" }, { path: "/pt/email", label: "Português", hrefLang: "pt-BR" }, { path: "/es/email", label: "Español", hrefLang: "es-419" }],
-    [{ path: "/privacy", label: "English", hrefLang: "en" }, { path: "/pt/privacidade", label: "Português", hrefLang: "pt-BR" }, { path: "/es/privacidad", label: "Español", hrefLang: "es-419" }],
-    [{ path: "/terms", label: "English", hrefLang: "en" }, { path: "/pt/termos", label: "Português", hrefLang: "pt-BR" }, { path: "/es/terminos", label: "Español", hrefLang: "es-419" }],
-    [{ path: "/data-deletion", label: "English", hrefLang: "en" }, { path: "/pt/exclusao-de-dados", label: "Português", hrefLang: "pt-BR" }, { path: "/es/eliminacion-de-datos", label: "Español", hrefLang: "es-419" }],
+    [{ path: "/contact/", label: "English", hrefLang: "en" }, { path: "/pt/contato/", label: "Português", hrefLang: "pt-BR" }, { path: "/es/contacto/", label: "Español", hrefLang: "es-419" }],
+    [{ path: "/email/", label: "English", hrefLang: "en" }, { path: "/pt/email/", label: "Português", hrefLang: "pt-BR" }, { path: "/es/email/", label: "Español", hrefLang: "es-419" }],
+    [{ path: "/privacy/", label: "English", hrefLang: "en" }, { path: "/pt/privacidade/", label: "Português", hrefLang: "pt-BR" }, { path: "/es/privacidad/", label: "Español", hrefLang: "es-419" }],
+    [{ path: "/terms/", label: "English", hrefLang: "en" }, { path: "/pt/termos/", label: "Português", hrefLang: "pt-BR" }, { path: "/es/terminos/", label: "Español", hrefLang: "es-419" }],
+    [{ path: "/data-deletion/", label: "English", hrefLang: "en" }, { path: "/pt/exclusao-de-dados/", label: "Português", hrefLang: "pt-BR" }, { path: "/es/eliminacion-de-datos/", label: "Español", hrefLang: "es-419" }],
   ];
 
   for (const group of routeGroups) {
@@ -596,11 +647,11 @@ test("language selectors link every page to its EN PT and ES equivalents", async
 });
 
 test("contact and data-deletion pages expose the correct corporate emails", async () => {
-  for (const path of ["/contact", "/pt/contato", "/es/contacto"]) {
+  for (const path of ["/contact/", "/pt/contato/", "/es/contacto/"]) {
     assert.match(await htmlFor(path), /href=["']mailto:contact@aiullma\.com["']/i);
   }
 
-  for (const path of ["/data-deletion", "/pt/exclusao-de-dados", "/es/eliminacion-de-datos"]) {
+  for (const path of ["/data-deletion/", "/pt/exclusao-de-dados/", "/es/eliminacion-de-datos/"]) {
     assert.match(await htmlFor(path), /href=["']mailto:privacy@aiullma\.com["']/i);
   }
 });
@@ -616,16 +667,16 @@ test("rendered pages avoid prohibited claims", async () => {
 
 test("localized pages publish canonical and alternate metadata", async () => {
   for (const [path, canonical] of [
-    ["/contact", "https://alltius.dev/contact"],
-    ["/pt/contato", "https://alltius.dev/pt/contato"],
-    ["/es/contacto", "https://alltius.dev/es/contacto"],
+    ["/contact/", "https://alltius.dev/contact/"],
+    ["/pt/contato/", "https://alltius.dev/pt/contato/"],
+    ["/es/contacto/", "https://alltius.dev/es/contacto/"],
   ]) {
     const html = await htmlFor(path);
     assert.match(html, new RegExp(`rel="canonical" href="${canonical}"`, "i"));
-    assert.match(html, /hrefLang="en" href="https:\/\/alltius\.dev\/contact"/i);
-    assert.match(html, /hrefLang="pt-BR" href="https:\/\/alltius\.dev\/pt\/contato"/i);
-    assert.match(html, /hrefLang="es-419" href="https:\/\/alltius\.dev\/es\/contacto"/i);
-    assert.match(html, /hrefLang="x-default" href="https:\/\/alltius\.dev\/contact"/i);
+    assert.match(html, /hrefLang="en" href="https:\/\/alltius\.dev\/contact\/"/i);
+    assert.match(html, /hrefLang="pt-BR" href="https:\/\/alltius\.dev\/pt\/contato\/"/i);
+    assert.match(html, /hrefLang="es-419" href="https:\/\/alltius\.dev\/es\/contacto\/"/i);
+    assert.match(html, /hrefLang="x-default" href="https:\/\/alltius\.dev\/contact\/"/i);
   }
 });
 

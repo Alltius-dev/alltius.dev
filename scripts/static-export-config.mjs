@@ -1,23 +1,8 @@
-export const localizedPublicRoutes = [
-  "/",
-  "/contact",
-  "/email",
-  "/privacy",
-  "/terms",
-  "/data-deletion",
-  "/pt/",
-  "/pt/contato",
-  "/pt/email",
-  "/pt/privacidade",
-  "/pt/termos",
-  "/pt/exclusao-de-dados",
-  "/es/",
-  "/es/contacto",
-  "/es/email",
-  "/es/privacidad",
-  "/es/terminos",
-  "/es/eliminacion-de-datos",
-];
+import { routePairs } from "../lib/site-content.ts";
+
+export const localizedPublicRoutes = Object.values(routePairs).flatMap((pair) =>
+  Object.values(pair),
+);
 
 export const staticDocumentRoutes = ["/sitemap.xml", "/robots.txt"];
 
@@ -42,4 +27,12 @@ export function staticArtifactPathForRoute(route) {
   return normalizedRoute.endsWith("/")
     ? `${normalizedRoute}index.html`
     : `${normalizedRoute}/index.html`;
+}
+
+export function workerRenderPathForRoute(route) {
+  if (route === "/") {
+    return route;
+  }
+
+  return route.endsWith("/") ? route.slice(0, -1) : route;
 }

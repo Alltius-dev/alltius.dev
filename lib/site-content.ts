@@ -12,14 +12,14 @@ export type EmailOperationsContent = {
 
 export const routePairs = {
   home: { en: "/", pt: "/pt/", es: "/es/" },
-  contact: { en: "/contact", pt: "/pt/contato", es: "/es/contacto" },
-  privacy: { en: "/privacy", pt: "/pt/privacidade", es: "/es/privacidad" },
-  terms: { en: "/terms", pt: "/pt/termos", es: "/es/terminos" },
-  email: { en: "/email", pt: "/pt/email", es: "/es/email" },
+  contact: { en: "/contact/", pt: "/pt/contato/", es: "/es/contacto/" },
+  privacy: { en: "/privacy/", pt: "/pt/privacidade/", es: "/es/privacidad/" },
+  terms: { en: "/terms/", pt: "/pt/termos/", es: "/es/terminos/" },
+  email: { en: "/email/", pt: "/pt/email/", es: "/es/email/" },
   dataDeletion: {
-    en: "/data-deletion",
-    pt: "/pt/exclusao-de-dados",
-    es: "/es/eliminacion-de-datos",
+    en: "/data-deletion/",
+    pt: "/pt/exclusao-de-dados/",
+    es: "/es/eliminacion-de-datos/",
   },
 } as const;
 
@@ -164,7 +164,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       ],
       scalingTitle: "Economics designed for useful scale",
       commercialQualifier:
-        "The model combines initial implementation, monthly service and infrastructure. It is designed so scale does not automatically become a new per-contact, per-message, per-user or per-execution charge. Third-party charges may still apply.",
+        "The model combines initial implementation, monthly service and infrastructure. It is designed so scale does not automatically become a new per-contact, per-message, per-user or per-execution charge. Cloud, telecommunications, platform and other third-party charges may still apply.",
       trustTitle: "Built for clear diligence",
       trust:
         "Alltius is a service brand operated by AIULLMA LLC, registered in New Mexico, United States. Our public policies and direct company contact are available below.",
@@ -267,8 +267,7 @@ export const siteContent: Record<Locale, SiteContent> = {
             heading: "Retention, security and rights",
             paragraphs: [
               "We retain information only for as long as reasonably necessary for the purposes described here, including legal, accounting, security and backup needs. We use reasonable administrative and technical safeguards, but no transmission or system is completely secure.",
-              "You may request access, correction, deletion or other applicable privacy rights by emailing privacy@aiullma.com. AIULLMA LLC is the controller for this website; where we process data for a client system, the client may control the relevant request.",
-              "AIULLMA LLC is the controller for this website, while a client may control recipient data in a managed service engagement.",
+              "You may request access, correction, deletion or other applicable privacy rights by emailing privacy@aiullma.com. AIULLMA LLC is the controller for this website; the client may control recipient data in a managed service and the relevant request.",
             ],
           },
         ],
@@ -411,7 +410,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       ],
       scalingTitle: "Economia desenhada para escalar com utilidade",
       commercialQualifier:
-        "O modelo combina implementação inicial, serviço mensal e infraestrutura. Ele foi desenhado para que a escala não se transforme automaticamente em uma nova cobrança por contato, mensagem, usuário ou execução. Custos de terceiros ainda podem ser aplicados.",
+        "O modelo combina implementação inicial, serviço mensal e infraestrutura. Ele foi desenhado para que a escala não se transforme automaticamente em uma nova cobrança por contato, mensagem, usuário ou execução. Custos de nuvem, telecomunicações, plataforma e outros terceiros ainda podem ser aplicados.",
       trustTitle: "Base para uma diligência clara",
       trust:
         "Alltius é uma marca de serviços operada pela AIULLMA LLC, registrada no New Mexico, Estados Unidos. Nossas políticas públicas e nosso contato corporativo direto estão disponíveis abaixo.",
@@ -512,8 +511,7 @@ export const siteContent: Record<Locale, SiteContent> = {
             heading: "Retenção, segurança e direitos",
             paragraphs: [
               "Mantemos informações somente pelo tempo razoavelmente necessário às finalidades descritas, inclusive necessidades legais, contábeis, de segurança e de backup. Usamos salvaguardas administrativas e técnicas razoáveis, mas nenhuma transmissão ou sistema é completamente seguro.",
-              "Você pode solicitar acesso, correção, exclusão ou outros direitos aplicáveis enviando um e-mail para privacy@aiullma.com. A AIULLMA LLC é controladora deste site; quando tratamos dados para um sistema de cliente, o cliente pode controlar a solicitação pertinente.",
-              "A AIULLMA LLC é controladora deste site, enquanto o cliente pode controlar os dados de destinatários em um serviço gerenciado.",
+              "Você pode solicitar acesso, correção, exclusão ou outros direitos aplicáveis enviando um e-mail para privacy@aiullma.com. A AIULLMA LLC é controladora deste site; o cliente pode controlar os dados de destinatários em um serviço gerenciado e a solicitação pertinente.",
             ],
           },
         ],
@@ -657,7 +655,7 @@ export const siteContent: Record<Locale, SiteContent> = {
       ],
       scalingTitle: "Economía diseñada para escalar con utilidad",
       commercialQualifier:
-        "El modelo combina implementación inicial, servicio mensual e infraestructura. Está diseñado para que la escala no se convierta automáticamente en un nuevo cargo por contacto, mensaje, usuario o ejecución. Los cargos de terceros todavía pueden aplicarse.",
+        "El modelo combina implementación inicial, servicio mensual e infraestructura. Está diseñado para que la escala no se convierta automáticamente en un nuevo cargo por contacto, mensaje, usuario o ejecución. Los cargos de nube, telecomunicaciones, plataforma y otros terceros todavía pueden aplicarse.",
       trustTitle: "Preparada para una evaluación clara",
       trust:
         "Alltius es una marca de servicios operada por AIULLMA LLC, registrada en New Mexico, Estados Unidos. Nuestras políticas públicas y nuestro contacto corporativo directo están disponibles a continuación.",
@@ -758,8 +756,7 @@ export const siteContent: Record<Locale, SiteContent> = {
             heading: "Conservación, seguridad y derechos",
             paragraphs: [
               "Conservamos la información únicamente durante el tiempo razonablemente necesario para los fines descritos, incluidas necesidades legales, contables, de seguridad y de respaldo. Utilizamos salvaguardas administrativas y técnicas razonables, pero ninguna transmisión ni sistema es completamente seguro.",
-              "Puede solicitar acceso, corrección, eliminación u otros derechos aplicables escribiendo a privacy@aiullma.com. AIULLMA LLC es responsable del tratamiento de este sitio; cuando tratamos datos para un sistema de un cliente, el cliente puede controlar la solicitud correspondiente.",
-              "AIULLMA LLC es responsable del tratamiento de este sitio, mientras que el cliente puede controlar los datos de destinatarios en un servicio gestionado.",
+              "Puede solicitar acceso, corrección, eliminación u otros derechos aplicables escribiendo a privacy@aiullma.com. AIULLMA LLC es responsable del tratamiento de este sitio; el cliente puede controlar los datos de destinatarios en un servicio gestionado y la solicitud correspondiente.",
             ],
           },
         ],
