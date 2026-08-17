@@ -227,8 +227,65 @@ The implementation plan must also create a private operational document named
 `docs/ses-production-access.md`. It will contain the AWS request narrative,
 expected volumes, regions, message categories, list-origination process,
 consent evidence, unsubscribe flow, bounce/complaint controls, abuse contact,
-tenant model and sample messages. It must never contain access keys or SMTP
-passwords.
+tenant model and sample messages. It must be kept outside the public GitHub
+repository and must never contain access keys or SMTP passwords.
+
+## Initial SES production posture
+
+The first production-access request must describe the current business
+honestly, without presenting Alltius as an established bulk-mail operator.
+The initial request will select **Transactional**, because that reflects the
+majority of the first real use cases. Marketing capability remains a planned
+phase, activated only after the opt-in, preference and unsubscribe controls
+are operating.
+
+The initial operating estimate is deliberately small:
+
+- 10–50 recipients per day at launch;
+- occasional initial peaks up to 100 recipients per day;
+- approximately 1,000–3,000 recipients per month during the first phase;
+- own Alltius/AIULLMA operational messages first;
+- gradual onboarding of a small number of reviewed client tenants;
+- no open relay and no anonymous or unsolicited sending.
+
+These figures describe recipients, not only message objects, because SES
+quotas count each recipient in a send request. The estimate must be updated if
+actual use changes materially. The account is expected to begin on the shared
+SES IP pool; dedicated IPs are not part of the initial design because the
+planned volume is low and irregular. We will still ramp responsibly and
+monitor reputation, bounces and complaints.
+
+The private SES request note should use this factual narrative as its starting
+point:
+
+> Alltius is a New Mexico-based technology services startup operated by
+> AIULLMA LLC. Our current production email volume is limited because we are
+> still in the early launch phase and currently use other email providers for
+> some workflows.
+>
+> We are requesting production access for low-volume transactional email,
+> including account notifications, security messages, support updates and
+> workflow alerts. During the initial rollout, we expect approximately 10–50
+> recipients per day, with occasional peaks up to 100 recipients per day and
+> an initial monthly volume below 3,000 recipients.
+>
+> We will begin with our own operational messages and gradually onboard a
+> small number of reviewed client tenants. Each tenant will use a verified
+> sending identity or an authorized client-owned identity. We will not use
+> purchased, rented, scraped or unsolicited lists.
+>
+> We will monitor deliveries, bounces and complaints, automatically suppress
+> affected recipients and provide unsubscribe controls for any future
+> permission-based marketing email. Marketing email will only be activated
+> after consent and preference-management controls are in place.
+
+The narrative is a planning baseline, not a guarantee of AWS approval. It must
+be updated with the actual AWS Region, verified identities, support mailbox,
+integrations and observed volumes immediately before submission.
+
+The quota and IP-pool assumptions are based on AWS guidance for [sending
+limits](https://docs.aws.amazon.com/ses/latest/dg/manage-sending-quotas.html)
+and [dedicated IP addresses](https://docs.aws.amazon.com/ses/latest/dg/dedicated-ip.html).
 
 The authentication and monitoring gates follow AWS guidance on [email
 authentication](https://docs.aws.amazon.com/ses/latest/dg/email-authentication-methods.html),
@@ -289,7 +346,8 @@ The release is ready when:
    bounce/complaint handling, tenant isolation and acceptable use without
    claiming AWS partnership or guaranteed SES approval.
 6. Operational readiness includes monitored abuse/support contact, sender
-   authentication, volume/warm-up assumptions, event handling and an
+   authentication, the small transactional launch estimate, shared-IP initial
+   posture, volume/warm-up assumptions, event handling and a private
    `docs/ses-production-access.md` request narrative.
 7. `robots.txt`, `sitemap.xml`, canonical metadata, language alternates and
    social metadata use `alltius.dev`.
