@@ -223,12 +223,12 @@ account decisions.
 | Multi-tenant controls | Covered in architecture | Verify each client identity, isolate data and reputation, define rate limits, and revoke access when a tenant is paused or offboarded. |
 | Public signup | Intentionally not required | Alltius is a managed service, not an anonymous self-service relay; onboarding occurs through review and a client agreement. Explain this in the SES request. |
 
-The implementation plan must also create a private operational document named
-`docs/ses-production-access.md`. It will contain the AWS request narrative,
-expected volumes, regions, message categories, list-origination process,
-consent evidence, unsubscribe flow, bounce/complaint controls, abuse contact,
-tenant model and sample messages. It must be kept outside the public GitHub
-repository and must never contain access keys or SMTP passwords.
+The implementation plan does not provision mailboxes, configure SES, change
+MX/DKIM/DMARC records or create an operational AWS document. The owner will
+complete those steps manually in the email service after the site launch. The
+public site may still describe the approved service model and its safeguards,
+but it must not claim AWS partnership, SES approval or active mailbox
+provisioning.
 
 ## Initial SES production posture
 
@@ -299,10 +299,11 @@ cookies or web form. The Alltius site keeps that low-collection posture. Email
 delivery itself is a separate managed service: the public site does not
 collect subscriber lists or send campaigns from a web form.
 
-The contact destination must use a verified company-controlled address. Before
-implementation, verify whether an Alltius alias exists in Cloudflare Email
-Routing. If it does not, use the existing AIULLMA corporate address as the
-initial contact bridge and state the Alltius/AIULLMA relationship clearly.
+The contact destination must use the existing official AIULLMA corporate
+address as a temporary contact bridge in this release. The owner may replace
+it manually with an Alltius mailbox after configuring the email service. Do not
+enable Cloudflare Email Routing or change existing mail/SES records as part of
+the site deployment; state the Alltius/AIULLMA relationship clearly.
 
 The legal pages will state that they cover the Alltius public website and that
 AIULLMA LLC is the responsible legal entity. Paid engagements remain governed
@@ -345,10 +346,11 @@ The release is ready when:
 5. Email-service copy documents opt-in, unsubscribe, suppression,
    bounce/complaint handling, tenant isolation and acceptable use without
    claiming AWS partnership or guaranteed SES approval.
-6. Operational readiness includes monitored abuse/support contact, sender
-   authentication, the small transactional launch estimate, shared-IP initial
-   posture, volume/warm-up assumptions, event handling and a private
-   `docs/ses-production-access.md` request narrative.
+6. The public Email & Messaging copy describes transactional-first use,
+   permission-based marketing, unsubscribe, suppression, tenant isolation and
+   acceptable use without claiming AWS partnership or SES approval. Actual
+   sender authentication, aliases, provider configuration and AWS requests
+   remain manual follow-up work for the owner.
 7. `robots.txt`, `sitemap.xml`, canonical metadata, language alternates and
    social metadata use `alltius.dev`.
 8. The static build deploys to Cloudflare Pages at no hosting cost.

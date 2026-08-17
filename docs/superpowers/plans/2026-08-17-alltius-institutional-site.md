@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox ( - [ ] ) syntax for tracking.
 
-**Goal:** Build, publish and verify a trilingual Alltius.dev institutional service site with a discreet AIULLMA LLC relationship and an honest, low-volume AWS SES production-readiness posture.
+**Goal:** Build, publish and verify a trilingual Alltius.dev institutional service site with a discreet AIULLMA LLC relationship and accurate public copy for its managed Email & Messaging service.
 
-**Architecture:** Fork the validated server-rendered vinext site into a separate Alltius project, centralize all brand/copy/legal content in lib/site-content.ts, add a dedicated Email & Messaging Operations route per locale, and generate a static Pages directory from the Cloudflare-compatible build. Use Cloudflare Pages free hosting for the public site and keep SES operational evidence in a private local document outside the public GitHub repository.
+**Architecture:** Fork the validated server-rendered vinext site into a separate Alltius project, centralize all brand/copy/legal content in lib/site-content.ts, add a dedicated Email & Messaging Operations route per locale, and generate a static Pages directory from the Cloudflare-compatible build. Use Cloudflare Pages free hosting for the public site. Actual email-provider, mailbox, SES and DNS operations remain manual and outside this release.
 
 **Tech Stack:** TypeScript, React 19, vinext, Vite, Cloudflare Vite plugin, Cloudflare Pages, Wrangler, CSS, Next-compatible metadata APIs, Node.js built-in test runner, GitHub CLI.
 
@@ -23,7 +23,7 @@
 - No analytics, advertising pixels, non-essential cookies, public signup, web form, database, authentication or lead backend.
 - The static site uses https://alltius.dev as canonical origin and is deployed to Cloudflare Pages free hosting.
 - AWS limits, quotas, policies and production approval are confirmed against current AWS documentation immediately before submission.
-- Secrets, AWS keys, SMTP passwords and private SES request notes never enter GitHub.
+- Secrets, AWS keys and SMTP passwords never enter GitHub. Email-provider and SES account setup is not performed by this site release.
 
 ---
 
@@ -42,24 +42,21 @@
 | public/favicon.svg, public/og.png | Alltius browser icon and social preview. |
 | scripts/export-static.mjs | Convert the built vinext worker responses into static route HTML for Pages. |
 | tests/rendered-html.test.mjs | Route, copy, metadata, legal, localization and safety regression tests. |
-| docs/ses-production-access.md | Local ignored SES request narrative and operational checklist; never publish. |
 | vite.config.ts, package.json | Cloudflare-compatible build without the stale AIULLMA Sites project binding. |
 
 ---
 
-### Task 1: Establish Alltius Cloudflare email and project boundaries
+### Task 1: Establish Alltius project and DNS boundaries
 
 **Files:**
-- Modify: .git/info/exclude
-- Create: docs/ses-production-access.md (local ignored file)
-- Modify: Cloudflare zone alltius.dev only
+- Read/verify: Cloudflare zone alltius.dev only
 - Modify: Git remote after the GitHub repository is confirmed/created
 
 **Interfaces:**
-- Consumes: the existing verified AIULLMA corporate email destination and the approved SES production posture.
-- Produces: verified company-controlled addresses for public contact and SES abuse handling; a private request note; an isolated Alltius branch with no future push target pointing at AIULLMA.
+- Consumes: the existing Alltius DNS state and the approved site scope.
+- Produces: a documented no-touch boundary for existing mail infrastructure and an isolated Alltius branch with no future push target pointing at AIULLMA.
 
-- [ ] Step 1: Verify the current Alltius DNS and email-routing state
+- [ ] Step 1: Verify the current Alltius DNS and project state
 
 Run read-only checks before any DNS change:
 
@@ -69,25 +66,13 @@ dig +short MX alltius.dev
 gh repo view Alltius-dev/alltius.dev --json nameWithOwner,url,defaultBranchRef,isPrivate
 ~~~
 
-Expected: the Cloudflare-managed zone is present; the repository either exists and is inspected or the command reports that it does not exist. Do not change AIULLMA DNS records.
+Expected: the Cloudflare-managed zone is present; the repository either exists and is inspected or the command reports that it does not exist. Do not change AIULLMA DNS records or any Alltius mail records.
 
-- [ ] Step 2: Create only the required company email aliases
+- [ ] Step 2: Record the manual email boundary
 
-In the Cloudflare Email Routing configuration for alltius.dev, create or verify contact@alltius.dev, privacy@alltius.dev, abuse@alltius.dev and postmaster@alltius.dev, all forwarding to the already verified company-controlled destination. Preserve unrelated DNS, MX, SPF and DKIM records. If Cloudflare requires destination confirmation, complete it only for the existing verified destination.
+The current DNS evidence shows MX alltius.dev -> mail.alltius.dev, a live mail host, and existing SES/DKIM/DMARC records for transactional and marketing subdomains. Treat this email setup as completed manually by the owner. Do not enable Cloudflare Email Routing, replace the MX, modify existing mail/SES records, or attempt to verify/create contact@alltius.dev, privacy@alltius.dev, abuse@alltius.dev or postmaster@alltius.dev in this site release. The public copy may use the existing official AIULLMA contact bridge until the owner changes it in the email service.
 
-Verify each alias with a controlled message and record only the routing status, never message contents or credentials.
-
-- [ ] Step 3: Add the private SES request note to local Git exclusions
-
-Add this exact line to .git/info/exclude:
-
-~~~
-/docs/ses-production-access.md
-~~~
-
-Create docs/ses-production-access.md locally with the approved production narrative, the 10–50/day and 1,000–3,000/month estimate, Transactional as the initial type, shared-IP posture, tenant onboarding policy, abuse mailbox, list-origination policy, consent evidence, unsubscribe controls, event-handling design and a short list of sample transactional messages. The note must not include AWS credentials, SMTP passwords or private customer data.
-
-- [ ] Step 4: Confirm the project is isolated before code changes
+- [ ] Step 3: Confirm the project is isolated before code changes
 
 Run:
 
@@ -99,18 +84,9 @@ git branch --show-current
 
 Expected: the branch is agent/alltius-dev-site, the worktree contains only the approved spec/plan commits, and no remote push is attempted while origin still references aiullma.com.
 
-- [ ] Step 5: Verify the local SES checklist boundary
-
-Because .git/info/exclude is local Git metadata and is not versioned, do not
-stage or commit it. Verify the private note is ignored:
-
-~~~
-git check-ignore -v docs/ses-production-access.md
-git status --short
-~~~
-
-Expected: the first command reports .git/info/exclude as the matching rule and
-the second command does not list docs/ses-production-access.md.
+The email-provider setup, aliases, SES production request and sender
+authentication are intentionally manual follow-up work. No private email
+credentials, message contents or mailbox state are recorded in this repository.
 
 ---
 
@@ -176,7 +152,7 @@ Keep routePairs as the single source of truth and add:
 email: { en: "/email", pt: "/pt/email", es: "/es/email" },
 ~~~
 
-Add emailOperations: EmailOperationsContent to SiteContent. Change legal email fields to use the verified Alltius addresses created in Task 1. Keep the AIULLMA LLC address, New Mexico registration and official relationship in the company/trust/legal copy.
+Add emailOperations: EmailOperationsContent to SiteContent. Keep the current official AIULLMA corporate addresses as the temporary contact bridge; the owner may replace them manually with Alltius mailboxes after launch. Keep the Alltius/AIULLMA relationship explicit, along with the AIULLMA LLC address, New Mexico registration and official relationship in the company/trust/legal copy.
 
 - [ ] Step 4: Write the Alltius home copy in all three locales
 
@@ -294,7 +270,7 @@ Assert:
 - the footer and legal pages say Alltius is operated by AIULLMA LLC or the localized equivalent;
 - metadataBase, JSON-LD url, sitemap and robots use https://alltius.dev;
 - Open Graph and Twitter metadata use Alltius copy and /og.png;
-- no rendered HTML contains aiullma.com or an AIULLMA-only page title.
+- no rendered HTML uses aiullma.com as the canonical origin or an AIULLMA-only page title; a verified AIULLMA corporate email bridge is allowed when Alltius aliases are not yet confirmed.
 
 - [ ] Step 2: Run tests and verify RED
 
@@ -304,7 +280,7 @@ Expected: FAIL because the current shell, metadata, sitemap, robots and assets s
 
 - [ ] Step 3: Rebrand shared shell and metadata
 
-Change the wordmark, accessibility labels, localized footer, canonical origin and organization JSON-LD. Use name: Alltius, legalName: AIULLMA LLC, url: https://alltius.dev and a verified Alltius contact address. Keep the New Mexico address only in the company/trust/legal content where it supports corporate diligence.
+Change the wordmark, accessibility labels, localized footer, canonical origin and organization JSON-LD. Use name: Alltius, legalName: AIULLMA LLC, url: https://alltius.dev and the current official AIULLMA contact bridge. The owner can change the public mailbox manually after launch. Keep the New Mexico address only in the company/trust/legal content where it supports corporate diligence.
 
 Update metadataFor to suffix non-absolute titles with | Alltius, add email-page alternates, and update sitemap/robots to the new origin.
 
@@ -427,7 +403,7 @@ npm run lint
 npm run pages:build
 ~~~
 
-Expected: clean worktree, passing build/test/lint/static export and no untracked private SES note.
+Expected: clean worktree, passing build/test/lint/static export and no untracked email operations documents.
 
 - [ ] Step 2: Create or inspect the GitHub repository
 
@@ -493,7 +469,7 @@ Record the returned pages.dev URL and verify it before attaching the custom doma
 
 - [ ] Step 4: Add custom domains without disturbing unrelated DNS
 
-In the Cloudflare Pages custom-domain settings, add alltius.dev as the canonical domain and www.alltius.dev as the secondary domain or redirect. Accept only the DNS records Cloudflare identifies for this Pages project; preserve the email-routing MX, SPF, DKIM and DMARC records created in Task 1.
+In the Cloudflare Pages custom-domain settings, add alltius.dev as the canonical domain and www.alltius.dev as the secondary domain or redirect. Accept only the DNS records Cloudflare identifies for this Pages project; preserve the existing mail MX, SPF, DKIM and DMARC records. Do not enable Email Routing as part of this deployment.
 
 - [ ] Step 5: Verify live HTTPS and route behavior
 
@@ -511,15 +487,14 @@ Expected: HTTPS 200 responses, localized content, Alltius canonical URLs and a s
 
 ---
 
-### Task 8: Final verification, SES readiness gate and handoff
+### Task 8: Final verification and handoff
 
 **Files:**
-- Modify: docs/ses-production-access.md only in the local ignored workspace
 - Modify: docs/superpowers/plans/2026-08-17-alltius-institutional-site.md checklist status if tracking is desired
 
 **Interfaces:**
-- Consumes: the published site, Cloudflare DNS state, the private SES request note and current AWS documentation.
-- Produces: evidence-backed handoff with GitHub link, Pages preview/custom-domain link, verified routes and explicit SES next actions.
+- Consumes: the published site and Cloudflare DNS state.
+- Produces: evidence-backed handoff with GitHub link, Pages preview/custom-domain link and verified routes. Email-provider and SES setup remains an explicit manual follow-up for the owner.
 
 - [ ] Step 1: Run fresh source and artifact verification
 
@@ -555,21 +530,13 @@ tenant
 
 Assert that no production page contains aiullma.com, AWS partnership language, guaranteed ROI, open-relay language or purchased-list permission. Confirm that footer, privacy, terms, deletion and contact pages all disclose the legal operator.
 
-- [ ] Step 4: Verify AWS readiness evidence
+- [ ] Step 4: Record the manual email follow-up boundary
 
-Confirm in the private note and current AWS console:
-
-- the chosen Region is recorded;
-- Alltius sending identities are verified;
-- SPF, Easy DKIM and DMARC are aligned for each active sender domain;
-- abuse/support mailboxes are monitored;
-- Transactional is the honest majority use case;
-- the 10–50/day, peak 100/day and 1,000–3,000/month estimate is current;
-- bounce, complaint, delivery and unsubscribe events have a handler;
-- marketing remains disabled until preference controls are live;
-- tenants are reviewed and no open relay exists;
-- shared IPs remain the initial posture;
-- no secrets appear in Git or the public site.
+Confirm only that the public copy describes Email & Messaging responsibly and
+does not claim AWS partnership, SES approval or active mailbox provisioning.
+The owner will complete sender identities, aliases, DNS authentication,
+provider configuration and any AWS request directly in the email service after
+the site launch.
 
 - [ ] Step 5: Handoff
 
@@ -580,4 +547,4 @@ Return:
 - https://alltius.dev production URL;
 - branch and commit used for deployment;
 - verification command summary;
-- SES status as “prepared for an honest Transactional production request”, never “AWS approved” unless the AWS console shows that status.
+- Email status as “public service copy ready; provider setup intentionally manual and pending owner execution.”
