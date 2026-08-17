@@ -28,11 +28,3 @@ export function staticArtifactPathForRoute(route) {
     ? `${normalizedRoute}index.html`
     : `${normalizedRoute}/index.html`;
 }
-
-export function workerRenderPathForRoute(route) {
-  if (route === "/") {
-    return route;
-  }
-
-  return route.endsWith("/") ? route.slice(0, -1) : route;
-}

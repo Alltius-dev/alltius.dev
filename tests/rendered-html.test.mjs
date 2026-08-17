@@ -5,7 +5,6 @@ import test from "node:test";
 import {
   localeHeaderForRoute,
   localizedPublicRoutes as expectedRoutes,
-  workerRenderPathForRoute,
 } from "../scripts/static-export-config.mjs";
 
 const prohibitedPatterns = [
@@ -32,7 +31,7 @@ async function render(path, headers = {}) {
   const { default: worker } = await import(workerUrl.href);
 
   return worker.fetch(
-    new Request(`http://localhost${workerRenderPathForRoute(path)}`, {
+    new Request(`http://localhost${path}`, {
       headers,
     }),
     {
@@ -73,6 +72,18 @@ for (const path of expectedRoutes) {
     assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   });
 }
+
+test("canonical trailing-slash routes render 200 without redirects from the worker", async () => {
+  for (const path of expectedRoutes.filter((route) => route.endsWith("/") && route !== "/")) {
+    const response = await render(path, {
+      accept: "text/html",
+      "x-aiullma-language": localeHeaderForRoute(path),
+    });
+
+    assert.equal(response.status, 200, `${path} must render directly`);
+    assert.equal(response.headers.get("location"), null, `${path} must not redirect`);
+  }
+});
 
 const positioningCases = [
   {

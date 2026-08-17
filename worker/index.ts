@@ -40,9 +40,10 @@ const worker = {
       }, allowedWidths);
     }
 
-    // vinext normalizes directory routes to their slashless form. Preserve
-    // the approved localized home URLs while dispatching to generated routes.
-    if (url.pathname === "/pt/" || url.pathname === "/es/") {
+    // vinext normalizes directory routes to their slashless form. Serve the
+    // canonical public trailing-slash URLs by dispatching them internally to
+    // the generated slashless routes instead of redirecting.
+    if (url.pathname !== "/" && url.pathname.endsWith("/")) {
       const normalizedUrl = new URL(request.url);
       normalizedUrl.pathname = url.pathname.slice(0, -1);
       return handler.fetch(new Request(normalizedUrl, request), env, ctx);
