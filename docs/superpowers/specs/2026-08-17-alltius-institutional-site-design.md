@@ -201,6 +201,40 @@ grant Amazon SES production access. Production access remains a separate AWS
 account review in which the sending type, website, consent process and bounce/
 complaint handling must be accurately described.
 
+## Readiness audit against the SMTPedia guide
+
+The independent [SMTPedia Amazon SES guide](https://smtpedia.com/amazon-ses-guide/)
+was used as a secondary checklist. It reinforces the direction above and adds
+operational gates that must be explicit before requesting production access.
+AWS documentation remains authoritative for current limits, policies and
+account decisions.
+
+| Area | Current design status | Gate before SES request |
+| --- | --- | --- |
+| Website, privacy and contact | Covered | Publish the Alltius site and verify the contact route works. |
+| Transactional, marketing and agency use cases | Covered | Prepare an accurate daily/monthly volume estimate and sending cadence. |
+| Consent and list hygiene | Covered as policy | Record consent source and timestamp where applicable; use confirmed opt-in for new marketing lists; never import purchased, scraped or rented lists. |
+| Unsubscribe | Covered as policy | Implement a visible one-click/list-unsubscribe path and tenant-specific preference handling. |
+| Abuse and support | Missing as an operational gate | Create and monitor `abuse@alltius.dev`, `postmaster@alltius.dev` or an equivalent company-controlled mailbox before onboarding tenants. |
+| Domain authentication | Planned | Verify every sending domain and configure aligned SPF, Easy DKIM and DMARC; use a custom MAIL FROM domain where appropriate. |
+| Bounces and complaints | Covered as policy | Connect SES events to an operational handler, suppress affected recipients and document escalation/pause procedures. |
+| Reputation and warm-up | Missing as an explicit gate | Start with controlled volume, monitor per tenant and configuration set, and pause or review sources that harm account reputation. |
+| API versus SMTP | Not yet selected | Use SES API as the default for Alltius-managed services; permit SMTP only for reviewed existing tools that require it, with scoped credentials and TLS. |
+| Multi-tenant controls | Covered in architecture | Verify each client identity, isolate data and reputation, define rate limits, and revoke access when a tenant is paused or offboarded. |
+| Public signup | Intentionally not required | Alltius is a managed service, not an anonymous self-service relay; onboarding occurs through review and a client agreement. Explain this in the SES request. |
+
+The implementation plan must also create a private operational document named
+`docs/ses-production-access.md`. It will contain the AWS request narrative,
+expected volumes, regions, message categories, list-origination process,
+consent evidence, unsubscribe flow, bounce/complaint controls, abuse contact,
+tenant model and sample messages. It must never contain access keys or SMTP
+passwords.
+
+The authentication and monitoring gates follow AWS guidance on [email
+authentication](https://docs.aws.amazon.com/ses/latest/dg/email-authentication-methods.html),
+[sending activity](https://docs.aws.amazon.com/ses/latest/dg/monitor-sending-activity.html)
+and [lists and subscriptions](https://docs.aws.amazon.com/ses/latest/dg/lists-and-subscriptions.html).
+
 ## Legal and contact treatment
 
 The reference site has no analytics, advertising pixels, non-essential
@@ -254,9 +288,12 @@ The release is ready when:
 5. Email-service copy documents opt-in, unsubscribe, suppression,
    bounce/complaint handling, tenant isolation and acceptable use without
    claiming AWS partnership or guaranteed SES approval.
-6. `robots.txt`, `sitemap.xml`, canonical metadata, language alternates and
+6. Operational readiness includes monitored abuse/support contact, sender
+   authentication, volume/warm-up assumptions, event handling and an
+   `docs/ses-production-access.md` request narrative.
+7. `robots.txt`, `sitemap.xml`, canonical metadata, language alternates and
    social metadata use `alltius.dev`.
-7. The static build deploys to Cloudflare Pages at no hosting cost.
-8. `https://alltius.dev` serves the published site over HTTPS, with any
+8. The static build deploys to Cloudflare Pages at no hosting cost.
+9. `https://alltius.dev` serves the published site over HTTPS, with any
    `www` behavior explicitly verified.
-9. The GitHub repository contains the exact source used for the deployment.
+10. The GitHub repository contains the exact source used for the deployment.
