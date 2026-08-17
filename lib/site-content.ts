@@ -50,6 +50,7 @@ export type SiteContent = {
   };
   footer: {
     policies: string;
+    email: string;
     privacy: string;
     terms: string;
     dataDeletion: string;
@@ -93,6 +94,7 @@ export const siteContent: Record<Locale, SiteContent> = {
     },
     footer: {
       policies: "Policies",
+      email: "Email & Messaging",
       privacy: "Privacy",
       terms: "Terms",
       dataDeletion: "Data deletion",
@@ -180,31 +182,40 @@ export const siteContent: Record<Locale, SiteContent> = {
         "Alltius Email & Messaging is a managed service operated by AIULLMA LLC. It starts with low-volume transactional and operational communication, with controls designed around sender identity, consent, deliverability and tenant boundaries.",
       sections: [
         {
-          heading: "Initial sending posture",
+          heading: "What we send",
           paragraphs: [
             "Transactional email is the initial focus: account notices, security messages, support updates and workflow alerts tied to an action or active business relationship.",
             "Permission-based marketing may be activated later only after opt-in, preference and unsubscribe controls are operating for the relevant audience.",
+            "Alltius does not offer an open relay, anonymous sending or public email-sending access.",
           ],
         },
         {
-          heading: "Consent and recipient controls",
+          heading: "How a tenant is reviewed",
+          paragraphs: [
+            "Each client tenant is reviewed for ownership, sender identity, use case, recipient source, content and operating limits before sending is enabled.",
+            "Client tenants are reviewed and isolated. Every approved tenant has a documented owner, reviewed sending identities, usage limits and an escalation contact.",
+          ],
+        },
+        {
+          heading: "Deliverability controls",
           paragraphs: [
             "Marketing recipients must have requested or lawfully subscribed to the communication, and every marketing message must provide a clear unsubscribe path.",
             "Unsubscribe, bounce and complaint events are processed into suppression controls so affected recipients are not sent the same category of communication again.",
-          ],
-        },
-        {
-          heading: "Reviewed and isolated tenants",
-          paragraphs: [
-            "Each client tenant is reviewed for ownership, sender identity, use case, recipient source, content and operating limits before sending is enabled.",
             "Credentials, recipient data, templates, events and suppression state are isolated by tenant, with access revocation and offboarding controls.",
           ],
         },
         {
-          heading: "Deliverability and acceptable use",
+          heading: "What we do not support",
           paragraphs: [
             "Delivery, bounce and complaint signals are monitored, and a tenant may be paused when activity creates abuse, compliance or reputation risk.",
-            "Anonymous sending, deceptive identity, unsolicited bulk delivery, phishing and prohibited content are not supported.",
+            "No purchased, rented, scraped or unsolicited lists are allowed, and no deceptive identity, phishing or prohibited content is supported.",
+          ],
+        },
+        {
+          heading: "Contact and legal operator",
+          paragraphs: [
+            "AIULLMA LLC remains the legal operator of the public site and the service brand relationship is disclosed in the public legal pages.",
+            "Use the existing AIULLMA corporate contact bridge for reviewed inquiries; operational mailbox and provider setup remain manual and outside this public site.",
           ],
         },
       ],
@@ -243,6 +254,7 @@ export const siteContent: Record<Locale, SiteContent> = {
             paragraphs: [
               "At launch, this website uses no advertising pixels, analytics, session replay, fingerprinting or non-essential cookies. Ordinary hosting and security logs may be generated when the site is visited.",
               "When you email us, we use the information you provide to respond to your inquiry, evaluate a potential engagement and maintain reasonable business records.",
+              "Where Alltius operates a managed email service for a client, we may process recipient, delivery, bounce, complaint and preference data on that client's behalf.",
             ],
           },
           {
@@ -256,6 +268,7 @@ export const siteContent: Record<Locale, SiteContent> = {
             paragraphs: [
               "We retain information only for as long as reasonably necessary for the purposes described here, including legal, accounting, security and backup needs. We use reasonable administrative and technical safeguards, but no transmission or system is completely secure.",
               "You may request access, correction, deletion or other applicable privacy rights by emailing privacy@aiullma.com. AIULLMA LLC is the controller for this website; where we process data for a client system, the client may control the relevant request.",
+              "AIULLMA LLC is the controller for this website, while a client may control recipient data in a managed service engagement.",
             ],
           },
         ],
@@ -271,6 +284,7 @@ export const siteContent: Record<Locale, SiteContent> = {
             paragraphs: [
               "You may use this site for lawful informational purposes. Do not interfere with the site, attempt unauthorized access, introduce harmful material or use its content in a misleading way.",
               "The site content is owned by AIULLMA LLC or its licensors and may not be copied or reused except as permitted by law or with written permission.",
+              "For managed email operations, Alltius does not offer an open relay, unlawful or unsolicited mail, or anonymous sending. Tenant review, identity verification and the right to suspend service for abuse are part of acceptable use.",
             ],
           },
           {
@@ -278,6 +292,7 @@ export const siteContent: Record<Locale, SiteContent> = {
             paragraphs: [
               "Site content is general information and does not create a service commitment. References or links to third-party products or sites do not imply affiliation, certification or endorsement.",
               "Paid services are governed by separate proposals, statements of work or other agreements accepted for the relevant engagement.",
+              "Managed email operations for a client are also governed by separate client agreements that define approved identities, list origin and operating limits.",
             ],
           },
           {
@@ -301,13 +316,14 @@ export const siteContent: Record<Locale, SiteContent> = {
             paragraphs: [
               "Include your name, company, relationship to AIULLMA LLC, the data or service concerned and enough context to help us locate the relevant record.",
               "Do not send passwords, tokens, API keys, customer lists or sensitive datasets in a deletion request.",
+              "State whether the request concerns Alltius-controlled records or a client-controlled audience so we can route the request correctly.",
             ],
           },
           {
             heading: "How requests are handled",
             paragraphs: [
               "We may verify your identity before acting on a request. Where appropriate, we will delete or anonymize information, subject to legitimate legal, security, accounting and backup-retention requirements that may limit immediate erasure.",
-              "If the requested data is controlled by one of our clients, the request may need to be directed to that client. We will explain the applicable next step where reasonably possible.",
+              "If the requested data is controlled by one of our clients, the request may need to be directed to that client because the audience is client-controlled. We will explain the applicable next step where reasonably possible.",
             ],
           },
         ],
@@ -325,6 +341,7 @@ export const siteContent: Record<Locale, SiteContent> = {
     },
     footer: {
       policies: "Políticas",
+      email: "E-mail e Mensageria",
       privacy: "Privacidade",
       terms: "Termos",
       dataDeletion: "Exclusão de dados",
@@ -405,38 +422,47 @@ export const siteContent: Record<Locale, SiteContent> = {
         "Não envie credenciais, chaves de API, bases de clientes ou dados pessoais sensíveis por e-mail.",
     },
     emailOperations: {
-      title: "Operações de Email & Messaging",
+      title: "Operações de E-mail e Mensageria",
       description:
         "Como a Alltius gerencia e-mail transacional, comunicação de ciclo de vida baseada em permissão e clientes revisados.",
       introduction:
         "Alltius Email & Messaging é um serviço gerenciado operado pela AIULLMA LLC. Ele começa com comunicação transacional e operacional de baixo volume, com controles desenhados para identidade do remetente, consentimento, entregabilidade e separação entre clientes.",
       sections: [
         {
-          heading: "Postura inicial de envio",
+          heading: "O que enviamos",
           paragraphs: [
             "E-mail transacional é o foco inicial: avisos de conta, mensagens de segurança, atualizações de suporte e alertas de fluxo ligados a uma ação ou relação comercial ativa.",
-            "Marketing baseado em permissão pode ser ativado depois, somente quando os controles de consentimento, preferências e descadastro estiverem funcionando para o público correspondente.",
+            "Marketing baseado em permissão pode ser ativado depois, somente quando os controles de opt-in, consentimento, preferências e descadastro estiverem funcionando para o público correspondente.",
+            "A Alltius não oferece um open relay, envio anônimo ou acesso público para disparo de e-mails.",
           ],
         },
         {
-          heading: "Consentimento e controle de destinatários",
+          heading: "Como um tenant é revisado",
+          paragraphs: [
+            "Cada tenant de cliente é revisado quanto a responsável, identidade do remetente, caso de uso, origem dos destinatários, conteúdo e limites operacionais antes da liberação de envios.",
+            "Tenants de clientes são revisados e isolados. Cada tenant aprovado possui responsável documentado, identidades revisadas, limites de uso e contato de escalonamento.",
+          ],
+        },
+        {
+          heading: "Controles de entregabilidade",
           paragraphs: [
             "Destinatários de marketing devem ter solicitado ou aderido legalmente à comunicação, e toda mensagem de marketing deve oferecer um caminho claro de descadastro.",
-            "Eventos de descadastro, devolução e reclamação alimentam controles de supressão para evitar novos envios da mesma categoria aos destinatários afetados.",
-          ],
-        },
-        {
-          heading: "Clientes revisados e isolados",
-          paragraphs: [
-            "Cada cliente é revisado quanto a responsável, identidade do remetente, caso de uso, origem dos destinatários, conteúdo e limites operacionais antes da liberação de envios.",
+            "Eventos de descadastro, bounce e reclamação alimentam controles de supressão para evitar novos envios da mesma categoria aos destinatários afetados.",
             "Credenciais, dados de destinatários, modelos, eventos e estado de supressão são isolados por tenant, com controles de revogação de acesso e encerramento.",
           ],
         },
         {
-          heading: "Entregabilidade e uso aceitável",
+          heading: "O que não apoiamos",
           paragraphs: [
             "Sinais de entrega, devolução e reclamação são monitorados, e um cliente pode ser pausado quando a atividade gera risco de abuso, conformidade ou reputação.",
-            "Envio anônimo, identidade enganosa, distribuição em massa não solicitada, phishing e conteúdo proibido não são aceitos.",
+            "Não usamos listas compradas, alugadas, raspadas ou não solicitadas, e não aceitamos identidade enganosa, phishing ou conteúdo proibido.",
+          ],
+        },
+        {
+          heading: "Contato e operador legal",
+          paragraphs: [
+            "A AIULLMA LLC permanece como operadora legal do site público, e a relação da marca de serviço é declarada nas páginas legais.",
+            "Use a ponte oficial de contato corporativo da AIULLMA para consultas revisadas; configuração de provedor e caixas operacionais continua manual e fora do escopo deste site público.",
           ],
         },
       ],
@@ -473,6 +499,7 @@ export const siteContent: Record<Locale, SiteContent> = {
             paragraphs: [
               "No lançamento, este site não usa pixels publicitários, analytics, gravação de sessão, fingerprinting ou cookies não essenciais. Logs comuns de hospedagem e segurança podem ser gerados quando o site é visitado.",
               "Quando você nos envia um e-mail, usamos as informações fornecidas para responder à solicitação, avaliar um possível projeto e manter registros comerciais razoáveis.",
+              "Quando a Alltius opera um serviço gerenciado de e-mail para um cliente, podemos tratar dados de destinatários, entrega, bounce, reclamações e preferências em nome desse cliente.",
             ],
           },
           {
@@ -486,6 +513,7 @@ export const siteContent: Record<Locale, SiteContent> = {
             paragraphs: [
               "Mantemos informações somente pelo tempo razoavelmente necessário às finalidades descritas, inclusive necessidades legais, contábeis, de segurança e de backup. Usamos salvaguardas administrativas e técnicas razoáveis, mas nenhuma transmissão ou sistema é completamente seguro.",
               "Você pode solicitar acesso, correção, exclusão ou outros direitos aplicáveis enviando um e-mail para privacy@aiullma.com. A AIULLMA LLC é controladora deste site; quando tratamos dados para um sistema de cliente, o cliente pode controlar a solicitação pertinente.",
+              "A AIULLMA LLC é controladora deste site, enquanto o cliente pode controlar os dados de destinatários em um serviço gerenciado.",
             ],
           },
         ],
@@ -501,6 +529,7 @@ export const siteContent: Record<Locale, SiteContent> = {
             paragraphs: [
               "Você pode usar este site para fins informativos e lícitos. Não interfira no site, tente acesso não autorizado, introduza material nocivo ou use seu conteúdo de forma enganosa.",
               "O conteúdo do site pertence à AIULLMA LLC ou a seus licenciadores e não pode ser copiado ou reutilizado exceto quando permitido por lei ou por autorização escrita.",
+              "Nas operações gerenciadas de e-mail, a Alltius não oferece um open relay, e-mail ilegal ou não solicitado, nem envio anônimo. Revisão do tenant, verificação de identidade e o direito de suspender o serviço por abuso fazem parte do uso aceitável.",
             ],
           },
           {
@@ -508,6 +537,7 @@ export const siteContent: Record<Locale, SiteContent> = {
             paragraphs: [
               "O conteúdo do site é informação geral e não cria compromisso de serviço. Referências ou links a produtos ou sites de terceiros não implicam afiliação, certificação ou endosso.",
               "Serviços pagos são regidos por propostas, declarações de trabalho ou outros contratos separados aceitos para o projeto correspondente.",
+              "Operações gerenciadas de e-mail para clientes também dependem de acordos separados com clientes que definem identidades aprovadas, origem das listas e limites operacionais.",
             ],
           },
           {
@@ -532,13 +562,14 @@ export const siteContent: Record<Locale, SiteContent> = {
             paragraphs: [
               "Inclua seu nome, empresa, relação com a AIULLMA LLC, os dados ou serviço envolvidos e contexto suficiente para localizar o registro pertinente.",
               "Não envie senhas, tokens, chaves de API, listas de clientes ou conjuntos de dados sensíveis em uma solicitação de exclusão.",
+              "Informe se o pedido trata de registros controlados pela Alltius ou de uma audiência controlada por cliente para que possamos encaminhá-lo corretamente.",
             ],
           },
           {
             heading: "Como as solicitações são tratadas",
             paragraphs: [
               "Podemos verificar sua identidade antes de agir. Quando apropriado, excluiremos ou anonimizaremos informações, sujeito a requisitos legítimos de retenção legal, de segurança, contábil e de backup que podem limitar a exclusão imediata.",
-              "Se os dados solicitados forem controlados por um de nossos clientes, a solicitação poderá precisar ser direcionada ao cliente. Explicaremos o próximo passo aplicável quando razoavelmente possível.",
+              "Se os dados solicitados forem controlados por um de nossos clientes, a solicitação poderá precisar ser direcionada ao cliente, porque a audiência é controlada por cliente. Explicaremos o próximo passo aplicável quando razoavelmente possível.",
             ],
           },
         ],
@@ -556,6 +587,7 @@ export const siteContent: Record<Locale, SiteContent> = {
     },
     footer: {
       policies: "Políticas",
+      email: "Email y Mensajería",
       privacy: "Privacidad",
       terms: "Términos",
       dataDeletion: "Eliminación de datos",
@@ -636,38 +668,47 @@ export const siteContent: Record<Locale, SiteContent> = {
         "No envíe credenciales, claves de API, bases de clientes ni datos personales sensibles por correo electrónico.",
     },
     emailOperations: {
-      title: "Operaciones de Email & Messaging",
+      title: "Operaciones de Email y Mensajería",
       description:
         "Cómo Alltius gestiona correo transaccional, comunicación de ciclo de vida basada en permisos y clientes revisados.",
       introduction:
         "Alltius Email & Messaging es un servicio gestionado operado por AIULLMA LLC. Comienza con comunicación transaccional y operativa de bajo volumen, con controles diseñados para identidad del remitente, consentimiento, entregabilidad y separación entre clientes.",
       sections: [
         {
-          heading: "Postura inicial de envío",
+          heading: "Qué enviamos",
           paragraphs: [
-            "El correo transaccional es el foco inicial: avisos de cuenta, mensajes de seguridad, actualizaciones de soporte y alertas de flujo vinculados a una acción o relación comercial activa.",
-            "El marketing basado en permisos puede activarse más adelante solamente cuando estén operativos los controles de consentimiento, preferencias y cancelación de suscripción para la audiencia correspondiente.",
+            "El email transaccional es el enfoque inicial: avisos de cuenta, mensajes de seguridad, actualizaciones de soporte y alertas de flujo vinculados a una acción o relación comercial activa.",
+            "El marketing basado en permisos puede activarse más adelante solamente cuando estén operativos los controles de opt-in, consentimiento, preferencias y cancelación de suscripción para la audiencia correspondiente.",
+            "Alltius no ofrece un open relay, envío anónimo ni acceso público para enviar correos.",
           ],
         },
         {
-          heading: "Consentimiento y control de destinatarios",
+          heading: "Cómo se revisa un tenant",
+          paragraphs: [
+            "Cada tenant de cliente se revisa en cuanto a responsable, identidad del remitente, caso de uso, origen de destinatarios, contenido y límites operativos antes de habilitar los envíos.",
+            "Los tenants de clientes quedan revisados y aislados. Cada tenant aprobado tiene un responsable documentado, identidades revisadas, límites de uso y un contacto de escalamiento.",
+          ],
+        },
+        {
+          heading: "Controles de entregabilidad",
           paragraphs: [
             "Los destinatarios de marketing deben haber solicitado la comunicación o haberse suscrito legalmente, y todo mensaje de marketing debe ofrecer una vía clara de cancelación de suscripción.",
-            "Los eventos de cancelación de suscripción, rebote y queja alimentan controles de supresión para evitar nuevos envíos de la misma categoría a los destinatarios afectados.",
-          ],
-        },
-        {
-          heading: "Clientes revisados y aislados",
-          paragraphs: [
-            "Cada cliente se revisa en cuanto a responsable, identidad del remitente, caso de uso, origen de destinatarios, contenido y límites operativos antes de habilitar los envíos.",
+            "Los eventos de cancelación de suscripción, rebotes y quejas alimentan controles de supresión para evitar nuevos envíos de la misma categoría a los destinatarios afectados.",
             "Las credenciales, los datos de destinatarios, las plantillas, los eventos y el estado de supresión se aíslan por tenant, con controles para revocar el acceso y cerrar el servicio.",
           ],
         },
         {
-          heading: "Entregabilidad y uso aceptable",
+          heading: "Lo que no apoyamos",
           paragraphs: [
             "Las señales de entrega, rebote y queja se supervisan, y un cliente puede pausarse cuando la actividad genera riesgos de abuso, cumplimiento o reputación.",
-            "El envío anónimo, la identidad engañosa, la distribución masiva no solicitada, el phishing y el contenido prohibido no son compatibles con el servicio.",
+            "No usamos listas compradas, alquiladas, extraídas ni no solicitadas, y no admitimos identidad engañosa, phishing ni contenido prohibido.",
+          ],
+        },
+        {
+          heading: "Contacto y operador legal",
+          paragraphs: [
+            "AIULLMA LLC sigue siendo la operadora legal del sitio público, y la relación con la marca de servicio se declara en las páginas legales.",
+            "Use el puente oficial de contacto corporativo de AIULLMA para consultas revisadas; la configuración del proveedor y los buzones operativos sigue siendo manual y queda fuera del alcance de este sitio público.",
           ],
         },
       ],
@@ -704,6 +745,7 @@ export const siteContent: Record<Locale, SiteContent> = {
             paragraphs: [
               "En su lanzamiento, este sitio no utiliza píxeles publicitarios, herramientas de analítica, grabación de sesiones, técnicas de fingerprinting ni cookies no esenciales. Cuando se visita el sitio, pueden generarse registros ordinarios de alojamiento y seguridad.",
               "Cuando nos envía un correo electrónico, utilizamos la información proporcionada para responder a su consulta, evaluar una posible contratación y mantener registros comerciales razonables.",
+              "Cuando Alltius opera un servicio gestionado de email para un cliente, podemos tratar datos de destinatarios, entrega, rebotes, quejas y preferencias en nombre de ese cliente.",
             ],
           },
           {
@@ -717,6 +759,7 @@ export const siteContent: Record<Locale, SiteContent> = {
             paragraphs: [
               "Conservamos la información únicamente durante el tiempo razonablemente necesario para los fines descritos, incluidas necesidades legales, contables, de seguridad y de respaldo. Utilizamos salvaguardas administrativas y técnicas razonables, pero ninguna transmisión ni sistema es completamente seguro.",
               "Puede solicitar acceso, corrección, eliminación u otros derechos aplicables escribiendo a privacy@aiullma.com. AIULLMA LLC es responsable del tratamiento de este sitio; cuando tratamos datos para un sistema de un cliente, el cliente puede controlar la solicitud correspondiente.",
+              "AIULLMA LLC es responsable del tratamiento de este sitio, mientras que el cliente puede controlar los datos de destinatarios en un servicio gestionado.",
             ],
           },
         ],
@@ -732,6 +775,7 @@ export const siteContent: Record<Locale, SiteContent> = {
             paragraphs: [
               "Puede utilizar este sitio con fines informativos y lícitos. No interfiera con el sitio, intente obtener acceso no autorizado, introduzca material dañino ni utilice su contenido de forma engañosa.",
               "El contenido del sitio pertenece a AIULLMA LLC o a sus licenciantes y no puede copiarse ni reutilizarse salvo cuando lo permita la ley o exista autorización por escrito.",
+              "En las operaciones gestionadas de email, Alltius no ofrece un open relay, correo ilegal o no solicitado, ni envío anónimo. La revisión del tenant, la verificación de identidad y el derecho a suspender el servicio por abuso forman parte del uso aceptable.",
             ],
           },
           {
@@ -739,6 +783,7 @@ export const siteContent: Record<Locale, SiteContent> = {
             paragraphs: [
               "El contenido del sitio es información general y no crea un compromiso de servicio. Las referencias o enlaces a productos o sitios de terceros no implican afiliación, certificación ni respaldo.",
               "Los servicios de pago se rigen por propuestas, alcances de trabajo u otros contratos independientes aceptados para la contratación correspondiente.",
+              "Las operaciones gestionadas de email para clientes también dependen de acuerdos separados con clientes que definen identidades aprobadas, origen de listas y límites operativos.",
             ],
           },
           {
@@ -763,13 +808,14 @@ export const siteContent: Record<Locale, SiteContent> = {
             paragraphs: [
               "Incluya su nombre, empresa, relación con AIULLMA LLC, los datos o el servicio involucrados y suficiente contexto para ayudarnos a localizar el registro correspondiente.",
               "No envíe contraseñas, tokens, claves de API, listas de clientes ni conjuntos de datos sensibles en una solicitud de eliminación.",
+              "Indique si la solicitud se refiere a registros controlados por Alltius o a una audiencia controlada por el cliente para que podamos dirigirla correctamente.",
             ],
           },
           {
             heading: "Cómo se gestionan las solicitudes",
             paragraphs: [
               "Podemos verificar su identidad antes de actuar. Cuando corresponda, eliminaremos o anonimizaremos la información, sujeto a requisitos legítimos de conservación legal, de seguridad, contable y de respaldo que pueden limitar la eliminación inmediata.",
-              "Si los datos solicitados están controlados por uno de nuestros clientes, es posible que la solicitud deba dirigirse a ese cliente. Explicaremos el siguiente paso aplicable cuando sea razonablemente posible.",
+              "Si los datos solicitados están controlados por uno de nuestros clientes, es posible que la solicitud deba dirigirse a ese cliente porque la audiencia está controlada por el cliente. Explicaremos el siguiente paso aplicable cuando sea razonablemente posible.",
             ],
           },
         ],

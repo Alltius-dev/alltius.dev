@@ -50,6 +50,7 @@ export function SiteShell({ locale, localizedPaths, children }: SiteShellProps) 
   const paths = {
     home: routePairs.home[locale],
     contact: routePairs.contact[locale],
+    email: routePairs.email[locale],
   };
 
   return (
@@ -112,6 +113,7 @@ export function SiteShell({ locale, localizedPaths, children }: SiteShellProps) 
             <p>AIULLMA LLC · {"New Mexico, United States"}</p>
           </div>
           <nav aria-label={accessibility.policies}>
+            <a href={paths.email}>{content.footer.email}</a>
             <a href={routePairs.privacy[locale]}>{content.footer.privacy}</a>
             <a href={routePairs.terms[locale]}>{content.footer.terms}</a>
             <a href={routePairs.dataDeletion[locale]}>{content.footer.dataDeletion}</a>

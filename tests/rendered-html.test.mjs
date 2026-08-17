@@ -5,16 +5,19 @@ import test from "node:test";
 const expectedRoutes = [
   "/",
   "/contact",
+  "/email",
   "/privacy",
   "/terms",
   "/data-deletion",
   "/pt/",
   "/pt/contato",
+  "/pt/email",
   "/pt/privacidade",
   "/pt/termos",
   "/pt/exclusao-de-dados",
   "/es/",
   "/es/contacto",
+  "/es/email",
   "/es/privacidad",
   "/es/terminos",
   "/es/eliminacion-de-datos",
@@ -27,7 +30,6 @@ const prohibitedPatterns = [
   /AWS partner/i,
   /AWS certified/i,
   /SES approved/i,
-  /open relay/i,
   /purchased lists?/i,
   /unlimited users/i,
   /unlimited messages/i,
@@ -331,9 +333,150 @@ test("home copy keeps permission-based marketing explicitly future-gated", async
   assert.match(await htmlFor("/es/"), /marketing basado en permisos puede activarse más adelante/i);
 });
 
+test("email operations pages publish the reviewed service boundaries in every locale", async () => {
+  const cases = [
+    {
+      path: "/email",
+      title: "Email & Messaging Operations",
+      transactional: /Transactional email is the initial focus/i,
+      marketing: /opt-?in[\s\S]*unsubscribe/i,
+      lists: /no purchased, rented, scraped or unsolicited lists/i,
+      delivery: /bounce[\s\S]*complaint[\s\S]*suppress/i,
+      tenants: /client tenants?[\s\S]*reviewed[\s\S]*isolated/i,
+      relay: /not offer an open relay/i,
+      operator: /AIULLMA LLC/i,
+    },
+    {
+      path: "/pt/email",
+      title: "Operações de E-mail e Mensageria",
+      transactional: /e-?mail transacional é o foco inicial/i,
+      marketing: /opt-?in[\s\S]*descadastro/i,
+      lists: /não usamos listas compradas, alugadas, raspadas ou não solicitadas/i,
+      delivery: /bounce[\s\S]*reclamaç(?:ão|oes)[\s\S]*supress/i,
+      tenants: /tenants? de clientes?[\s\S]*revisad[\w\s\S]*isolad/i,
+      relay: /não oferece um open relay/i,
+      operator: /AIULLMA LLC/i,
+    },
+    {
+      path: "/es/email",
+      title: "Operaciones de Email y Mensajería",
+      transactional: /el email transaccional es el enfoque inicial/i,
+      marketing: /opt-?in[\s\S]*cancelación de suscripción/i,
+      lists: /no usamos listas compradas, alquiladas, extraídas ni no solicitadas/i,
+      delivery: /rebotes?[\s\S]*quejas?[\s\S]*supresi/i,
+      tenants: /tenants? de clientes?[\s\S]*revisad[\w\s\S]*aislad/i,
+      relay: /no ofrece un open relay/i,
+      operator: /AIULLMA LLC/i,
+    },
+  ];
+
+  for (const item of cases) {
+    const html = await htmlFor(item.path);
+    assert.match(html, new RegExp(`<main[^>]*id=["']main-content["']`, "i"));
+    const escapedTitle = item.title.replaceAll("&", "(?:&|&amp;)");
+    assert.match(html, new RegExp(`<h1[^>]*>${escapedTitle}<\\/h1>`, "i"));
+    assert.equal((html.match(/<h1\b/gi) ?? []).length, 1, `${item.path} must render a single h1`);
+    assert.match(html, item.transactional);
+    assert.match(html, item.marketing);
+    assert.match(html, item.lists);
+    assert.match(html, item.delivery);
+    assert.match(html, item.tenants);
+    assert.match(html, item.relay);
+    assert.match(html, item.operator);
+  }
+});
+
 test("legal pages identify the AIULLMA LLC legal entity", async () => {
   for (const path of expectedRoutes.filter((path) => path !== "/" && path !== "/pt/" && path !== "/es/")) {
     assert.match(await htmlFor(path), /AIULLMA LLC/);
+  }
+});
+
+test("legal pages explain email-service privacy, acceptable use and control boundaries", async () => {
+  const cases = [
+    {
+      privacy: "/privacy",
+      privacyPatterns: [
+        /recipient[\s\S]*delivery[\s\S]*bounce[\s\S]*complaint[\s\S]*preference data/i,
+        /AIULLMA LLC is the controller for this website/i,
+        /client may control recipient data in a managed service/i,
+      ],
+      terms: "/terms",
+      termsPatterns: [
+        /not offer an open relay/i,
+        /unlawful or unsolicited mail/i,
+        /tenant review/i,
+        /identity verification/i,
+        /suspend service for abuse/i,
+        /separate client agreements/i,
+      ],
+      deletion: "/data-deletion",
+      deletionPatterns: [
+        /Alltius-controlled records/i,
+        /client-controlled audience/i,
+      ],
+    },
+    {
+      privacy: "/pt/privacidade",
+      privacyPatterns: [
+        /destinatári[\w\s\S]*entrega[\s\S]*bounce[\s\S]*reclamaç(?:ão|ões)[\s\S]*preferênc/i,
+        /A AIULLMA LLC é controladora deste site/i,
+        /cliente pode controlar os dados de destinatários em um serviço gerenciado/i,
+      ],
+      terms: "/pt/termos",
+      termsPatterns: [
+        /não oferece um open relay/i,
+        /e-?mail ilegal ou não solicitado/i,
+        /revisão do tenant/i,
+        /verificação de identidade/i,
+        /suspender o serviço por abuso/i,
+        /acordos separados com clientes/i,
+      ],
+      deletion: "/pt/exclusao-de-dados",
+      deletionPatterns: [
+        /registros controlados pela Alltius/i,
+        /audiência controlada por cliente/i,
+      ],
+    },
+    {
+      privacy: "/es/privacidad",
+      privacyPatterns: [
+        /destinatari[\w\s\S]*entrega[\s\S]*rebotes?[\s\S]*quejas?[\s\S]*preferenci/i,
+        /AIULLMA LLC es responsable del tratamiento de este sitio/i,
+        /cliente puede controlar los datos de destinatarios en un servicio gestionado/i,
+      ],
+      terms: "/es/terminos",
+      termsPatterns: [
+        /no ofrece un open relay/i,
+        /correo ilegal o no solicitado/i,
+        /revisión del tenant/i,
+        /verificación de identidad/i,
+        /suspender el servicio por abuso/i,
+        /acuerdos separados con clientes/i,
+      ],
+      deletion: "/es/eliminacion-de-datos",
+      deletionPatterns: [
+        /registros controlados por Alltius/i,
+        /audiencia controlada por el cliente/i,
+      ],
+    },
+  ];
+
+  for (const item of cases) {
+    const privacyHtml = await htmlFor(item.privacy);
+    for (const pattern of item.privacyPatterns) {
+      assert.match(privacyHtml, pattern, `${item.privacy} must include ${pattern}`);
+    }
+
+    const termsHtml = await htmlFor(item.terms);
+    for (const pattern of item.termsPatterns) {
+      assert.match(termsHtml, pattern, `${item.terms} must include ${pattern}`);
+    }
+
+    const deletionHtml = await htmlFor(item.deletion);
+    for (const pattern of item.deletionPatterns) {
+      assert.match(deletionHtml, pattern, `${item.deletion} must include ${pattern}`);
+    }
   }
 });
 
@@ -341,6 +484,7 @@ test("language selectors link every page to its EN PT and ES equivalents", async
   const routeGroups = [
     [{ path: "/", label: "English", hrefLang: "en" }, { path: "/pt/", label: "Português", hrefLang: "pt-BR" }, { path: "/es/", label: "Español", hrefLang: "es-419" }],
     [{ path: "/contact", label: "English", hrefLang: "en" }, { path: "/pt/contato", label: "Português", hrefLang: "pt-BR" }, { path: "/es/contacto", label: "Español", hrefLang: "es-419" }],
+    [{ path: "/email", label: "English", hrefLang: "en" }, { path: "/pt/email", label: "Português", hrefLang: "pt-BR" }, { path: "/es/email", label: "Español", hrefLang: "es-419" }],
     [{ path: "/privacy", label: "English", hrefLang: "en" }, { path: "/pt/privacidade", label: "Português", hrefLang: "pt-BR" }, { path: "/es/privacidad", label: "Español", hrefLang: "es-419" }],
     [{ path: "/terms", label: "English", hrefLang: "en" }, { path: "/pt/termos", label: "Português", hrefLang: "pt-BR" }, { path: "/es/terminos", label: "Español", hrefLang: "es-419" }],
     [{ path: "/data-deletion", label: "English", hrefLang: "en" }, { path: "/pt/exclusao-de-dados", label: "Português", hrefLang: "pt-BR" }, { path: "/es/eliminacion-de-datos", label: "Español", hrefLang: "es-419" }],

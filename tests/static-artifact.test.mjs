@@ -7,7 +7,6 @@ const prohibitedPatterns = [
   /AWS partner/i,
   /AWS certified/i,
   /SES approved/i,
-  /open relay/i,
   /purchased lists?/i,
   /guaranteed revenue/i,
   /guaranteed ROI/i,
