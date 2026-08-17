@@ -2,26 +2,10 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-const expectedRoutes = [
-  "/",
-  "/contact",
-  "/email",
-  "/privacy",
-  "/terms",
-  "/data-deletion",
-  "/pt/",
-  "/pt/contato",
-  "/pt/email",
-  "/pt/privacidade",
-  "/pt/termos",
-  "/pt/exclusao-de-dados",
-  "/es/",
-  "/es/contacto",
-  "/es/email",
-  "/es/privacidad",
-  "/es/terminos",
-  "/es/eliminacion-de-datos",
-];
+import {
+  localeHeaderForRoute,
+  localizedPublicRoutes as expectedRoutes,
+} from "../scripts/static-export-config.mjs";
 
 const prohibitedPatterns = [
   /Meta approved/i,
@@ -41,14 +25,14 @@ const prohibitedPatterns = [
   /ingresos garantizados/i,
 ];
 
-async function render(path) {
+async function render(path, headers = {}) {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}-${path}`);
   const { default: worker } = await import(workerUrl.href);
 
   return worker.fetch(
     new Request(`http://localhost${path}`, {
-      headers: { accept: "text/html" },
+      headers,
     }),
     {
       ASSETS: {
@@ -63,7 +47,10 @@ async function render(path) {
 }
 
 async function htmlFor(path) {
-  const response = await render(path);
+  const response = await render(path, {
+    accept: "text/html",
+    "x-aiullma-language": localeHeaderForRoute(path),
+  });
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   return response.text();
@@ -77,7 +64,10 @@ async function textFor(path) {
 
 for (const path of expectedRoutes) {
   test(`${path} renders a public HTML page`, async () => {
-    const response = await render(path);
+    const response = await render(path, {
+      accept: "text/html",
+      "x-aiullma-language": localeHeaderForRoute(path),
+    });
     assert.equal(response.status, 200);
     assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
   });
